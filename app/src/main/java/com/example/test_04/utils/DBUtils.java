@@ -358,6 +358,7 @@ public class DBUtils {
 
         db.collection("Merchant Reviews")
                 .whereEqualTo("Merchant Name", merchantName)
+                .whereEqualTo("Completed", true)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
