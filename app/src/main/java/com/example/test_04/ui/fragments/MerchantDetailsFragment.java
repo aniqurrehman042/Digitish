@@ -138,11 +138,13 @@ public class MerchantDetailsFragment extends Fragment {
     public void onResume() {
         super.onResume();
         customerHome.hideSearchIcons();
+        customerHome.showBackBtn();
     }
 
     @Override
     public void onPause() {
         super.onPause();
         customerHome.showSearchIcons();
+        customerHome.hideBackBtn();
     }
 }

@@ -74,16 +74,16 @@ public class SearchFragment extends Fragment {
 
         findViews(view);
 
+        init();
+
+        return view;
+    }
+
+    private void init() {
         setListeners();
 
         if (getArguments() != null) {
-            boolean firstRun = getArguments().getBoolean("First Run", false);
-            if (firstRun) {
-                filters = new ArrayList<>();
-                productReviews = new ArrayList<>();
-                filterAdapter = null;
-                searchReviewsAdapter = null;
-            }
+            firstRunCheck();
         }
 
         setArguments(null);
@@ -98,15 +98,28 @@ public class SearchFragment extends Fragment {
         } else {
             setUpMerchantsRecycler();
         }
+    }
 
-        return view;
+    private void firstRunCheck() {
+        boolean firstRun = getArguments().getBoolean("First Run", false);
+        if (firstRun) {
+            resetRecyclers();
+        }
+    }
+
+    private void resetRecyclers() {
+        filters = new ArrayList<>();
+        productReviews = new ArrayList<>();
+        filterAdapter = null;
+        searchReviewsAdapter = null;
+    }
+
+    public void onSearchClickAgain() {
+        resetRecyclers();
+        init();
     }
 
     private void setUpReviewsRecycler() {
-        String qrId = "";
-        if (!productReviews.isEmpty())
-            productReviews.get(0).getQrId();
-
         if (searchReviewsAdapter == null)
             searchReviewsAdapter = new SearchReviewsAdapter(productReviews, customerHome, null);
         else

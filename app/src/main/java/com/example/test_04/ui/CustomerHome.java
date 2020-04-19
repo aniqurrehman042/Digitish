@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,6 +26,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.test_04.R;
 import com.example.test_04.async.DownloadImageTask;
@@ -378,6 +380,10 @@ public class CustomerHome extends AppCompatActivity {
         llSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (currentFragment.equals("Search")) {
+                    onSearchClickAgain();
+                }
+
                 startFragment(fragments.get(3));
             }
         });
@@ -422,6 +428,10 @@ public class CustomerHome extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void onSearchClickAgain() {
+        ((SearchFragment) fragments.get(3)).onSearchClickAgain();
     }
 
     public void setMerchantProfileMenuListener() {
