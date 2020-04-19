@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:card_view="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/padding_extra_large"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_normal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1"
+                    android:textColor="@color/white"
+                    android:paddingHorizontal="@dimen/padding_small"
+                    android:background="@color/dark_grey"
+                    android:textSize="@dimen/text_normal" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Responsiveness"
+                    android:layout_marginLeft="@dimen/margin_small"
+                    android:textColor="@color/dark_grey"
+                    android:textSize="@dimen/text_normal" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_responsiveness_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_tiny"
+                android:layout_marginLeft="@dimen/_25sdp">
+
+                <ImageView
+                    android:layout_width="@dimen/size_icon"
+                    android:layout_height="@dimen/size_icon"
+                    android:src="@drawable/ic_star_filled"
+                    android:tint="@color/light_yellow" />
+
+                <ImageView
+                    android:layout_width="@dimen/size_icon"
+                    android:layout_height="@dimen/size_icon"
+                    android:src="@drawable/ic_star_filled"
+                    android:tint="@color/light_yellow" />
+
+                <ImageView
+                    android:layout_width="@dimen/size_icon"
+                    android:layout_height="@dimen/size_icon"
+                    android:src="@drawable/ic_star_filled"
+                    android:tint="@color/light_yellow" />
+
+                <ImageView
+                    android:layout_width="@dimen/size_icon"
+                    android:layout_height="@dimen/size_icon"
+                    android:src="@drawable/ic_star_filled"
+                    android:tint="@color/light_yellow" />
+
+                <ImageView
+                    android:layout_width="@dimen/size_icon"
+                    android:layout_height="@dimen/size_icon"
+                    android:src="@drawable/ic_star_hollow"
+                    android:tint="@color/light_yellow" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_normal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2"
+                    android:textColor="@color/white"
+                    android:paddingHorizontal="@dimen/padding_small"
+                    android:background="@color/dark_grey"
+                    android:textSize="@dimen/text_normal" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="After sale service"
+                    android:layout_marginLeft="@dimen/margin_small"
+                    android:textColor="@color/dark_grey"
+                    android:textSize="@dimen/text_normal" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_sale_service_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_tiny"
+                android:layout_marginLeft="@dimen/_25sdp">
+
+                <ImageView
+                    android:layout_width="@dimen/size_icon"
+                    android:layout_height="@dimen/size_icon"
+                    android:src="@drawable/ic_star_filled"
+                    android:tint="@color/light_yellow" />
+
+                <ImageView
+                    android:layout_width="@dimen/size_icon"
+                    android:layout_height="@dimen/size_icon"
+                    android:src="@drawable/ic_star_filled"
+                    android:tint="@color/light_yellow" />
+
+                <ImageView
+                    android:layout_width="@dimen/size_icon"
+                    android:layout_height="@dimen/size_icon"
+                    android:src="@drawable/ic_star_filled"
+                    android:tint="@color/light_yellow" />
+
+                <ImageView
+                    android:layout_width="@dimen/size_icon"
+                    android:layout_height="@dimen/size_icon"
+                    android:src="@drawable/ic_star_filled"
+                    android:tint="@color/light_yellow" />
+
+                <ImageView
+                    android:layout_width="@dimen/size_icon"
+                    android:layout_height="@dimen/size_icon"
+                    android:src="@drawable/ic_star_hollow"
+                    android:tint="@color/light_yellow" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_normal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="3"
+                    android:textColor="@color/white"
+                    android:paddingHorizontal="@dimen/padding_small"
+                    android:background="@color/dark_grey"
+                    android:textSize="@dimen/text_normal" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="In-store sales agent support"
+                    android:layout_marginLeft="@dimen/margin_small"
+                    android:textColor="@color/dark_grey"
+                    android:textSize="@dimen/text_normal" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_agent_support_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_tiny"
+                android:layout_marginLeft="@dimen/_25sdp">
+
+                <ImageView
+                    android:layout_width="@dimen/size_icon"
+                    android:layout_height="@dimen/size_icon"
+                    android:src="@drawable/ic_star_filled"
+                    android:tint="@color/light_yellow" />
+
+                <ImageView
+                    android:layout_width="@dimen/size_icon"
+                    android:layout_height="@dimen/size_icon"
+                    android:src="@drawable/ic_star_filled"
+                    android:tint="@color/light_yellow" />
+
+                <ImageView
+                    android:layout_width="@dimen/size_icon"
+                    android:layout_height="@dimen/size_icon"
+                    android:src="@drawable/ic_star_filled"
+                    android:tint="@color/light_yellow" />
+
+                <ImageView
+                    android:layout_width="@dimen/size_icon"
+                    android:layout_height="@dimen/size_icon"
+                    android:src="@drawable/ic_star_filled"
+                    android:tint="@color/light_yellow" />
+
+                <ImageView
+                    android:layout_width="@dimen/size_icon"
+                    android:layout_height="@dimen/size_icon"
+                    android:src="@drawable/ic_star_hollow"
+                    android:tint="@color/light_yellow" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_normal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="4"
+                    android:textColor="@color/white"
+                    android:paddingHorizontal="@dimen/padding_small"
+                    android:background="@color/dark_grey"
+                    android:textSize="@dimen/text_normal" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Accuracy of product info"
+                    android:layout_marginLeft="@dimen/margin_small"
+                    android:textColor="@color/dark_grey"
+                    android:textSize="@dimen/text_normal" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_product_info_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_tiny"
+                android:layout_marginLeft="@dimen/_25sdp">
+
+                <ImageView
+                    android:layout_width="@dimen/size_icon"
+                    android:layout_height="@dimen/size_icon"
+                    android:src="@drawable/ic_star_filled"
+                    android:tint="@color/light_yellow" />
+
+                <ImageView
+                    android:layout_width="@dimen/size_icon"
+                    android:layout_height="@dimen/size_icon"
+                    android:src="@drawable/ic_star_filled"
+                    android:tint="@color/light_yellow" />
+
+                <ImageView
+                    android:layout_width="@dimen/size_icon"
+                    android:layout_height="@dimen/size_icon"
+                    android:src="@drawable/ic_star_filled"
+                    android:tint="@color/light_yellow" />
+
+                <ImageView
+                    android:layout_width="@dimen/size_icon"
+                    android:layout_height="@dimen/size_icon"
+                    android:src="@drawable/ic_star_filled"
+                    android:tint="@color/light_yellow" />
+
+                <ImageView
+                    android:layout_width="@dimen/size_icon"
+                    android:layout_height="@dimen/size_icon"
+                    android:src="@drawable/ic_star_hollow"
+                    android:tint="@color/light_yellow" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_normal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="5"
+                    android:textColor="@color/white"
+                    android:paddingHorizontal="@dimen/padding_small"
+                    android:background="@color/dark_grey"
+                    android:textSize="@dimen/text_normal" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Value for price"
+                    android:layout_marginLeft="@dimen/margin_small"
+                    android:textColor="@color/dark_grey"
+                    android:textSize="@dimen/text_normal" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_value_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_tiny"
+                android:layout_marginLeft="@dimen/_25sdp">
+
+                <ImageView
+                    android:layout_width="@dimen/size_icon"
+                    android:layout_height="@dimen/size_icon"
+                    android:src="@drawable/ic_star_filled"
+                    android:tint="@color/light_yellow" />
+
+                <ImageView
+                    android:layout_width="@dimen/size_icon"
+                    android:layout_height="@dimen/size_icon"
+                    android:src="@drawable/ic_star_filled"
+                    android:tint="@color/light_yellow" />
+
+                <ImageView
+                    android:layout_width="@dimen/size_icon"
+                    android:layout_height="@dimen/size_icon"
+                    android:src="@drawable/ic_star_filled"
+                    android:tint="@color/light_yellow" />
+
+                <ImageView
+                    android:layout_width="@dimen/size_icon"
+                    android:layout_height="@dimen/size_icon"
+                    android:src="@drawable/ic_star_filled"
+                    android:tint="@color/light_yellow" />
+
+                <ImageView
+                    android:layout_width="@dimen/size_icon"
+                    android:layout_height="@dimen/size_icon"
+                    android:src="@drawable/ic_star_hollow"
+                    android:tint="@color/light_yellow" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_ok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_gravity="right"
+            android:layout_marginTop="@dimen/_25sdp"
+            android:padding="@dimen/padding_large">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="OK"
+                android:textColor="@color/darkest"
+                android:layout_marginRight="@dimen/margin_normal"
+                android:textSize="@dimen/text_sub_normal"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

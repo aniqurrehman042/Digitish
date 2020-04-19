@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/tv_date_heading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Today"
+        android:layout_marginLeft="@dimen/margin_small"
+        android:layout_marginTop="@dimen/margin_large"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_main"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_75sdp"
+        android:layout_marginTop="@dimen/margin_small">
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/riv_merchant_logo"
+            android:layout_width="@dimen/_33sdp"
+            android:layout_height="@dimen/_33sdp"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_marginLeft="@dimen/margin_small"
+            android:src="@drawable/abans_logo"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:riv_corner_radius="100dp"/>
+
+        <TextView
+            android:id="@+id/tv_merchant_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Abans"
+            android:textSize="@dimen/text_normal"
+            android:textColor="@color/black"
+            app:layout_constraintTop_toTopOf="@id/riv_merchant_logo"
+            app:layout_constraintLeft_toRightOf="@id/riv_merchant_logo"
+            android:layout_marginLeft="@dimen/margin_normal"/>
+
+        <TextView
+            android:id="@+id/tv_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/margin_small"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_merchant_name"
+            android:text="Jan 16"
+            android:textSize="@dimen/text_sub_normal"
+            android:textColor="@color/black"/>
+
+        <ImageView
+            android:id="@+id/iv_attachment"
+            android:layout_width="@dimen/_10sdp"
+            android:layout_height="@dimen/_10sdp"
+            android:src="@drawable/ic_attachment"
+            android:tint="@color/dark_grey"
+            app:layout_constraintRight_toLeftOf="@id/tv_date"
+            app:layout_constraintTop_toTopOf="@id/tv_date"
+            app:layout_constraintBottom_toBottomOf="@id/tv_date"
+            android:layout_marginRight="@dimen/margin_small"/>
+
+        <TextView
+            android:id="@+id/tv_mes1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:lines="1"
+            android:paddingRight="@dimen/_50sdp"
+            android:text="New updates from the merchant are coming. So stay tuned for more updates"
+            android:textSize="@dimen/text_sub_normal"
+            android:textColor="@color/dark_grey"
+            android:ellipsize="end"
+            app:layout_constraintLeft_toLeftOf="@id/tv_merchant_name"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_merchant_name"
+            android:layout_marginTop="@dimen/_3sdp"/>
+
+        <TextView
+            android:id="@+id/tv_mes2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:lines="1"
+            android:paddingRight="@dimen/_50sdp"
+            android:text="Your status in the eyes of the employer has risen dramatically"
+            android:textSize="@dimen/text_sub_normal"
+            android:textColor="@color/dark_grey"
+            android:ellipsize="end"
+            app:layout_constraintLeft_toLeftOf="@id/tv_merchant_name"
+            app:layout_constraintRight_toRightOf="@id/tv_mes1"
+            app:layout_constraintTop_toBottomOf="@id/tv_mes1"
+            android:layout_marginTop="@dimen/_3sdp"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/dark_grey"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>

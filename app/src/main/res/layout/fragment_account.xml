@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.fragments.AccountFragment"
+    android:background="@color/white">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_profile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/riv_profile_pic"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_marginLeft="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:scaleType="centerCrop"
+            android:src="@color/darkest"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:riv_corner_radius="100dp" />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_25sdp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="@id/riv_profile_pic"
+            app:layout_constraintLeft_toRightOf="@id/riv_profile_pic"
+            app:layout_constraintTop_toTopOf="@id/riv_profile_pic">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_customer_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Supun Dissanayake"
+                android:textColor="@color/darkest"
+                android:textSize="@dimen/text_normal" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_customer_points"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4 Points"
+                android:textColor="@color/dark_grey"
+                android:textSize="@dimen/text_sub_normal" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <View
+            android:id="@+id/v_line"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@color/light_grey"
+            app:layout_constraintTop_toBottomOf="@+id/riv_profile_pic" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="@dimen/padding_normal"
+        app:layout_constraintTop_toBottomOf="@id/cl_profile">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_general"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_normal"
+            android:fontFamily="@font/roboto_medium"
+            android:text="General"
+            android:textColor="@color/dark_grey"
+            android:textSize="@dimen/_10ssp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/cb_notifications"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_25sdp"
+            android:translationX="-5dp"
+            android:layout_marginTop="@dimen/margin_large"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_general" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_notifications"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_large"
+            android:text="Notifications"
+            android:textColor="@color/darkest"
+            android:textSize="@dimen/text_normal"
+            app:layout_constraintBottom_toBottomOf="@id/cb_notifications"
+            app:layout_constraintLeft_toRightOf="@id/cb_notifications"
+            app:layout_constraintTop_toTopOf="@id/cb_notifications" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_contact"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_large"
+            android:fontFamily="@font/roboto_medium"
+            android:text="Contact Digitish"
+            android:textColor="@color/dark_grey"
+            android:textSize="@dimen/_10ssp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cb_notifications" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_headset"
+            android:layout_width="@dimen/size_icon"
+            android:layout_height="@dimen/size_icon"
+            android:layout_marginTop="@dimen/margin_large"
+            android:src="@drawable/ic_headset"
+            android:tint="@color/darkest"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_contact" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_callback"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Request callback"
+            android:textColor="@color/darkest"
+            android:textSize="@dimen/text_normal"
+            app:layout_constraintLeft_toLeftOf="@id/tv_notifications"
+            app:layout_constraintTop_toTopOf="@id/iv_headset"
+            app:layout_constraintBottom_toBottomOf="@id/iv_headset"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_feedback"
+            android:layout_width="@dimen/size_icon"
+            android:layout_height="@dimen/size_icon"
+            android:layout_marginTop="@dimen/margin_large"
+            android:src="@drawable/ic_feedback"
+            android:tint="@color/darkest"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_headset"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_feedback"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Send feedback"
+            android:textColor="@color/darkest"
+            android:textSize="@dimen/text_normal"
+            app:layout_constraintLeft_toLeftOf="@id/tv_notifications"
+            app:layout_constraintTop_toTopOf="@id/iv_feedback"
+            app:layout_constraintBottom_toBottomOf="@id/iv_feedback"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_suggestions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_large"
+            android:fontFamily="@font/roboto_medium"
+            android:text="Product suggestions"
+            android:textColor="@color/dark_grey"
+            android:textSize="@dimen/_10ssp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_feedback"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_suggestions"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_150sdp"
+        app:layout_constraintTop_toBottomOf="@+id/cl_container"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/margin_normal"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

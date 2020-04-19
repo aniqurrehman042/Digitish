@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.CustomerHome">
+
+    <include
+        android:id="@+id/inc_actionbar"
+        layout="@layout/layout_topbar" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/v_bottombar_t"
+        app:layout_constraintTop_toBottomOf="@id/inc_actionbar" />
+
+    <View
+        android:id="@+id/v_bottombar_t"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_45sdp"
+        android:background="@color/transparent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_bottombar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/transparent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <View
+            android:id="@+id/v_bottombar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_bottombar"
+            android:background="@color/light_yellow"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/ll_search"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="@id/v_bottombar"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/ll_thumbs"
+            app:layout_constraintTop_toTopOf="@id/v_bottombar">
+
+            <ImageView
+                android:id="@+id/iv_search"
+                android:layout_width="@dimen/size_icon"
+                android:layout_height="@dimen/size_icon"
+                android:src="@drawable/ic_search"
+                android:tint="@color/darkest" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_thumbs"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:gravity="center"
+            app:layout_constraintLeft_toRightOf="@id/ll_search"
+            app:layout_constraintRight_toLeftOf="@id/ll_qr"
+            app:layout_constraintTop_toTopOf="@id/ll_search">
+
+            <ImageView
+                android:id="@+id/iv_thumbs"
+                android:layout_width="@dimen/size_icon"
+                android:layout_height="@dimen/size_icon"
+                android:src="@drawable/ic_thumbs"
+                android:tint="@color/darkest" />
+
+        </LinearLayout>
+
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/ll_qr"
+            android:layout_width="@dimen/_45sdp"
+            android:layout_height="@dimen/_45sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:background="@drawable/bg_qr"
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/ll_thumbs"
+            app:layout_constraintRight_toLeftOf="@id/ll_messages">
+
+            <ImageView
+                android:layout_width="@dimen/size_icon"
+                android:layout_height="@dimen/size_icon"
+                android:src="@drawable/ic_qr"
+                android:tint="@color/white" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <LinearLayout
+            android:id="@+id/ll_messages"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:gravity="center"
+            app:layout_constraintLeft_toRightOf="@id/ll_qr"
+            app:layout_constraintRight_toLeftOf="@id/ll_account"
+            app:layout_constraintTop_toTopOf="@+id/ll_search">
+
+            <ImageView
+                android:id="@+id/iv_messages"
+                android:layout_width="@dimen/size_icon"
+                android:layout_height="@dimen/size_icon"
+                android:src="@drawable/ic_message"
+                android:tint="@color/darkest" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_account"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:gravity="center"
+            app:layout_constraintLeft_toRightOf="@id/ll_messages"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/ll_search">
+
+            <ImageView
+                android:id="@+id/iv_account"
+                android:layout_width="@dimen/size_icon"
+                android:layout_height="@dimen/size_icon"
+                android:src="@drawable/ic_account"
+                android:tint="@color/white" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/lightest_darkest">
+
+    <TextView
+        android:id="@+id/tv_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Friday - 15:23"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/margin_normal"/>
+
+    <LinearLayout
+        android:id="@+id/ll_chat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/lightest_darkest">
+
+        <TextView
+            android:id="@+id/tv_other_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxWidth="@dimen/_200sdp"
+            android:text="Thank you for choosing Abans. We are waiting for your feedback."
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_normal"
+            android:padding="@dimen/padding_normal"
+            android:layout_marginTop="@dimen/margin_normal"
+            android:layout_marginLeft="@dimen/margin_small"
+            android:background="@drawable/bg_btn_white_round"/>
+
+        <TextView
+            android:id="@+id/tv_my_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxWidth="@dimen/_200sdp"
+            android:text="There are some issues with the product setting up"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_normal"
+            android:padding="@dimen/padding_normal"
+            android:layout_gravity="right"
+            android:layout_marginTop="@dimen/margin_normal"
+            android:layout_marginRight="@dimen/margin_small"
+            android:background="@drawable/bg_btn_white_round"/>
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/iv_other_img"
+        android:layout_marginLeft="@dimen/margin_small"
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="@dimen/_100sdp"
+        android:src="@color/darkest"
+        android:visibility="gone"/>
+
+    <ImageView
+        android:id="@+id/iv_my_img"
+        android:layout_gravity="right"
+        android:layout_marginRight="@dimen/margin_small"
+        android:src="@color/darkest"
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="@dimen/_100sdp"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/tv_not_sent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Not sent. Tap to try again."
+        android:layout_gravity="right"
+        android:layout_marginTop="@dimen/margin_tiny"/>
+
+</LinearLayout>

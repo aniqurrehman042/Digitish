@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.MainActivity">
+
+    <ImageView
+        android:layout_width="@dimen/_200sdp"
+        android:layout_height="@dimen/_200sdp"
+        android:src="@drawable/home_top_left"
+        android:translationY="@dimen/_170sdp"
+        android:translationX="@dimen/_50sdp"
+        app:layout_constraintBottom_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <ImageView
+        android:id="@+id/iv_logo_img"
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="@dimen/_100sdp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/tv_logo_text"
+        android:src="@drawable/digitish"/>
+
+    <TextView
+        android:id="@+id/tv_logo_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/btn_merchant_login"
+        android:layout_marginBottom="@dimen/_30sdp"
+        android:text="Digitish"
+        android:textSize="@dimen/_32ssp"
+        android:textColor="@color/darkest"
+        android:fontFamily="@font/roboto_bold"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_merchant_login"
+        android:layout_width="@dimen/width_btn_main"
+        android:layout_height="@dimen/height_btn"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/btn_customer_login"
+        android:layout_marginBottom="@dimen/_7sdp"
+        android:textColor="@color/white"
+        android:textAllCaps="false"
+        android:text="Merchant Login"
+        android:background="@drawable/bg_btn_darkest"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_customer_login"
+        android:layout_width="@dimen/width_btn_main"
+        android:layout_height="@dimen/height_btn"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/ll_account_signup"
+        android:layout_marginBottom="@dimen/_40sdp"
+        android:textAllCaps="false"
+        android:text="Customer Login"
+        android:background="@drawable/bg_btn_white"/>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/ll_account_signup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginBottom="@dimen/_40sdp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Don't have an account ?" />
+
+        <TextView
+            android:id="@+id/tv_signup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_5sdp"
+            android:text="@string/signup_u"
+            android:textColor="@color/light_blue" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.fragments.MerchantAccountFragment"
+    android:orientation="vertical"
+    android:background="@color/white">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:paddingHorizontal="@dimen/padding_small"
+        android:paddingVertical="@dimen/padding_normal">
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/riv_merchant_logo"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_marginLeft="@dimen/margin_normal"
+            android:gravity="center"
+            android:src="@drawable/abans_logo"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:riv_corner_radius="100dp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_normal"
+            android:orientation="vertical"
+            app:layout_constraintLeft_toRightOf="@id/riv_merchant_logo"
+            app:layout_constraintTop_toTopOf="@id/riv_merchant_logo">
+
+            <TextView
+                android:id="@+id/tv_merchant_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:lines="1"
+                android:text="Abans"
+                android:textColor="@color/darkest"
+                android:textSize="@dimen/text_normal" />
+
+            <LinearLayout
+                android:id="@+id/ll_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/iv_rating1"
+                    android:layout_width="@dimen/size_icon"
+                    android:layout_height="@dimen/size_icon"
+                    android:src="@drawable/ic_star_filled"
+                    android:tint="@color/light_yellow" />
+
+                <ImageView
+                    android:id="@+id/iv_rating2"
+                    android:layout_width="@dimen/size_icon"
+                    android:layout_height="@dimen/size_icon"
+                    android:src="@drawable/ic_star_filled"
+                    android:tint="@color/light_yellow" />
+
+                <ImageView
+                    android:id="@+id/iv_rating3"
+                    android:layout_width="@dimen/size_icon"
+                    android:layout_height="@dimen/size_icon"
+                    android:src="@drawable/ic_star_filled"
+                    android:tint="@color/light_yellow" />
+
+                <ImageView
+                    android:id="@+id/iv_rating4"
+                    android:layout_width="@dimen/size_icon"
+                    android:layout_height="@dimen/size_icon"
+                    android:src="@drawable/ic_star_filled"
+                    android:tint="@color/light_yellow" />
+
+                <ImageView
+                    android:id="@+id/iv_rating5"
+                    android:layout_width="@dimen/size_icon"
+                    android:layout_height="@dimen/size_icon"
+                    android:src="@drawable/ic_star_hollow"
+                    android:tint="@color/light_yellow" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/dark_grey"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="@dimen/padding_small">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_small">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="@dimen/padding_normal"
+                android:paddingVertical="@dimen/padding_large">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical">
+                    
+                    <ImageView
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:src="@drawable/ic_info"
+                        android:tint="@color/dark_grey"/>
+                    
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Company Description"
+                        android:textSize="@dimen/text_sub_normal"
+                        android:textColor="@color/dark_grey"
+                        android:layout_marginLeft="@dimen/margin_tiny"/>
+                    
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"/>
+                    
+                    <ImageView
+                        android:id="@+id/iv_more_desc"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:src="@drawable/ic_more"/>
+                    
+                </LinearLayout>
+                
+                <TextView
+                    android:id="@+id/tv_merchant_desc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_normal"
+                    android:layout_marginTop="@dimen/margin_small"
+                    android:text="Abans is one of the most diversified and fastest growing public listed companies in Sri Lanka."/>
+
+                <LinearLayout
+                    android:id="@+id/ll_merchant_desc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone">
+
+                    <EditText
+                        android:id="@+id/et_merchant_desc"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_marginRight="@dimen/margin_small"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_normal"
+                        android:layout_marginTop="@dimen/margin_small"
+                        android:text="" />
+
+                    <TextView
+                        android:id="@+id/tv_done_merchant_desc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/darkest"
+                        android:textSize="@dimen/text_normal"
+                        android:fontFamily="@font/roboto_bold"
+                        android:layout_marginTop="@dimen/margin_small"
+                        android:text="Done" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_tiny"
+            android:layout_marginBottom="@dimen/margin_small">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="@dimen/padding_normal"
+                android:paddingVertical="@dimen/padding_large">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:src="@drawable/ic_info"
+                        android:tint="@color/dark_grey"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Products"
+                        android:textSize="@dimen/text_sub_normal"
+                        android:textColor="@color/dark_grey"
+                        android:layout_marginLeft="@dimen/margin_tiny"/>
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"/>
+
+                    <ImageView
+                        android:id="@+id/iv_more_products"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:src="@drawable/ic_more"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_products"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_normal"
+                    android:layout_marginTop="@dimen/margin_small"
+                    android:text="Washing Machines\nMicrowaves\nRefrigerators\nTVs"/>
+
+                <LinearLayout
+                    android:id="@+id/ll_products"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone">
+
+                    <EditText
+                        android:id="@+id/et_products"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_normal"
+                        android:layout_marginRight="@dimen/margin_small"
+                        android:layout_marginTop="@dimen/margin_small"
+                        android:text="" />
+
+                    <TextView
+                        android:id="@+id/tv_done_products"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/darkest"
+                        android:textSize="@dimen/text_normal"
+                        android:fontFamily="@font/roboto_bold"
+                        android:layout_marginTop="@dimen/margin_small"
+                        android:text="Done" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+
+</LinearLayout>

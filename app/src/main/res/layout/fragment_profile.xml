@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".ui.fragments.ProfileFragment">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="7dp"
+        android:background="@drawable/bg_shadow"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/riv_profile_pic"
+        android:layout_width="@dimen/_80sdp"
+        android:layout_height="@dimen/_80sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:scaleType="centerCrop"
+        android:src="@color/darkest"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:riv_corner_radius="100dp" />
+
+    <LinearLayout
+        android:id="@+id/ll_add_pic"
+        android:layout_width="@dimen/_26sdp"
+        android:layout_height="@dimen/_26sdp"
+        android:background="@drawable/bg_qr"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="@id/riv_profile_pic"
+        app:layout_constraintRight_toRightOf="@id/riv_profile_pic">
+
+        <ImageView
+            android:id="@+id/iv_add_pic"
+            android:layout_width="@dimen/_16sdp"
+            android:layout_height="@dimen/_16sdp"
+            android:src="@drawable/ic_add_photo"
+            android:tint="@color/white" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingHorizontal="@dimen/padding_normal"
+        app:layout_constraintTop_toBottomOf="@id/riv_profile_pic">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_points"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_medium"
+                android:text="0"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_22ssp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_5sdp"
+                android:text="Points"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_title" />
+
+        </LinearLayout>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_normal">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:padding="@dimen/padding_normal">
+
+                <TextView
+                    android:id="@+id/tv_name_heading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:text="Name: "
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_normal"
+                    android:visibility="visible"/>
+
+                <TextView
+                    android:id="@+id/tv_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/tv_name_heading"
+                    android:text="Supun Dissanayake"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_normal"
+                    android:visibility="visible"/>
+
+                <EditText
+                    android:id="@+id/et_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:text="Supun Dissanayake"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_normal"
+                    android:lines="1"
+                    android:maxLines="1"
+                    android:maxLength="35"
+                    android:background="@color/white"
+                    android:visibility="gone"
+                    android:inputType="text"/>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_name_more"
+                    android:layout_width="@dimen/size_icon"
+                    android:layout_height="@dimen/size_icon"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/ic_more"
+                    android:tint="@color/darkest"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/tv_edit_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="EDIT"
+                    android:textColor="@color/darkest"
+                    android:textSize="@dimen/text_normal"
+                    android:fontFamily="@font/roboto_medium"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/margin_small"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/tv_done_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="SAVE"
+                    android:textColor="@color/darkest"
+                    android:textSize="@dimen/text_normal"
+                    android:fontFamily="@font/roboto_medium"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/margin_small"
+                    android:visibility="gone"/>
+
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_tiny">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:padding="@dimen/padding_normal">
+
+                <TextView
+                    android:id="@+id/tv_email_heading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:text="Email: "
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_normal" />
+
+                <TextView
+                    android:id="@+id/tv_email"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/tv_email_heading"
+                    android:text="supun@brotherslk.com"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_normal" />
+
+                <EditText
+                    android:id="@+id/et_email"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:text="supun@brotherslk.com"
+                    android:textColor="@color/black"
+                    android:background="@color/white"
+                    android:textSize="@dimen/text_normal"
+                    android:lines="1"
+                    android:maxLines="1"
+                    android:maxLength="35"
+                    android:visibility="gone"
+                    android:inputType="textEmailAddress"/>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_email_more"
+                    android:layout_width="@dimen/size_icon"
+                    android:layout_height="@dimen/size_icon"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/ic_more"
+                    android:visibility="gone"
+                    android:tint="@color/darkest" />
+
+                <TextView
+                    android:id="@+id/tv_edit_email"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="EDIT"
+                    android:textColor="@color/darkest"
+                    android:textSize="@dimen/text_normal"
+                    android:fontFamily="@font/roboto_medium"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/margin_small"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/tv_done_email"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="DONE"
+                    android:textColor="@color/darkest"
+                    android:textSize="@dimen/text_normal"
+                    android:fontFamily="@font/roboto_medium"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/margin_small"
+                    android:visibility="gone"/>
+
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_tiny">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:padding="@dimen/padding_normal">
+
+                <TextView
+                    android:id="@+id/tv_phone_heading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:text="Phone: "
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_normal" />
+
+                <TextView
+                    android:id="@+id/tv_phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/tv_phone_heading"
+                    android:text="+94767553910"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_normal" />
+
+                <EditText
+                    android:id="@+id/et_phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/tv_phone_heading"
+                    android:text="+94767553910"
+                    android:textColor="@color/black"
+                    android:background="@color/white"
+                    android:lines="1"
+                    android:maxLines="1"
+                    android:maxLength="13"
+                    android:textSize="@dimen/text_normal"
+                    android:visibility="gone"
+                    android:inputType="phone"/>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_phone_more"
+                    android:layout_width="@dimen/size_icon"
+                    android:layout_height="@dimen/size_icon"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/ic_more"
+                    android:tint="@color/darkest"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/tv_edit_phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="EDIT"
+                    android:textColor="@color/darkest"
+                    android:textSize="@dimen/text_normal"
+                    android:fontFamily="@font/roboto_medium"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/margin_small"/>
+
+                <TextView
+                    android:id="@+id/tv_done_phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="DONE"
+                    android:textColor="@color/darkest"
+                    android:textSize="@dimen/text_normal"
+                    android:fontFamily="@font/roboto_medium"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/margin_small"
+                    android:visibility="gone"/>
+
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_normal"
+            android:text="My QR"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_normal"/>
+
+        <ImageView
+            android:id="@+id/iv_qr"
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="@dimen/_80sdp"
+            android:src="@drawable/ic_qr_big" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Scan QR code to redeem points"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_sub_normal"
+            android:layout_marginTop="@dimen/margin_tiny"/>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

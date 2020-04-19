@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:layout_marginTop="@dimen/margin_normal">
+
+    <ImageView
+        android:id="@+id/iv_legend_form"
+        android:layout_gravity="center_vertical"
+        android:layout_width="@dimen/_20sdp"
+        android:layout_height="@dimen/_20sdp"
+        android:src="@drawable/ic_ring"/>
+
+    <TextView
+        android:id="@+id/tv_legend_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginLeft="@dimen/margin_tiny"
+        android:gravity="center_vertical"
+        android:layout_gravity="center_vertical"
+        android:textSize="@dimen/text_normal"
+        android:textColor="@color/black"/>
+
+    <TextView
+        android:id="@+id/tv_legend_value"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="right"
+        android:layout_gravity="center_vertical"
+        android:textSize="@dimen/text_normal"
+        android:textColor="@color/dark_grey"/>
+
+</LinearLayout>

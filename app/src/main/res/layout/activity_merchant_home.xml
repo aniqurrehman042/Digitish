@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.MerchantHome"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/i_topbar"
+        layout="@layout/layout_topbar_merchant"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <LinearLayout
+        android:id="@+id/ll_bottombar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_bottombar"
+        android:background="@color/darkest">
+
+        <LinearLayout
+            android:id="@+id/ll_dashboard"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.25"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/iv_dashboard"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:src="@drawable/ic_dashboard"
+                android:tint="@color/dark_yellow"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_notifications"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.25"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/iv_notifications"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:src="@drawable/ic_notofications"
+                android:tint="@color/dark_yellow"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_messages"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.25"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/iv_messages"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:src="@drawable/ic_message"
+                android:tint="@color/dark_yellow"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_account"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.25"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/iv_account"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:src="@drawable/ic_account"
+                android:tint="@color/light_yellow"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

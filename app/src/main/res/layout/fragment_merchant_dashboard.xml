@@ -1,0 +1,448 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.fragments.MerchantDashboardFragment">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".ui.fragments.MerchantDashboardFragment">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/padding_small">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding_small">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="@dimen/_110sdp"
+                    android:layout_height="@dimen/_120sdp"
+                    android:layout_columnWeight="0.5"
+                    android:layout_marginTop="@dimen/margin_small"
+                    android:layout_marginBottom="@dimen/_6sdp">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingHorizontal="@dimen/padding_small"
+                        android:paddingVertical="@dimen/padding_large">
+
+                        <LinearLayout
+                            android:id="@+id/ll_1_star"
+                            android:layout_width="@dimen/_20sdp"
+                            android:layout_height="@dimen/_20sdp"
+                            android:background="@drawable/bg_round_border"
+                            android:gravity="center"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@color/light_darkest"
+                                android:paddingHorizontal="4dp"
+                                android:text="1"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/_7ssp" />
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/tv_reviews_1_star"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/margin_tiny"
+                            android:text="-"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_22ssp"
+                            app:layout_constraintLeft_toLeftOf="@id/ll_1_star"
+                            app:layout_constraintRight_toRightOf="@id/ll_1_star"
+                            app:layout_constraintTop_toBottomOf="@id/s_reviews_1_star" />
+
+                        <TextView
+                            android:id="@+id/tv_reviews_1_star_heading"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_tiny"
+                            android:text="1-star reviews"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_sub_normal"
+                            app:layout_constraintLeft_toLeftOf="@id/ll_1_star"
+                            app:layout_constraintRight_toRightOf="@id/ll_1_star"
+                            app:layout_constraintTop_toBottomOf="@id/ll_1_star" />
+                        
+                        <Spinner
+                            android:id="@+id/s_reviews_1_star"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="@dimen/margin_tiny"
+                            android:layout_marginHorizontal="@dimen/margin_small"
+                            android:background="@drawable/bg_spinner_bordered"
+                            app:layout_constraintTop_toBottomOf="@id/tv_reviews_1_star_heading"/>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"/>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="@dimen/_110sdp"
+                    android:layout_height="@dimen/_120sdp"
+                    android:layout_columnWeight="0.5"
+                    android:layout_marginTop="@dimen/margin_small"
+                    android:layout_marginBottom="@dimen/_6sdp">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingHorizontal="@dimen/padding_small"
+                        android:paddingVertical="@dimen/padding_large">
+
+                        <LinearLayout
+                            android:id="@+id/ll_2_star"
+                            android:layout_width="@dimen/_20sdp"
+                            android:layout_height="@dimen/_20sdp"
+                            android:background="@drawable/bg_round_border"
+                            android:gravity="center"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@color/light_darkest"
+                                android:paddingHorizontal="4dp"
+                                android:text="2"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/_7ssp" />
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/tv_reviews_2_star"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/margin_tiny"
+                            android:text="-"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_22ssp"
+                            app:layout_constraintLeft_toLeftOf="@id/ll_2_star"
+                            app:layout_constraintRight_toRightOf="@id/ll_2_star"
+                            app:layout_constraintTop_toBottomOf="@id/s_reviews_2_star" />
+
+                        <TextView
+                            android:id="@+id/tv_reviews_2_star_heading"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_tiny"
+                            android:text="2-star reviews"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_sub_normal"
+                            app:layout_constraintLeft_toLeftOf="@id/ll_2_star"
+                            app:layout_constraintRight_toRightOf="@id/ll_2_star"
+                            app:layout_constraintTop_toBottomOf="@id/ll_2_star" />
+
+                        <Spinner
+                            android:id="@+id/s_reviews_2_star"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="@dimen/margin_tiny"
+                            android:layout_marginHorizontal="@dimen/margin_small"
+                            android:background="@drawable/bg_spinner_bordered"
+                            app:layout_constraintTop_toBottomOf="@id/tv_reviews_2_star_heading"/>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding_small"
+                android:gravity="center_horizontal">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="@dimen/_110sdp"
+                    android:layout_height="@dimen/_120sdp"
+                    android:layout_columnWeight="0.5"
+                    android:layout_marginRight="@dimen/_3sdp"
+                    android:layout_marginBottom="@dimen/_6sdp">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingHorizontal="@dimen/padding_small"
+                        android:paddingVertical="@dimen/padding_large">
+
+                        <LinearLayout
+                            android:id="@+id/ll_3_star"
+                            android:layout_width="@dimen/_20sdp"
+                            android:layout_height="@dimen/_20sdp"
+                            android:background="@drawable/bg_round_border"
+                            android:gravity="center"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@color/light_darkest"
+                                android:paddingHorizontal="4dp"
+                                android:text="3"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/_7ssp" />
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/tv_reviews_3_star"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/margin_tiny"
+                            android:text="-"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_22ssp"
+                            app:layout_constraintLeft_toLeftOf="@id/ll_3_star"
+                            app:layout_constraintRight_toRightOf="@id/ll_3_star"
+                            app:layout_constraintTop_toBottomOf="@id/s_reviews_3_star" />
+
+                        <TextView
+                            android:id="@+id/tv_reviews_3_star_heading"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_tiny"
+                            android:text="3-star reviews"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_sub_normal"
+                            app:layout_constraintLeft_toLeftOf="@id/ll_3_star"
+                            app:layout_constraintRight_toRightOf="@id/ll_3_star"
+                            app:layout_constraintTop_toBottomOf="@id/ll_3_star" />
+
+                        <Spinner
+                            android:id="@+id/s_reviews_3_star"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="@dimen/margin_tiny"
+                            android:layout_marginHorizontal="@dimen/margin_small"
+                            android:background="@drawable/bg_spinner_bordered"
+                            app:layout_constraintTop_toBottomOf="@id/tv_reviews_3_star_heading"/>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding_small">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="@dimen/_110sdp"
+                    android:layout_height="@dimen/_120sdp"
+                    android:layout_columnWeight="0.5"
+                    android:layout_marginRight="@dimen/_3sdp"
+                    android:layout_marginBottom="@dimen/_6sdp">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingHorizontal="@dimen/padding_small"
+                        android:paddingVertical="@dimen/padding_large">
+
+                        <LinearLayout
+                            android:id="@+id/ll_4_star"
+                            android:layout_width="@dimen/_20sdp"
+                            android:layout_height="@dimen/_20sdp"
+                            android:background="@drawable/bg_round_border"
+                            android:gravity="center"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@color/light_darkest"
+                                android:paddingHorizontal="4dp"
+                                android:text="4"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/_7ssp" />
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/tv_reviews_4_star"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/margin_tiny"
+                            android:text="-"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_22ssp"
+                            app:layout_constraintLeft_toLeftOf="@id/ll_4_star"
+                            app:layout_constraintRight_toRightOf="@id/ll_4_star"
+                            app:layout_constraintTop_toBottomOf="@id/s_reviews_4_star" />
+
+                        <TextView
+                            android:id="@+id/tv_reviews_4_star_heading"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_tiny"
+                            android:text="4-star reviews"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_sub_normal"
+                            app:layout_constraintLeft_toLeftOf="@id/ll_4_star"
+                            app:layout_constraintRight_toRightOf="@id/ll_4_star"
+                            app:layout_constraintTop_toBottomOf="@id/ll_4_star" />
+
+                        <Spinner
+                            android:id="@+id/s_reviews_4_star"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="@dimen/margin_tiny"
+                            android:layout_marginHorizontal="@dimen/margin_small"
+                            android:background="@drawable/bg_spinner_bordered"
+                            app:layout_constraintTop_toBottomOf="@id/tv_reviews_4_star_heading"/>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"/>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="@dimen/_110sdp"
+                    android:layout_height="@dimen/_120sdp"
+                    android:layout_columnWeight="0.5"
+                    android:layout_marginRight="@dimen/_3sdp"
+                    android:layout_marginBottom="@dimen/_6sdp">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingHorizontal="@dimen/padding_small"
+                        android:paddingVertical="@dimen/padding_large">
+
+                        <LinearLayout
+                            android:id="@+id/ll_5_star"
+                            android:layout_width="@dimen/_20sdp"
+                            android:layout_height="@dimen/_20sdp"
+                            android:background="@drawable/bg_round_border"
+                            android:gravity="center"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@color/light_darkest"
+                                android:paddingHorizontal="4dp"
+                                android:text="5"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/_7ssp" />
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/tv_reviews_5_star"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/margin_tiny"
+                            android:text="-"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_22ssp"
+                            app:layout_constraintLeft_toLeftOf="@id/ll_5_star"
+                            app:layout_constraintRight_toRightOf="@id/ll_5_star"
+                            app:layout_constraintTop_toBottomOf="@id/s_reviews_5_star" />
+
+                        <TextView
+                            android:id="@+id/tv_reviews_5_star_heading"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_tiny"
+                            android:text="5-star reviews"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_sub_normal"
+                            app:layout_constraintLeft_toLeftOf="@id/ll_5_star"
+                            app:layout_constraintRight_toRightOf="@id/ll_5_star"
+                            app:layout_constraintTop_toBottomOf="@id/ll_5_star" />
+
+                        <Spinner
+                            android:id="@+id/s_reviews_5_star"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="@dimen/margin_tiny"
+                            android:layout_marginHorizontal="@dimen/margin_small"
+                            android:background="@drawable/bg_spinner_bordered"
+                            app:layout_constraintTop_toBottomOf="@id/tv_reviews_5_star_heading"/>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="@dimen/margin_small"
+            android:paddingHorizontal="@dimen/_30sdp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Top selling products"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_title" />
+
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/pc_top_products"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_150sdp"
+                android:layout_marginTop="@dimen/margin_normal"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_legend"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_large"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>
