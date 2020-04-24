@@ -14,20 +14,22 @@ import android.widget.Toast;
 
 import com.example.test_04.R;
 import com.example.test_04.adapters.MerchantNotificationsAdapter;
-import com.example.test_04.adapters.NotificationsAdapter;
+import com.example.test_04.comparators.DateComparator;
 import com.example.test_04.db_callbacks.IGetMerchantReviews;
+import com.example.test_04.db_callbacks.IGetProductReviewChats;
 import com.example.test_04.db_callbacks.IGetProductReviews;
 import com.example.test_04.models.CurrentMerchant;
 import com.example.test_04.models.CustomerNotification;
-import com.example.test_04.models.Merchant;
 import com.example.test_04.models.MerchantReview;
 import com.example.test_04.models.ProductReview;
+import com.example.test_04.models.ProductReviewChat;
 import com.example.test_04.ui.MerchantHome;
 import com.example.test_04.utils.DBUtils;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -37,10 +39,11 @@ public class MerchantNotificationsFragment extends Fragment {
     private RecyclerView rvNotifications;
 
     private MerchantHome merchantHome;
-    private ArrayList<CustomerNotification> customerNotifications = new ArrayList<>();
-    private ArrayList<MerchantReview> merchantReviews = new ArrayList<>();
+    private ArrayList<CustomerNotification> customerNotificationsHolder = new ArrayList<>();
+    private ArrayList<DateComparator> customerNotificationsData = new ArrayList<>();
     private ArrayList<ArrayList<ProductReview>> notifications = new ArrayList<>();
     private ProgressDialog progressDialog;
+    private int done = 0;
 
     public MerchantNotificationsFragment() {
         // Required empty public constructor
@@ -68,10 +71,112 @@ public class MerchantNotificationsFragment extends Fragment {
     }
 
     private void init() {
-        getNotificationsReviews();
+        getNotifications();
     }
 
-    private void getNotificationsReviews() {
+    private void getNotifications() {
+
+        done = 0;
+
+        customerNotificationsData = new ArrayList<>();
+        customerNotificationsHolder = new ArrayList<>();
+
+        showProgressDialog("Loading notifications");
+
+        DBUtils.getMerchantProductReviews(CurrentMerchant.name, new IGetProductReviews() {
+            @Override
+            public void onCallback(boolean successful, @NotNull ArrayList<ProductReview> productReviews) {
+                if (successful) {
+
+                    for (ProductReview productReview : productReviews) {
+                        productReview.setType("Product Review");
+                        customerNotificationsData.add(productReview);
+                    }
+
+                } else {
+                    Toast.makeText(merchantHome, "Couldn't load notifications", Toast.LENGTH_SHORT).show();
+                }
+
+                checkAndSetRecycler();
+
+            }
+        });
+
+        DBUtils.getMerchantReviews(CurrentMerchant.name, new IGetMerchantReviews() {
+            @Override
+            public void onCallback(boolean successful, @NotNull ArrayList<MerchantReview> merchantReviews) {
+                if (successful) {
+
+                    for (MerchantReview merchantReview : merchantReviews) {
+                        merchantReview.setType("Merchant Review");
+                        customerNotificationsData.add(merchantReview);
+                    }
+
+                } else {
+                    Toast.makeText(merchantHome, "Couldn't load notifications", Toast.LENGTH_SHORT).show();
+                }
+
+                checkAndSetRecycler();
+            }
+        });
+
+        DBUtils.getMerchantProductReviewChats(CurrentMerchant.name, new IGetProductReviewChats() {
+            @Override
+            public void onCallback(boolean successful, @NotNull ArrayList<ProductReviewChat> productReviewChats) {
+                if (successful) {
+
+                    for (ProductReviewChat productReviewChat : productReviewChats) {
+                        productReviewChat.setType("Product Review Chat");
+                        customerNotificationsData.add(productReviewChat);
+                    }
+
+                } else {
+                    Toast.makeText(merchantHome, "Couldn't load notifications", Toast.LENGTH_SHORT).show();
+                }
+
+                checkAndSetRecycler();
+            }
+        });
+    }
+
+    private void checkAndSetRecycler() {
+        done++;
+        if (done > 2) {
+            Collections.sort(customerNotificationsData, Collections.<DateComparator>reverseOrder());
+            addHolderFromData();
+            setUpNotificationsRecycler();
+            progressDialog.dismiss();
+        }
+    }
+
+    private void addHolderFromData() {
+        for (DateComparator dateComparator : customerNotificationsData) {
+
+            String title = "";
+            String customerName = "";
+            String message = "Tap to view";
+            String type = dateComparator.getType();
+            String date = dateComparator.getDate();
+
+            if (type.equals("Product Review")) {
+                ProductReview productReview = (ProductReview) dateComparator;
+                title = productReview.getCustomerName() + " added a review";
+                message = productReview.getProductName();
+            } else if (type.equals("Merchant Review")) {
+                MerchantReview merchantReview = (MerchantReview) dateComparator;
+                title = "Company has been rated by " + merchantReview.getCustomerName();
+            } else if (type.equals("Product Review Chat")) {
+                ProductReviewChat productReviewChat = (ProductReviewChat) dateComparator;
+                title = productReviewChat.getCustomerName() + " has commented on your product's review";
+            }
+
+            customerNotificationsHolder.add(new CustomerNotification(customerName, title, message, type, date));
+        }
+    }
+
+    private void getProductReviews() {
+
+        notifications = new ArrayList<>();
 
         showProgressDialog("Loading notifications");
 
@@ -112,31 +217,11 @@ public class MerchantNotificationsFragment extends Fragment {
                     notifications.add(reviews4);
                     notifications.add(reviews5);
 
-                    for (int i = 1; i < 6; i++) {
-                        customerNotifications.add(new CustomerNotification("", "", i + "-Star Reviews", "Read all " + i + "-star reviews for products", "Product Review", "", String.valueOf(notifications.get(i-1).size())));
-                    }
-
-                    DBUtils.getMerchantReviews(CurrentMerchant.name, new IGetMerchantReviews() {
-                        @Override
-                        public void onCallback(boolean successful, @NotNull ArrayList<MerchantReview> merchantReviews) {
-                            if (successful) {
-                                MerchantNotificationsFragment.this.merchantReviews = merchantReviews;
-                                for (MerchantReview merchantReview : merchantReviews) {
-                                    customerNotifications.add(new CustomerNotification(merchantReview.getCustomerEmail(), merchantReview.getMerchantName(), "Company has been rated by " + merchantReview.getCustomerNAme(), "Tap to view", "Merchant Review", "", ""));
-                                }
-
-                                setUpNotificationsRecycler();
-                            } else {
-                                Toast.makeText(merchantHome, "Couldn't load notifications", Toast.LENGTH_SHORT).show();
-                            }
-
-                            progressDialog.dismiss();
-                        }
-                    });
                 } else {
                     Toast.makeText(merchantHome, "Couldn't load notifications", Toast.LENGTH_SHORT).show();
-                    progressDialog.dismiss();
                 }
+
+                progressDialog.dismiss();
             }
         });
     }
@@ -146,9 +231,14 @@ public class MerchantNotificationsFragment extends Fragment {
     }
 
     private void setUpNotificationsRecycler() {
-        MerchantNotificationsAdapter adapter = new MerchantNotificationsAdapter(customerNotifications, notifications, merchantReviews, merchantHome);
+        rvNotifications.setVisibility(View.VISIBLE);
+        MerchantNotificationsAdapter adapter = new MerchantNotificationsAdapter(customerNotificationsHolder, customerNotificationsData, merchantHome, null);
         rvNotifications.setLayoutManager(new LinearLayoutManager(getContext()));
         rvNotifications.setAdapter(adapter);
+
+        if (customerNotificationsHolder.isEmpty()) {
+            rvNotifications.setVisibility(View.GONE);
+        }
     }
 
     @Override

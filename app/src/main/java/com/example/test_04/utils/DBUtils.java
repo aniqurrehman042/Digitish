@@ -9,6 +9,8 @@ import androidx.annotation.NonNull;
 import com.example.test_04.db_callbacks.GetMerchantCallback;
 import com.example.test_04.db_callbacks.GetRatingsCallback;
 import com.example.test_04.db_callbacks.IGetMerchantReviews;
+import com.example.test_04.db_callbacks.IGetProductReview;
+import com.example.test_04.db_callbacks.IGetProductReviewChats;
 import com.example.test_04.db_callbacks.IGetProductReviews;
 import com.example.test_04.db_callbacks.IUploadMerchantRating;
 import com.example.test_04.db_callbacks.IUploadQrScan;
@@ -19,6 +21,7 @@ import com.example.test_04.models.Merchant;
 import com.example.test_04.models.MerchantReview;
 import com.example.test_04.models.Product;
 import com.example.test_04.models.ProductReview;
+import com.example.test_04.models.ProductReviewChat;
 import com.example.test_04.models.QRCode;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -27,6 +30,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.lang.reflect.Array;
@@ -40,7 +44,6 @@ import java.util.Map;
 public class DBUtils {
 
     private static FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private static ProgressDialog progressDialog;
     private static Context context;
 
     private DBUtils() {
@@ -102,10 +105,10 @@ public class DBUtils {
                             DocumentSnapshot documentSnapshot = task.getResult().getDocuments().get(0);
                             String merchantDescription = documentSnapshot.get("Merchant Description").toString();
                             String merchantEmail = documentSnapshot.get("Email").toString();
-                            String merchantRating = documentSnapshot.get("Merchant Rating").toString();
+                            int merchantRating = (int) Math.rint(documentSnapshot.getDouble("Merchant Rating"));
                             String merchantProducts = documentSnapshot.get("Products").toString();
                             String merchantWebsite = documentSnapshot.get("Website").toString();
-                            Merchant merchant = new Merchant(merchantName, merchantDescription, merchantEmail, merchantRating, merchantProducts, merchantWebsite);
+                            Merchant merchant = new Merchant(merchantName, merchantDescription, merchantEmail, String.valueOf(merchantRating), merchantProducts, merchantWebsite);
                             callback.onCallback(merchant, true);
                         } else {
                             callback.onCallback(null, false);
@@ -158,13 +161,6 @@ public class DBUtils {
                     }
                 });
 
-    }
-
-    private static void showProgressDialog(String title) {
-        progressDialog = new ProgressDialog(context);
-        progressDialog.setTitle(title);
-        progressDialog.setCancelable(false);
-        progressDialog.show();
     }
 
     public static void getRatingsBetween(String merchantName, long rating, int daysMin, int daysMax, final GetRatingsCallback callback) {
@@ -308,12 +304,59 @@ public class DBUtils {
                 });
     }
 
+    public static void getReviewedProductReviews(String customerEmail, final IGetProductReviews callback) {
+
+        final ArrayList<ProductReview> productReviews = new ArrayList<>();
+
+        db.collection("Product Reviews")
+                .whereEqualTo("Customer Email", customerEmail)
+                .whereEqualTo("Reviewed", true)
+                .orderBy("Date", Query.Direction.DESCENDING)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            List<DocumentSnapshot> documentSnapshots = task.getResult().getDocuments();
+                            if (documentSnapshots.size() > 0) {
+                                for (DocumentSnapshot documentSnapshot : documentSnapshots) {
+
+                                    String merchantName = documentSnapshot.getString("Merchant Name");
+                                    String productCode = documentSnapshot.getString("Product Code");
+                                    String productName = documentSnapshot.getString("Product Name");
+                                    String productCategory = documentSnapshot.getString("Product Category");
+                                    int productRating = Integer.parseInt(documentSnapshot.get("Product Rating").toString());
+                                    String reviewDescription = documentSnapshot.getString("Review Description");
+                                    String reviewTitle = documentSnapshot.getString("Review Title");
+                                    String qrId = documentSnapshot.getString("QR Id");
+                                    boolean completed = documentSnapshot.getBoolean("Completed");
+                                    boolean reviewed = documentSnapshot.getBoolean("Reviewed");
+                                    String date = DateUtils.dateToStringWithTime(documentSnapshot.getTimestamp("Date").toDate());
+
+                                    ProductReview productReview = new ProductReview(CurrentCustomer.email, CurrentCustomer.name, merchantName, productCode, productName, productCategory, productRating, reviewDescription, reviewTitle, qrId, completed, reviewed, date);
+                                    productReviews.add(productReview);
+                                }
+
+                                callback.onCallback(true, productReviews);
+
+                            } else {
+                                callback.onCallback(true, productReviews);
+                            }
+                        } else {
+                            callback.onCallback(false, null);
+                        }
+                    }
+                });
+    }
+
     public static void getMerchantProductReviews(final String merchantName, final IGetProductReviews callback) {
 
         final ArrayList<ProductReview> productReviews = new ArrayList<>();
 
         db.collection("Product Reviews")
                 .whereEqualTo("Merchant Name", merchantName)
+                .whereEqualTo("Reviewed", true)
+                .orderBy("Date", Query.Direction.ASCENDING)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -352,13 +395,138 @@ public class DBUtils {
                 });
     }
 
+    public static void getProductReview(final String qrId, final String productCode, final IGetProductReview callback) {
+
+        db.collection("Product Reviews")
+                .whereEqualTo("QR Id", qrId)
+                .whereEqualTo("Product Code", productCode)
+                .whereEqualTo("Reviewed", true)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                        ProductReview productReview = new ProductReview("", "", "", "", "", "", 0, "", "", "", false, true, "");
+
+                        if (task.isSuccessful()) {
+                            List<DocumentSnapshot> documentSnapshots = task.getResult().getDocuments();
+                            if (documentSnapshots.size() > 0) {
+
+                                DocumentSnapshot documentSnapshot = documentSnapshots.get(0);
+
+                                String customerName = documentSnapshot.getString("Customer Name");
+                                String customerEmail = documentSnapshot.getString("Customer Email");
+                                String merchantName = documentSnapshot.getString("Merchant Name");
+                                String productCode = documentSnapshot.getString("Product Code");
+                                String productName = documentSnapshot.getString("Product Name");
+                                String productCategory = documentSnapshot.getString("Product Category");
+                                int productRating = Integer.parseInt(documentSnapshot.get("Product Rating").toString());
+                                String reviewDescription = documentSnapshot.getString("Review Description");
+                                String reviewTitle = documentSnapshot.getString("Review Title");
+                                String qrId = documentSnapshot.getString("QR Id");
+                                boolean completed = documentSnapshot.getBoolean("Completed");
+                                boolean reviewed = documentSnapshot.getBoolean("Reviewed");
+                                String date = DateUtils.dateToStringWithTime(documentSnapshot.getTimestamp("Date").toDate());
+
+                                productReview = new ProductReview(customerEmail, customerName, merchantName, productCode, productName, productCategory, productRating, reviewDescription, reviewTitle, qrId, completed, reviewed, date);
+                                callback.onCallback(true, productReview);
+                            } else {
+                                callback.onCallback(false, productReview);
+                            }
+                        } else {
+                            callback.onCallback(false, productReview);
+                        }
+                    }
+                });
+
+    }
+
+    public static void getCustomerProductReviewChats(final String customerEmail, final IGetProductReviewChats callback) {
+
+        final ArrayList<ProductReviewChat> productReviewChats = new ArrayList<>();
+
+        db.collection("ProductReviewChat")
+                .whereEqualTo("Customer Email", customerEmail)
+                .whereEqualTo("Sender", "Merchant")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (DocumentSnapshot document : task.getResult().getDocuments()) {
+                                String customerName = document.get("Customer Name").toString();
+                                String productCode = document.get("Product Code").toString();
+                                String productName = document.get("Product Name").toString();
+                                String qrId = document.get("QR Id").toString();
+                                String image = document.get("Image").toString();
+                                String message = document.get("Message").toString();
+                                String sender = document.get("Sender").toString();
+                                String merchantName = document.get("Merchant Name").toString();
+                                String customerProfilePic = document.get("Customer Profile Picture").toString();
+                                Timestamp timestamp = (Timestamp) document.get("Date");
+                                Date dateObj = timestamp.toDate();
+                                String date = DateUtils.dateToStringWithTime(dateObj);
+                                ProductReviewChat productReviewChat = new ProductReviewChat(customerEmail, customerName, merchantName, productCode, qrId, image, message, sender, date, customerProfilePic);
+                                productReviewChat.setProductName(productName);
+                                productReviewChats.add(productReviewChat);
+                            }
+
+                            callback.onCallback(true, productReviewChats);
+                        } else {
+                            callback.onCallback(false, productReviewChats);
+                        }
+                    }
+                });
+
+    }
+
+    public static void getMerchantProductReviewChats(final String merchantName, final IGetProductReviewChats callback) {
+
+        final ArrayList<ProductReviewChat> productReviewChats = new ArrayList<>();
+
+        db.collection("ProductReviewChat")
+                .whereEqualTo("Merchant Name", merchantName)
+                .whereEqualTo("Sender", "Customer")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (DocumentSnapshot document : task.getResult().getDocuments()) {
+                                String customerName = document.get("Customer Name").toString();
+                                String customerEmail = document.get("Customer Email").toString();
+                                String productCode = document.get("Product Code").toString();
+                                String productName = document.get("Product Name").toString();
+                                String qrId = document.get("QR Id").toString();
+                                String image = document.get("Image").toString();
+                                String message = document.get("Message").toString();
+                                String sender = document.get("Sender").toString();
+                                String merchantName = document.get("Merchant Name").toString();
+                                String customerProfilePic = document.get("Customer Profile Picture").toString();
+                                Timestamp timestamp = (Timestamp) document.get("Date");
+                                Date dateObj = timestamp.toDate();
+                                String date = DateUtils.dateToStringWithTime(dateObj);
+                                ProductReviewChat productReviewChat = new ProductReviewChat(customerEmail, customerName, merchantName, productCode, qrId, image, message, sender, date, customerProfilePic);
+                                productReviewChat.setProductName(productName);
+                                productReviewChats.add(productReviewChat);
+                            }
+
+                            callback.onCallback(true, productReviewChats);
+                        } else {
+                            callback.onCallback(false, productReviewChats);
+                        }
+                    }
+                });
+
+    }
+
     public static void getMerchantReviews(final String merchantName, final IGetMerchantReviews callback) {
 
         final ArrayList<MerchantReview> merchantReviews = new ArrayList<>();
 
         db.collection("Merchant Reviews")
                 .whereEqualTo("Merchant Name", merchantName)
-                .whereEqualTo("Completed", true)
+                .whereEqualTo("Merchant Rated", true)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -376,8 +544,52 @@ public class DBUtils {
                                     int productInfo = Integer.parseInt(String.valueOf(documentSnapshot.getLong("Product Info")));
                                     int valueForPrice = Integer.parseInt(String.valueOf(documentSnapshot.getLong("Value For Price")));
                                     String qrId = documentSnapshot.getString("QR Id");
+                                    String date = DateUtils.dateToStringWithTime(documentSnapshot.getTimestamp("Date").toDate());
 
-                                    MerchantReview merchantReview = new MerchantReview(customerEmail, customerName, merchantName, responsiveness, afterSaleService, salesAgentSupport, productInfo, valueForPrice, qrId);
+                                    MerchantReview merchantReview = new MerchantReview(customerEmail, customerName, merchantName, responsiveness, afterSaleService, salesAgentSupport, productInfo, valueForPrice, qrId, date);
+                                    merchantReviews.add(merchantReview);
+                                }
+
+                                callback.onCallback(true, merchantReviews);
+
+                            } else {
+                                callback.onCallback(true, merchantReviews);
+                            }
+                        } else {
+                            callback.onCallback(false, null);
+                        }
+                    }
+                });
+    }
+
+    public static void getCustomerMerchantReviews(final String customerEmail, final IGetMerchantReviews callback) {
+
+        final ArrayList<MerchantReview> merchantReviews = new ArrayList<>();
+
+        db.collection("Merchant Reviews")
+                .whereEqualTo("Customer Email", customerEmail)
+                .whereEqualTo("Merchant Rated", true)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            List<DocumentSnapshot> documentSnapshots = task.getResult().getDocuments();
+                            if (documentSnapshots.size() > 0) {
+                                for (DocumentSnapshot documentSnapshot : documentSnapshots) {
+
+                                    String customerName = documentSnapshot.getString("Customer Name");
+                                    String merchantName = documentSnapshot.getString("Merchant Name");
+                                    String customerEmail = documentSnapshot.getString("Customer Email");
+                                    int responsiveness = Integer.parseInt(String.valueOf(documentSnapshot.getLong("Responsiveness")));
+                                    int afterSaleService = Integer.parseInt(String.valueOf(documentSnapshot.getLong("After Sale Service")));
+                                    int salesAgentSupport = Integer.parseInt(String.valueOf(documentSnapshot.getLong("Sales Agent Support")));
+                                    int productInfo = Integer.parseInt(String.valueOf(documentSnapshot.getLong("Product Info")));
+                                    int valueForPrice = Integer.parseInt(String.valueOf(documentSnapshot.getLong("Value For Price")));
+                                    String qrId = documentSnapshot.getString("QR Id");
+                                    String date = DateUtils.dateToStringWithTime(documentSnapshot.getTimestamp("Date").toDate());
+
+                                    MerchantReview merchantReview = new MerchantReview(customerEmail, customerName, merchantName, responsiveness, afterSaleService, salesAgentSupport, productInfo, valueForPrice, qrId, date);
                                     merchantReviews.add(merchantReview);
                                 }
 

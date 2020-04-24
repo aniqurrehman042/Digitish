@@ -27,6 +27,8 @@
             android:maxLines="1"
             android:lines="1"
             android:hint="Username"
+            android:layout_marginLeft="-4dp"
+            android:layout_marginRight="-4dp"
             android:inputType="text"/>
 
         <EditText
@@ -37,6 +39,8 @@
             android:lines="1"
             android:layout_marginTop="@dimen/margin_small"
             android:hint="Password"
+            android:layout_marginLeft="-4dp"
+            android:layout_marginRight="-4dp"
             android:inputType="textPassword"/>
 
         <TextView

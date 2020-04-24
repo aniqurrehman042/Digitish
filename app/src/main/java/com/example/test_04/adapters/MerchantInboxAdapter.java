@@ -80,7 +80,7 @@ public class MerchantInboxAdapter extends RecyclerView.Adapter<MerchantInboxAdap
         Date currentDate = Calendar.getInstance().getTime();
         Date msgDate = DateUtils.stringToDateWithTime(chatsWithLastMsg.get(position).getDate());
 
-        if (DateUtils.isSameDay(currentDate, msgDate)){
+        if (DateUtils.isSameDay(currentDate, msgDate) && position < 1){
 
             tvDateHeading.setVisibility(View.VISIBLE);
             tvDateHeading.setText("Today");

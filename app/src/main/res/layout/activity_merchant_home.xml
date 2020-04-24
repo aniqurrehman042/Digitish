@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -15,36 +15,57 @@
         android:id="@+id/cl_fragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        app:layout_constraintBottom_toTopOf="@id/v_bottombar_t"
+        app:layout_constraintTop_toBottomOf="@id/i_topbar" />
 
-    <LinearLayout
-        android:id="@+id/ll_bottombar"
+    <View
+        android:id="@+id/v_bottombar_t"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/height_bottombar"
-        android:background="@color/darkest">
+        android:layout_height="@dimen/_45sdp"
+        android:background="@color/transparent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_bottombar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/transparent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <View
+            android:id="@+id/v_bottombar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_bottombar"
+            android:background="@color/darkest"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
         <LinearLayout
             android:id="@+id/ll_dashboard"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.25"
-            android:gravity="center">
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="@id/v_bottombar"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/ll_notifications"
+            app:layout_constraintTop_toTopOf="@id/v_bottombar">
 
             <ImageView
                 android:id="@+id/iv_dashboard"
                 android:layout_width="@dimen/_20sdp"
                 android:layout_height="@dimen/_20sdp"
                 android:src="@drawable/ic_dashboard"
-                android:tint="@color/dark_yellow"/>
+                android:tint="@color/dark_yellow" />
 
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/ll_notifications"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.25"
-            android:gravity="center">
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:gravity="center"
+            app:layout_constraintLeft_toRightOf="@id/ll_dashboard"
+            app:layout_constraintRight_toLeftOf="@id/ll_reviews"
+            app:layout_constraintTop_toTopOf="@id/ll_dashboard">
 
             <ImageView
                 android:id="@+id/iv_notifications"
@@ -55,12 +76,34 @@
 
         </LinearLayout>
 
+
+        <LinearLayout
+            android:id="@+id/ll_reviews"
+            android:layout_width="@dimen/_45sdp"
+            android:layout_height="@dimen/_45sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:background="@drawable/bg_reviews"
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/ll_notifications"
+            app:layout_constraintRight_toLeftOf="@id/ll_messages">
+
+            <ImageView
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:src="@drawable/ic_thumbs"
+                android:tint="@color/darkest" />
+
+        </LinearLayout>
+
         <LinearLayout
             android:id="@+id/ll_messages"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.25"
-            android:gravity="center">
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:gravity="center"
+            app:layout_constraintLeft_toRightOf="@id/ll_reviews"
+            app:layout_constraintRight_toLeftOf="@id/ll_account"
+            app:layout_constraintTop_toTopOf="@+id/ll_dashboard">
 
             <ImageView
                 android:id="@+id/iv_messages"
@@ -73,10 +116,12 @@
 
         <LinearLayout
             android:id="@+id/ll_account"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.25"
-            android:gravity="center">
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:gravity="center"
+            app:layout_constraintLeft_toRightOf="@id/ll_messages"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/ll_dashboard">
 
             <ImageView
                 android:id="@+id/iv_account"
@@ -87,6 +132,6 @@
 
         </LinearLayout>
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

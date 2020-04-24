@@ -40,7 +40,7 @@ import java.util.ArrayList;
  */
 public class SearchFragment extends Fragment {
 
-    private RecyclerView rvSelect;
+    private RecyclerView rvFilters;
     private RecyclerView rvResults;
     private EditText etSearch;
 
@@ -129,7 +129,7 @@ public class SearchFragment extends Fragment {
         rvResults.setAdapter(searchReviewsAdapter);
     }
 
-    private void getMerchants() {
+    public void getMerchants() {
 
         showProgressDialog("Loading Search Results");
 
@@ -174,7 +174,7 @@ public class SearchFragment extends Fragment {
     }
 
     private void setUpFilters() {
-        String[] filterNames = new String[]{"Merchants", "Reviews", "5-Star Reviews", "4-Star Reviews", "3-Star Reviews", "2-Star Reviews", "1-Star Reviews"};
+        String[] filterNames = new String[]{"Merchants", "Reviews", "5 star reviews", "4 star reviews", "3 star reviews", "2 star reviews", "1 star reviews"};
 
         filters = new ArrayList<>();
 
@@ -188,11 +188,11 @@ public class SearchFragment extends Fragment {
     private void setUpFilterRecycler() {
 
         if (filterAdapter == null)
-            filterAdapter = new FilterAdapter(filters, SearchFragment.this);
+            filterAdapter = new FilterAdapter(filters, SearchFragment.this, null);
         selectLayoutManager = new LinearLayoutManager(getContext());
         selectLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        rvSelect.setLayoutManager(selectLayoutManager);
-        rvSelect.setAdapter(filterAdapter);
+        rvFilters.setLayoutManager(selectLayoutManager);
+        rvFilters.setAdapter(filterAdapter);
     }
 
     private void setListeners() {
@@ -250,6 +250,7 @@ public class SearchFragment extends Fragment {
         Query query = db.collection("Product Reviews");
 
         query = query.whereEqualTo("Reviewed", true);
+        query = query.whereEqualTo("Public", true);
 
         if (!key.isEmpty()) {
             if (key.equals("Product Rating"))
@@ -311,7 +312,7 @@ public class SearchFragment extends Fragment {
     }
 
     private void findViews(View view) {
-        rvSelect = view.findViewById(R.id.rv_select);
+        rvFilters = view.findViewById(R.id.rv_select);
         rvResults = view.findViewById(R.id.rv_results);
         etSearch = getActivity().findViewById(R.id.et_search);
     }

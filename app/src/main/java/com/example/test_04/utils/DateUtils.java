@@ -24,6 +24,18 @@ public class DateUtils {
         return date;
     }
 
+    public static Date stringToDate(String dateString) {
+        Date date = null;
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yy", Locale.US);
+        try {
+            date = format.parse(dateString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return date;
+    }
+
     public static String dateToStringWithTime(Date date) {
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yy - hh:mm a", Locale.US);
         return format.format(date);

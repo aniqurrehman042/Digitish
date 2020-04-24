@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.test_04.R;
 import com.example.test_04.db_callbacks.UpdatePointsCallback;
 import com.example.test_04.models.CurrentCustomer;
+import com.example.test_04.models.CurrentMerchant;
 import com.example.test_04.models.Merchant;
 import com.example.test_04.models.MerchantReview;
 import com.example.test_04.models.ProductReview;
@@ -258,15 +259,16 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ViewHold
                         if (task.isSuccessful()) {
                             for (DocumentSnapshot document : task.getResult().getDocuments()) {
                                 String customerName = document.get("Customer Name").toString();
+                                String productCode = document.get("Product Code").toString();
+                                String qrId = document.get("QR Id").toString();
                                 String image = document.get("Image").toString();
                                 String message = document.get("Message").toString();
                                 String sender = document.get("Sender").toString();
                                 String customerProfilePic = document.get("Customer Profile Picture").toString();
                                 Timestamp timestamp = (Timestamp) document.get("Date");
-                                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy - HH:mm");
                                 Date dateObj = timestamp.toDate();
-                                String date = sdf.format(dateObj);
-                                ProductReviewChat productReviewChat = new ProductReviewChat(customerEmail, customerName, merchantName, image, message, sender, date, customerProfilePic);
+                                String date = DateUtils.dateToStringWithTime(dateObj);
+                                ProductReviewChat productReviewChat = new ProductReviewChat(customerEmail, customerName, merchantName, productCode, qrId, image, message, sender, date, customerProfilePic);
                                 productReviewChats.add(productReviewChat);
                             }
 
@@ -339,7 +341,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ViewHold
         done++;
         if (done > 2) {
             progressDialog.dismiss();
-            customerHome.startProductReviewChatFragment(productReviewChats, merchant, productReview, productCategory, false);
+            customerHome.startProductReviewChatFragment(productReviewChats, merchant, productReview, false);
         }
     }
 
@@ -783,6 +785,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ViewHold
                             });
 
                             FCMUtils.Companion.sendMessage(context, true, true, "Review", "Company has been rated by " + CurrentCustomer.name, "Abans", CurrentCustomer.email);
+                            FCMUtils.Companion.sendMessage(context, true, false, "Review published - " + "Abans", "Your review for " + "Abans" + " has been published", CurrentCustomer.email, CurrentCustomer.email);
 
                         } else {
                             Toast.makeText(context, "Failed to rate merchant. Please try again.", Toast.LENGTH_SHORT).show();
@@ -838,6 +841,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ViewHold
                             });
 
                             FCMUtils.Companion.sendMessage(context, true, true, "Review", "Company has been rated by " + CurrentCustomer.name, "Singer", CurrentCustomer.email);
+                            FCMUtils.Companion.sendMessage(context, true, false, "Review published - " + "Singer", "Your review for " + "Singer" + " has been published", CurrentCustomer.email, CurrentCustomer.email);
                         } else {
                             Toast.makeText(context, "Failed to rate merchant. Please try again.", Toast.LENGTH_SHORT).show();
                             progressDialog.dismiss();
@@ -891,7 +895,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ViewHold
                             });
 
                             FCMUtils.Companion.sendMessage(context, true, true, "Review", "Company has been rated by " + CurrentCustomer.name, "Softlogic Holdings PLC", CurrentCustomer.email);
-
+                            FCMUtils.Companion.sendMessage(context, true, false, "Review published - " + "Softlogic", "Your review for " + "Softlogic" + " has been published", CurrentCustomer.email, CurrentCustomer.email);
                         } else {
                             Toast.makeText(context, "Failed to rate merchant. Please try again.", Toast.LENGTH_SHORT).show();
                             progressDialog.dismiss();

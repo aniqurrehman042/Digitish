@@ -54,28 +54,28 @@
                     android:id="@+id/iv_rating1"
                     android:layout_width="@dimen/size_icon"
                     android:layout_height="@dimen/size_icon"
-                    android:src="@drawable/ic_star_filled"
+                    android:src="@drawable/ic_star_hollow"
                     android:tint="@color/light_yellow" />
 
                 <ImageView
                     android:id="@+id/iv_rating2"
                     android:layout_width="@dimen/size_icon"
                     android:layout_height="@dimen/size_icon"
-                    android:src="@drawable/ic_star_filled"
+                    android:src="@drawable/ic_star_hollow"
                     android:tint="@color/light_yellow" />
 
                 <ImageView
                     android:id="@+id/iv_rating3"
                     android:layout_width="@dimen/size_icon"
                     android:layout_height="@dimen/size_icon"
-                    android:src="@drawable/ic_star_filled"
+                    android:src="@drawable/ic_star_hollow"
                     android:tint="@color/light_yellow" />
 
                 <ImageView
                     android:id="@+id/iv_rating4"
                     android:layout_width="@dimen/size_icon"
                     android:layout_height="@dimen/size_icon"
-                    android:src="@drawable/ic_star_filled"
+                    android:src="@drawable/ic_star_hollow"
                     android:tint="@color/light_yellow" />
 
                 <ImageView

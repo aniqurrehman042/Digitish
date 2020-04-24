@@ -1,8 +1,10 @@
 package com.example.test_04.models;
 
+import com.example.test_04.comparators.DateComparator;
+
 import java.io.Serializable;
 
-public class ProductReview implements Serializable {
+public class ProductReview extends DateComparator implements Serializable {
 
     private String customerEmail;
     private String customerName;
@@ -16,7 +18,6 @@ public class ProductReview implements Serializable {
     private String qrId;
     private boolean completed;
     private String id;
-    private String date;
     private boolean reviewed;
 
     public ProductReview(String customerEmail, String customerName, String merchantName, String productCode, String productName, String productCategory, int productRating, String reviewDescription, String reviewTitle, String qrId, boolean completed, boolean reviewed, String date) {
@@ -32,7 +33,8 @@ public class ProductReview implements Serializable {
         this.productCategory = productCategory;
         this.completed = completed;
         this.reviewed = reviewed;
-        this.date = date;
+        setDate(date);
+        setType("Product Review");
     }
 
     public void setReviewed(boolean reviewed) {
@@ -41,10 +43,6 @@ public class ProductReview implements Serializable {
 
     public boolean isReviewed() {
         return reviewed;
-    }
-
-    public String getDate() {
-        return date;
     }
 
     public String getProductCategory() {

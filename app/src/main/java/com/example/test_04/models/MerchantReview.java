@@ -1,9 +1,11 @@
 package com.example.test_04.models;
 
-public class MerchantReview {
+import com.example.test_04.comparators.DateComparator;
+
+public class MerchantReview extends DateComparator {
 
     private String customerEmail;
-    private String customerNAme;
+    private String customerName;
     private String merchantName;
     private int responsiveness;
     private int afterSaleService;
@@ -11,11 +13,10 @@ public class MerchantReview {
     private int productInfo;
     private int valueForPrice;
     private String qrId;
-    private String date;
 
-    public MerchantReview(String customerEmail, String customerNAme, String merchantName, int responsiveness, int afterSaleService, int salesAgentSupport, int productInfo, int valueForPrice, String qrId) {
+    public MerchantReview(String customerEmail, String customerName, String merchantName, int responsiveness, int afterSaleService, int salesAgentSupport, int productInfo, int valueForPrice, String qrId, String date) {
         this.customerEmail = customerEmail;
-        this.customerNAme = customerNAme;
+        this.customerName = customerName;
         this.merchantName = merchantName;
         this.responsiveness = responsiveness;
         this.afterSaleService = afterSaleService;
@@ -23,22 +24,17 @@ public class MerchantReview {
         this.productInfo = productInfo;
         this.valueForPrice = valueForPrice;
         this.qrId = qrId;
-    }
 
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
+        setDate(date);
+        setType("Merchant Review");
     }
 
     public String getCustomerEmail() {
         return customerEmail;
     }
 
-    public String getCustomerNAme() {
-        return customerNAme;
+    public String getCustomerName() {
+        return customerName;
     }
 
     public String getMerchantName() {

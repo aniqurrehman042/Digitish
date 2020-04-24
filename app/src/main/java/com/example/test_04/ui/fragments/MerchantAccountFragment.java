@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -37,7 +36,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;
-import static android.content.Context.MODE_PRIVATE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -54,11 +52,6 @@ public class MerchantAccountFragment extends Fragment {
 
     private RoundedImageView rivMerchantLogo;
     private TextView tvMerchantName;
-    private ImageView ivRating1;
-    private ImageView ivRating2;
-    private ImageView ivRating3;
-    private ImageView ivRating4;
-    private ImageView ivRating5;
     private TextView tvMerchantDesc;
     private TextView tvProducts;
     private ImageView ivMoreDesc;
@@ -249,38 +242,16 @@ public class MerchantAccountFragment extends Fragment {
         products = CurrentMerchant.products;
         merchantDesc = CurrentMerchant.description;
         String name = getMerchantDetail("Merchant Name");
-        int rating = (int) Math.rint(Double.valueOf(getMerchantDetail("Merchant Rating")));
         tvMerchantName.setText(name);
         rivMerchantLogo.setImageResource(SwitchUtils.getMerchantImgId(name));
         tvMerchantDesc.setText(merchantDesc);
         tvProducts.setText(products);
 
-        setRating();
-
-        if (products.isEmpty() || merchantDesc.isEmpty())
-            setMerchantDescriptionAndProducts();
+        setMerchantDescriptionRatingAndProducts();
 
     }
 
-    private void setRating() {
-
-        db.collection("Merchants")
-                .whereEqualTo("Merchant Name", CurrentMerchant.name)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            int rating = (int) Math.rint(Double.valueOf(task.getResult().getDocuments().get(0).getDouble("Merchant Rating")));
-                            reviewUtils.fillStars(rating);
-                        } else {
-                            Toast.makeText(merchantHome, "Couldn't get merchant rating", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-    }
-
-    private void setMerchantDescriptionAndProducts() {
+    private void setMerchantDescriptionRatingAndProducts() {
 
         showProgressDialog("Loading profile");
 
@@ -294,6 +265,7 @@ public class MerchantAccountFragment extends Fragment {
                             DocumentSnapshot documentSnapshot = task.getResult().getDocuments().get(0);
                             String products = documentSnapshot.get("Products").toString();
                             String merchantDesc = documentSnapshot.get("Merchant Description").toString();
+                            int merchantRating = (int) Math.rint(Double.valueOf(task.getResult().getDocuments().get(0).getDouble("Merchant Rating")));
                             products = StringUtils.addLineBreaks(products);
 
                             MerchantAccountFragment.this.products = products;
@@ -301,6 +273,15 @@ public class MerchantAccountFragment extends Fragment {
 
                             tvMerchantDesc.setText(merchantDesc);
                             tvProducts.setText(products);
+                            reviewUtils.fillStars(merchantRating);
+
+                            setMerchantDetail("Merchant Rating", String.valueOf(merchantRating));
+                            setMerchantDetail("Merchant Description", merchantDesc);
+                            setMerchantDetail("Products", products);
+
+                            CurrentMerchant.description = merchantDesc;
+                            CurrentMerchant.products = products;
+                            CurrentMerchant.rating = String.valueOf(merchantRating);
 
                         } else {
                             Toast.makeText(merchantHome, "Couldn't load merchant details", Toast.LENGTH_SHORT).show();
@@ -321,11 +302,6 @@ public class MerchantAccountFragment extends Fragment {
     private void findViews(View view) {
         rivMerchantLogo = view.findViewById(R.id.riv_merchant_logo);
         tvMerchantName = view.findViewById(R.id.tv_merchant_name);
-        ivRating1 = view.findViewById(R.id.iv_rating1);
-        ivRating2 = view.findViewById(R.id.iv_rating2);
-        ivRating3 = view.findViewById(R.id.iv_rating3);
-        ivRating4 = view.findViewById(R.id.iv_rating4);
-        ivRating5 = view.findViewById(R.id.iv_rating5);
         tvMerchantDesc = view.findViewById(R.id.tv_merchant_desc);
         etMerchantDesc = view.findViewById(R.id.et_merchant_desc);
         tvProducts = view.findViewById(R.id.tv_products);

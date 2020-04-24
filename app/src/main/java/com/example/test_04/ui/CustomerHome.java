@@ -2,11 +2,9 @@ package com.example.test_04.ui;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,7 +24,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.example.test_04.R;
 import com.example.test_04.async.DownloadImageTask;
@@ -76,6 +73,7 @@ public class CustomerHome extends AppCompatActivity {
     private EditText etSearch;
     private ImageView ivBack;
     private LinearLayout llCall;
+    private LinearLayout llBack;
     private LinearLayout llMore;
 
     private Bitmap profileBmp;
@@ -232,7 +230,7 @@ public class CustomerHome extends AppCompatActivity {
                 .commit();
     }
 
-    public void startProductReviewChatFragment(ArrayList<ProductReviewChat> chats, @Nullable Merchant merchant, ProductReview productReview, String productCategory, boolean fromSearch) {
+    public void startProductReviewChatFragment(ArrayList<ProductReviewChat> chats, @Nullable Merchant merchant, ProductReview productReview, boolean fromSearch) {
 
         if (fromSearch)
             searchBackClick();
@@ -241,7 +239,7 @@ public class CustomerHome extends AppCompatActivity {
         Bundle arguments = new Bundle();
         arguments.putSerializable("Chats", chats);
         arguments.putSerializable("Product Review", productReview);
-        arguments.putString("Product Category", productCategory);
+        arguments.putString("Product Category", productReview.getProductCategory());
         arguments.putBoolean("From Search", fromSearch);
         if (merchant != null) {
             arguments.putSerializable("Merchant", merchant);
@@ -350,6 +348,12 @@ public class CustomerHome extends AppCompatActivity {
     private void setListeners() {
 
         findViewById(R.id.iv_back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+        llBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
@@ -599,6 +603,7 @@ public class CustomerHome extends AppCompatActivity {
         ivBack = findViewById(R.id.iv_back);
         llCall = findViewById(R.id.ll_call);
         llMore = findViewById(R.id.ll_more);
+        llBack = findViewById(R.id.ll_back);
     }
 
     @Override
@@ -650,5 +655,21 @@ public class CustomerHome extends AppCompatActivity {
     public void onProductReviewResume(String title) {
         setPageTitle(title);
         showBackBtn();
+    }
+
+    public void startProductReviewsThenProductReviewChat(ArrayList<ProductReviewChat> productReviewChats, Merchant merchant, ProductReview productReview, boolean fromSearch) {
+        if (fromSearch)
+            searchBackClick();
+
+        Bundle arguments = new Bundle();
+        arguments.putSerializable("Chats", productReviewChats);
+        arguments.putSerializable("Product Review", productReview);
+        arguments.putString("Product Category", productReview.getProductCategory());
+        arguments.putBoolean("From Search", fromSearch);
+        if (merchant != null) {
+            arguments.putSerializable("Merchant", merchant);
+        }
+        fragments.get(2).setArguments(arguments);
+        startFragment(fragments.get(2));
     }
 }

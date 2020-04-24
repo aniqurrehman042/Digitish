@@ -30,14 +30,8 @@ class FCMUtils {
             val notificationBody = JSONObject()
 
             try {
-                if (!review) {
-                    notificationBody.put("title", title)
-                    notificationBody.put("message", message)   //Enter your notification message
-                }
-                else {
-                    notificationBody.put("title", "Review")
-                    notificationBody.put("message", "${CurrentCustomer.name} has left a review")   //Enter your notification message
-                }
+                notificationBody.put("title", title)
+                notificationBody.put("message", message)   //Enter your notification message
                 notificationBody.put("Receiver Name Or Email", receiverNameOrEmail)
                 notificationBody.put("Sender Name Or Email", senderNameOrEmail)
                 notificationBody.put("Review", review)
@@ -56,7 +50,7 @@ class FCMUtils {
             Log.e("TAG", "sendNotification")
             val jsonObjectRequest = object : JsonObjectRequest(FCM_API, notification,
                     Response.Listener<JSONObject> { response ->
-
+                        Log.e("TAG", response.toString())
                     },
                     Response.ErrorListener {
                         Toast.makeText(context, "Request error", Toast.LENGTH_LONG).show()

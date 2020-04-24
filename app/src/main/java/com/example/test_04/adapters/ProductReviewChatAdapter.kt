@@ -74,7 +74,7 @@ class ProductReviewChatAdapter(private var productReviewChats: ArrayList<Product
         val image = productReviewChat.image
         val sender = productReviewChat.sender
         val bitmap = productReviewChat.bitmap
-        val name = if (productReviewChat.sender.equals("Customer")) productReviewChat.customerName else productReviewChat.merchantName
+        val name = if (productReviewChat.sender == "Customer") productReviewChat.customerName else productReviewChat.merchantName
 
         if (productReviewChats.get(position).sent)
             tvNotSent.visibility = View.GONE
@@ -87,6 +87,7 @@ class ProductReviewChatAdapter(private var productReviewChats: ArrayList<Product
 
             if (sender == "Merchant") {
                 rivMyImg.setImageResource(getMerchantImgId(productReviewChat.merchantName))
+                rivMyImg.visibility = View.VISIBLE
                 rivOtherImg.visibility = View.GONE
                 llOtherMsg.visibility = View.GONE
                 ivOtherImg.visibility = View.GONE
@@ -108,6 +109,7 @@ class ProductReviewChatAdapter(private var productReviewChats: ArrayList<Product
                     rivOtherImg.setImageBitmap(profileBmp)
                 else
                     DownloadImageTask(profileBmp, rivOtherImg).execute(productReviewChat.customerProfilePic)
+                rivOtherImg.visibility = View.VISIBLE
                 rivMyImg.visibility = View.GONE
                 llMyMsg.visibility = View.GONE
                 ivOtherImg.visibility = View.GONE
@@ -131,6 +133,7 @@ class ProductReviewChatAdapter(private var productReviewChats: ArrayList<Product
                     rivMyImg.setImageBitmap(profileBmp)
                 else
                     DownloadImageTask(profileBmp, rivMyImg).execute(productReviewChat.customerProfilePic)
+                rivMyImg.visibility = View.VISIBLE
                 rivOtherImg.visibility = View.GONE
                 llOtherMsg.visibility = View.GONE
                 ivOtherImg.visibility = View.GONE
@@ -149,6 +152,7 @@ class ProductReviewChatAdapter(private var productReviewChats: ArrayList<Product
                 }
             } else {
                 rivOtherImg.setImageResource(getMerchantImgId(productReviewChat.merchantName))
+                rivOtherImg.visibility = View.VISIBLE
                 rivMyImg.visibility = View.GONE
                 llMyMsg.visibility = View.GONE
                 ivOtherImg.visibility = View.GONE

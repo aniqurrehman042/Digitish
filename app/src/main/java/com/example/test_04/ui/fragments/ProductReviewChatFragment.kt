@@ -271,6 +271,8 @@ class ProductReviewChatFragment : Fragment() {
         val customerName: String
         val merchantName: String
         val customerProfilePic: String
+        val productCode: String = productReview!!.productCode
+        val qrId: String = productReview!!.qrId
         if (productReviewChats.isNotEmpty()) {
             customerEmail = productReviewChats[0].customerEmail
             customerName = productReviewChats[0].customerName
@@ -285,12 +287,12 @@ class ProductReviewChatFragment : Fragment() {
             merchantName = merchant!!.name
             customerProfilePic = CurrentCustomer.profilePicture
         } else {
-            customerEmail = customer!!.customerEmail
-            customerName = customer!!.customerName
+            customerEmail = productReview!!.customerEmail
+            customerName = productReview!!.customerName
             merchantName = CurrentMerchant.name
             customerProfilePic = customer!!.profilePic
         }
-        return ProductReviewChat(customerEmail, customerName, merchantName, image, message, sender, date, customerProfilePic)
+        return ProductReviewChat(customerEmail, customerName, merchantName, productCode, qrId, image, message, sender, date, customerProfilePic)
     }
 
     private fun sendImages() {
@@ -336,6 +338,7 @@ class ProductReviewChatFragment : Fragment() {
         data["Image"] = productReviewChat.image
         data["QR Id"] = productReview!!.qrId
         data["Product Code"] = productReview!!.productCode
+        data["Product Name"] = productReview!!.productName
         db.collection("ProductReviewChat")
                 .add(data)
                 .addOnCompleteListener { task ->
@@ -375,16 +378,16 @@ class ProductReviewChatFragment : Fragment() {
             else
                 customerHome!!.setPageTitle(productReview!!.productName)
         } else {
-            merchantHome!!.setPageTitle(productReview!!.productName)
-            merchantHome!!.hideSearchIcons()
             merchantHome!!.onChatResume()
+            merchantHome!!.hideSearchIcons()
+            merchantHome!!.setPageTitle(productReview!!.customerName)
         }
 
         if (productReview!!.isCompleted) {
             hideChatAndMarkComplete()
         }
 
-        if (fromSearch!!) {
+        if (fromSearch!! && customerHome != null) {
             customerHome!!.setShowMerchantMenuListener();
             vChatLine.visibility = View.GONE
             llChat.visibility = View.GONE

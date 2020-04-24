@@ -17,7 +17,10 @@ import com.example.test_04.R;
 import com.example.test_04.adapters.ReviewsAdapter;
 import com.example.test_04.db_callbacks.IGetProductReviews;
 import com.example.test_04.models.CurrentCustomer;
+import com.example.test_04.models.Customer;
+import com.example.test_04.models.Merchant;
 import com.example.test_04.models.ProductReview;
+import com.example.test_04.models.ProductReviewChat;
 import com.example.test_04.ui.CustomerHome;
 import com.example.test_04.utils.DBUtils;
 
@@ -33,6 +36,7 @@ public class ReviewsFragment extends Fragment {
     private ArrayList<ProductReview> productReviews = new ArrayList<>();
     private ReviewsAdapter adapter;
     private ProgressDialog progressDialog;
+    private CustomerHome customerHome;
 
     public ReviewsFragment() {
         // Required empty public constructor
@@ -44,6 +48,7 @@ public class ReviewsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_reviews, container, false);
+        customerHome = (CustomerHome) getActivity();
 
         findViews(view);
 
@@ -53,8 +58,30 @@ public class ReviewsFragment extends Fragment {
     }
 
     private void init() {
-        llReviews.setVisibility(View.VISIBLE);
-        checkQr();
+
+        if (!isFromNotifications()) {
+            llReviews.setVisibility(View.VISIBLE);
+            checkQr();
+        }
+    }
+
+    private boolean isFromNotifications() {
+        if (getArguments() != null) {
+            ArrayList<ProductReviewChat> productReviewChats = (ArrayList<ProductReviewChat>) getArguments().getSerializable("Chats");
+            ProductReview productReview = (ProductReview) getArguments().getSerializable("Product Review");
+            Merchant merchant = (Merchant) getArguments().getSerializable("Merchant");
+            String productCategory = getArguments().getString("Product Category");
+
+            if (productReviewChats != null && productReview != null && productCategory != null && merchant != null) {
+                customerHome.startProductReviewChatFragment(productReviewChats, merchant, productReview, false);
+                setArguments(null);
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
     }
 
     private void checkQr() {
@@ -113,6 +140,7 @@ public class ReviewsFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        progressDialog.dismiss();
+        if (progressDialog != null)
+            progressDialog.dismiss();
     }
 }

@@ -2,6 +2,7 @@ package com.example.test_04.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -18,7 +19,6 @@ import com.example.test_04.R;
 import com.example.test_04.models.Chat;
 import com.example.test_04.models.CurrentMerchant;
 import com.example.test_04.models.Customer;
-import com.example.test_04.models.Merchant;
 import com.example.test_04.models.ProductReview;
 import com.example.test_04.models.ProductReviewChat;
 import com.example.test_04.ui.fragments.ChatFragment;
@@ -32,8 +32,6 @@ import com.example.test_04.utils.DBUtils;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
-
-import javax.annotation.Nullable;
 
 public class MerchantHome extends AppCompatActivity {
 
@@ -49,7 +47,10 @@ public class MerchantHome extends AppCompatActivity {
     private LinearLayout llAccount;
     private LinearLayout llSearchIcons;
     private LinearLayout llMore;
-    private LinearLayout llBottombar;
+    private LinearLayout llReviews;
+    private LinearLayout llBack;
+    private ConstraintLayout clBottombar;
+    private View vBottombarT;
 
     private String currentFragment;
     private String lastFragment;
@@ -104,14 +105,14 @@ public class MerchantHome extends AppCompatActivity {
     public void onChatResume() {
         ivBack.setVisibility(View.VISIBLE);
         llSearchIcons.setVisibility(View.VISIBLE);
-        llBottombar.setVisibility(View.GONE);
+        hideBottomBar();
         llMore.setVisibility(View.GONE);
     }
 
     public void onChatPause() {
         ivBack.setVisibility(View.GONE);
         llSearchIcons.setVisibility(View.GONE);
-        llBottombar.setVisibility(View.VISIBLE);
+        clBottombar.setVisibility(View.VISIBLE);
         llMore.setVisibility(View.VISIBLE);
     }
 
@@ -132,6 +133,7 @@ public class MerchantHome extends AppCompatActivity {
         fragments.add(new MerchantMessagesFragment());
         fragments.add(new MerchantNotificationsFragment());
         fragments.add(new MerchantDashboardFragment());
+        fragments.add(new MerchantReviewsFragment());
 
         fragmentManager.beginTransaction()
                 .add(R.id.cl_fragment, fragments.get(0))
@@ -166,6 +168,8 @@ public class MerchantHome extends AppCompatActivity {
             currentFragment = "Merchant Notifications";
         else if (fragment == fragments.get(3))
             currentFragment = "Merchant Dashboard";
+        else if (fragment == fragments.get(4))
+            currentFragment = "Merchant Reviews";
 
         setIcon(false);
 
@@ -264,6 +268,15 @@ public class MerchantHome extends AppCompatActivity {
                 startFragment(fragments.get(3));
             }
         });
+        llReviews.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putBoolean("First Run", true);
+                fragments.get(4).setArguments(bundle);
+                startFragment(fragments.get(4));
+            }
+        });
 
         llMore.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -295,6 +308,12 @@ public class MerchantHome extends AppCompatActivity {
                 onBackPressed();
             }
         });
+        llBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
     }
 
     private void findViews() {
@@ -308,17 +327,22 @@ public class MerchantHome extends AppCompatActivity {
         llAccount = findViewById(R.id.ll_account);
         llMessages = findViewById(R.id.ll_messages);
         ivBack = findViewById(R.id.iv_back);
-        llBottombar = findViewById(R.id.ll_bottombar);
+        clBottombar = findViewById(R.id.cl_bottombar);
         llSearchIcons = findViewById(R.id.ll_search_icons);
         llMore = findViewById(R.id.ll_more);
+        llBack = findViewById(R.id.ll_back);
+        llReviews = findViewById(R.id.ll_reviews);
+        vBottombarT = findViewById(R.id.v_bottombar_t);
     }
 
     public void hideBottomBar() {
-        llBottombar.setVisibility(View.GONE);
+        clBottombar.setVisibility(View.GONE);
+        vBottombarT.setVisibility(View.GONE);
     }
 
     public void showBottomBar() {
-        llBottombar.setVisibility(View.VISIBLE);
+        clBottombar.setVisibility(View.VISIBLE);
+        vBottombarT.setVisibility(View.VISIBLE);
     }
 
     private void setStatusBar() {
@@ -336,42 +360,20 @@ public class MerchantHome extends AppCompatActivity {
         setIcon(true);
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
-
-    public void startProductReviewChatFragment(ArrayList<ProductReviewChat> chats, @Nullable Merchant merchant, ProductReview productReview, String productCategory, Customer customer, boolean fromSearch) {
+    public void startProductReviewChatFragment(ArrayList<ProductReviewChat> chats, ProductReview productReview, Customer customer) {
 
         ProductReviewChatFragment productReviewChatFragment = new ProductReviewChatFragment();
         Bundle arguments = new Bundle();
         arguments.putSerializable("Chats", chats);
         arguments.putSerializable("Customer", customer);
         arguments.putSerializable("Product Review", productReview);
-        arguments.putString("Product Category", productCategory);
-        if (merchant != null) {
-            arguments.putSerializable("Merchant", merchant);
-        }
+        arguments.putBoolean("From Search", true);
+        arguments.putString("Product Category", productReview.getProductCategory());
         productReviewChatFragment.setArguments(arguments);
 
         fragmentManager
                 .beginTransaction()
                 .replace(R.id.cl_fragment, productReviewChatFragment)
-                .addToBackStack("Product Review Chat")
-                .commit();
-    }
-
-    public void startMerchantReviewsFragment(ArrayList<ProductReview> productReviews) {
-
-        MerchantReviewsFragment merchantReviewsFragment = new MerchantReviewsFragment();
-        Bundle arguments = new Bundle();
-        arguments.putSerializable("Product Reviews", productReviews);
-        merchantReviewsFragment.setArguments(arguments);
-
-        fragmentManager
-                .beginTransaction()
-                .replace(R.id.cl_fragment, merchantReviewsFragment)
                 .addToBackStack("Product Review Chat")
                 .commit();
     }

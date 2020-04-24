@@ -17,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.test_04.R;
 import com.example.test_04.models.CustomerNotification;
 import com.example.test_04.utils.DateUtils;
+import com.example.test_04.utils.SwitchUtils;
+import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -57,15 +59,12 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
         Date currentDate = Calendar.getInstance().getTime();
         Date msgDate = DateUtils.stringToDateWithTime(customerNotifications.get(position).getDate());
 
-        if (DateUtils.isSameDay(currentDate, msgDate)) {
-
+        if (DateUtils.isSameDay(currentDate, msgDate) && position < 1) {
             tvDateHeading.setVisibility(View.VISIBLE);
             tvDateHeading.setText("Today");
 
         } else if (DateUtils.isSameDay(msgDate, lastDate)) {
-
             tvDateHeading.setVisibility(View.GONE);
-
         } else {
             lastDate = msgDate;
             tvDateHeading.setVisibility(View.VISIBLE);
@@ -75,7 +74,20 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
         tvNotificationTitle.setText(customerNotification.getTitle());
         tvNotificationDesc.setText(customerNotification.getMessage());
         ivNotificationImg.setImageResource(R.drawable.ic_star);
-        tvUnread.setHeight(tvUnread.getWidth());
+
+        if (customerNotification.getType().equals("Product Review")) {
+
+            ivNotificationImg.setImageResource(R.drawable.ic_product_review);
+
+        } else if (customerNotification.getType().equals("Merchant Review")) {
+
+            ivNotificationImg.setImageResource(R.drawable.ic_merchant_rating);
+
+        } else if (customerNotification.getType().equals("Product Review Chat")) {
+
+            ivNotificationImg.setImageResource(R.drawable.ic_merchant_rating);
+
+        }
 
 }
 

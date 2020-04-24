@@ -70,14 +70,12 @@ public class SearchReviewsAdapter extends RecyclerView.Adapter<SearchReviewsAdap
             @Override
             public void onClick(View v) {
 
-                String merchantName = productReviews.get(position).getMerchantName();
-                String customerEmail = CurrentCustomer.email;
                 getChatBetween(productReviews.get(position));
 
             }
         });
 
-        holder.tvCustomerName.setText(productReviews.get(position).getCustomerName());
+        holder.tvCustomerName.setText(productReviews.get(position).getReviewTitle());
         holder.tvProductName.setText(productReviews.get(position).getProductName());
         holder.tvProductCode.setText(productReviews.get(position).getProductCode());
         holder.tvRating.setText(String.valueOf(productReviews.get(position).getProductRating()));
@@ -97,6 +95,8 @@ public class SearchReviewsAdapter extends RecyclerView.Adapter<SearchReviewsAdap
 
         showProgressDialog("Loading review");
 
+        productReviewChats = new ArrayList<>();
+
         db.collection("ProductReviewChat")
                 .whereEqualTo("Merchant Name", productReview.getMerchantName())
                 .whereEqualTo("Customer Email", productReview.getCustomerEmail())
@@ -110,6 +110,8 @@ public class SearchReviewsAdapter extends RecyclerView.Adapter<SearchReviewsAdap
                         if (task.isSuccessful()) {
                             for (DocumentSnapshot document : task.getResult().getDocuments()) {
                                 String customerName = document.get("Customer Name").toString();
+                                String productCode = document.get("Product Code").toString();
+                                String qrId = document.get("QR Id").toString();
                                 String image = document.get("Image").toString();
                                 String message = document.get("Message").toString();
                                 String sender = document.get("Sender").toString();
@@ -118,7 +120,7 @@ public class SearchReviewsAdapter extends RecyclerView.Adapter<SearchReviewsAdap
                                 SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy - HH:mm");
                                 Date dateObj = timestamp.toDate();
                                 String date = sdf.format(dateObj);
-                                ProductReviewChat productReviewChat = new ProductReviewChat(productReview.getCustomerEmail(), customerName, productReview.getMerchantName(), image, message, sender, date, customerProfilePic);
+                                ProductReviewChat productReviewChat = new ProductReviewChat(productReview.getCustomerEmail(), customerName, productReview.getMerchantName(), productCode, qrId, image, message, sender, date, customerProfilePic);
                                 productReviewChats.add(productReviewChat);
                             }
 
@@ -179,9 +181,9 @@ public class SearchReviewsAdapter extends RecyclerView.Adapter<SearchReviewsAdap
         if (done > 2) {
             progressDialog.dismiss();
             if (customerHome != null)
-                customerHome.startProductReviewChatFragment(productReviewChats, merchant, productReview, productCategory, true);
+                customerHome.startProductReviewChatFragment(productReviewChats, merchant, productReview, true);
             else
-                merchantHome.startProductReviewChatFragment(productReviewChats, merchant, productReview, productCategory, customer, true);
+                merchantHome.startProductReviewChatFragment(productReviewChats, productReview, customer);
         }
     }
 

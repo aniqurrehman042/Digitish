@@ -1,6 +1,8 @@
 package com.example.test_04.ui.fragments;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -29,7 +31,6 @@ import com.example.test_04.utils.ReviewUtils;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -202,13 +203,33 @@ public class ProductReviewFragment extends Fragment {
         int productRating = reviewUtils.getRating();
         if (productRating > 0) {
             ProductReview productReview = new ProductReview(CurrentCustomer.email, CurrentCustomer.name, this.productReview.getMerchantName(), this.productReview.getProductCode(), this.productReview.getProductName(), this.productReview.getProductCategory(), productRating, reviewDescription, reviewTitle, qrId, false, true, DateUtils.getCurrentDateInString());
-            uploadReview(productReview);
+            showPublicPrivateDialog(productReview);
         } else {
             Toast.makeText(customerHome, "Please select a rating.", Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void uploadReview(final ProductReview productReview) {
+    private void showPublicPrivateDialog(final ProductReview productReview) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(customerHome);
+        builder.setTitle("Make review public")
+                .setMessage("Do you want your review to be visible to other users?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        uploadReview(productReview, true);
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        uploadReview(productReview, false);
+                    }
+                });
+
+        builder.show();
+    }
+
+    private void uploadReview(final ProductReview productReview, boolean showToOthers) {
 
         showProgressDialog("Submitting Review");
 
@@ -225,6 +246,7 @@ public class ProductReviewFragment extends Fragment {
         productReviewData.put("Review Title", productReview.getReviewTitle());
         productReviewData.put("Reviewed", true);
         productReviewData.put("Completed", false);
+        productReviewData.put("Public", showToOthers);
         productReviewData.put("Date", Timestamp.now());
 
         db.collection("Product Reviews")
@@ -263,6 +285,7 @@ public class ProductReviewFragment extends Fragment {
                                     });
 
                             FCMUtils.Companion.sendMessage(customerHome, true, true, "Review", "Your product has been rated by " + CurrentCustomer.name, productReview.getMerchantName(), CurrentCustomer.email);
+                            FCMUtils.Companion.sendMessage(customerHome, true, false, "Review published - " + productReview.getMerchantName(), "Your review for " + productReview.getProductName() + " has been published", CurrentCustomer.email, CurrentCustomer.email);
 
                         } else {
                             Toast.makeText(customerHome, "Failed to send review. Please try again.", Toast.LENGTH_SHORT).show();

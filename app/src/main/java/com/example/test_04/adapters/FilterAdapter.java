@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.test_04.R;
 import com.example.test_04.models.Filter;
+import com.example.test_04.ui.fragments.MerchantReviewsFragment;
 import com.example.test_04.ui.fragments.SearchFragment;
 
 import java.util.ArrayList;
@@ -22,15 +23,17 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.ViewHolder
     private Context context;
     private int selectedFilter;
     private SearchFragment searchFragment;
+    private MerchantReviewsFragment merchantReviewsFragment;
 
     public int getSelectedFilter() {
         return selectedFilter;
     }
 
-    public FilterAdapter(ArrayList<Filter> filters, SearchFragment searchFragment) {
+    public FilterAdapter(ArrayList<Filter> filters, SearchFragment searchFragment, MerchantReviewsFragment merchantReviewsFragment) {
         this.filters = filters;
         selectedFilter = 0;
         this.searchFragment = searchFragment;
+        this.merchantReviewsFragment = merchantReviewsFragment;
     }
 
     @NonNull
@@ -46,7 +49,7 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.ViewHolder
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
 
         holder.btnSelect.setText(filters.get(position).getFilterName());
-        if (filters.get(position).getSelected()){
+        if (filters.get(position).getSelected()) {
             holder.btnSelect.setBackground(ResourcesCompat.getDrawable(context.getResources(), R.drawable.bg_btn_light_round, null));
             holder.btnSelect.setTextColor(ContextCompat.getColor(context, R.color.white));
         } else {
@@ -64,28 +67,57 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.ViewHolder
     }
 
     private void applyFilter(int position) {
-        switch (position) {
-            case 0:
-                searchFragment.setUpMerchantsRecycler();
-                break;
-            case 1:
-                searchFragment.getReviews("", "");
-                break;
-            case 2:
-                searchFragment.getReviews("Product Rating", "5");
-                break;
-            case 3:
-                searchFragment.getReviews("Product Rating", "4");
-                break;
-            case 4:
-                searchFragment.getReviews("Product Rating", "3");
-                break;
-            case 5:
-                searchFragment.getReviews("Product Rating", "2");
-                break;
-            case 6:
-                searchFragment.getReviews("Product Rating", "1");
-                break;
+
+        if (searchFragment != null) {
+
+            switch (position) {
+                case 0:
+                    searchFragment.getMerchants();
+                    break;
+                case 1:
+                    searchFragment.getReviews("", "");
+                    break;
+                case 2:
+                    searchFragment.getReviews("Product Rating", "5");
+                    break;
+                case 3:
+                    searchFragment.getReviews("Product Rating", "4");
+                    break;
+                case 4:
+                    searchFragment.getReviews("Product Rating", "3");
+                    break;
+                case 5:
+                    searchFragment.getReviews("Product Rating", "2");
+                    break;
+                case 6:
+                    searchFragment.getReviews("Product Rating", "1");
+                    break;
+            }
+        } else {
+
+            switch (position) {
+                case 0:
+                    merchantReviewsFragment.getMerchantReviews();
+                    break;
+                case 1:
+                    merchantReviewsFragment.getReviews("", "");
+                    break;
+                case 2:
+                    merchantReviewsFragment.getReviews("Product Rating", "5");
+                    break;
+                case 3:
+                    merchantReviewsFragment.getReviews("Product Rating", "4");
+                    break;
+                case 4:
+                    merchantReviewsFragment.getReviews("Product Rating", "3");
+                    break;
+                case 5:
+                    merchantReviewsFragment.getReviews("Product Rating", "2");
+                    break;
+                case 6:
+                    merchantReviewsFragment.getReviews("Product Rating", "1");
+                    break;
+            }
         }
     }
 
