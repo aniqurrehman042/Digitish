@@ -162,9 +162,8 @@ public class ScanFragment extends Fragment {
     public void onPause() {
         super.onPause();
 
-        if (progressDialog == null)
-            progressDialog = new ProgressDialog(customerHome);
-        progressDialog.dismiss();
+        if (progressDialog != null)
+            progressDialog.dismiss();
 
     }
 }

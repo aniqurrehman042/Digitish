@@ -20,7 +20,7 @@
             android:id="@+id/riv_merchant_logo"
             android:layout_width="@dimen/_35sdp"
             android:layout_height="@dimen/_35sdp"
-            android:layout_marginLeft="@dimen/margin_normal"
+            android:layout_marginLeft="@dimen/margin_small"
             android:gravity="center"
             android:src="@drawable/abans_logo"
             app:layout_constraintBottom_toBottomOf="parent"

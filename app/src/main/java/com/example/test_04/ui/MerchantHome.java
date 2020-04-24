@@ -81,7 +81,8 @@ public class MerchantHome extends AppCompatActivity {
     private void checkNotificationIntent() {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            if (extras.getBoolean("Review"))
+            boolean review = extras.getBoolean("Review");
+            if (review)
                 startFragment(fragments.get(2));
             else
                 startFragment(fragments.get(1));
@@ -104,6 +105,7 @@ public class MerchantHome extends AppCompatActivity {
 
     public void onChatResume() {
         ivBack.setVisibility(View.VISIBLE);
+        llBack.setVisibility(View.VISIBLE);
         llSearchIcons.setVisibility(View.VISIBLE);
         hideBottomBar();
         llMore.setVisibility(View.GONE);
@@ -111,6 +113,7 @@ public class MerchantHome extends AppCompatActivity {
 
     public void onChatPause() {
         ivBack.setVisibility(View.GONE);
+        llBack.setVisibility(View.GONE);
         llSearchIcons.setVisibility(View.GONE);
         clBottombar.setVisibility(View.VISIBLE);
         llMore.setVisibility(View.VISIBLE);
@@ -234,10 +237,12 @@ public class MerchantHome extends AppCompatActivity {
 
     private void showBackBtn() {
         ivBack.setVisibility(View.VISIBLE);
+        llBack.setVisibility(View.VISIBLE);
     }
 
     private void hideBackBtn() {
         ivBack.setVisibility(View.GONE);
+        llBack.setVisibility(View.GONE);
     }
 
     private void setListeners() {

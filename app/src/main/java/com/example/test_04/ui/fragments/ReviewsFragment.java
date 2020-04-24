@@ -1,6 +1,7 @@
 package com.example.test_04.ui.fragments;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -119,7 +120,7 @@ public class ReviewsFragment extends Fragment {
     }
 
     private void setUpReviewsRecycler() {
-        adapter = new ReviewsAdapter(productReviews, getFragmentManager(), (CustomerHome) getActivity());
+        adapter = new ReviewsAdapter(productReviews, getFragmentManager(), customerHome);
         rvReviews.setLayoutManager(new LinearLayoutManager(getContext()));
         rvReviews.setAdapter(adapter);
     }

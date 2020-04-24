@@ -17,4 +17,5 @@
     <color name="lightest_darkest">#f0f6f7</color>
     <color name="darker_darkest">#0b1d21</color>
     <color name="dark_red">#b93c1f</color>
+    <color name="semi_trans_black">#11000000</color>
 </resources>

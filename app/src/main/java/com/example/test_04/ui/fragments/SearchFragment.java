@@ -91,12 +91,11 @@ public class SearchFragment extends Fragment {
         if (filters.isEmpty())
             setUpFilters();
         setUpFilterRecycler();
-        if (merchants.isEmpty())
-            getMerchants();
-        else if (!productReviews.isEmpty() && filterAdapter.getSelectedFilter() != 0) {
+
+        if (!productReviews.isEmpty() && filterAdapter.getSelectedFilter() != 0) {
             setUpReviewsRecycler();
-        } else {
-            setUpMerchantsRecycler();
+        }else if (filterAdapter.getSelectedFilter() == 0) {
+            getMerchants();
         }
     }
 
@@ -131,7 +130,12 @@ public class SearchFragment extends Fragment {
 
     public void getMerchants() {
 
+        if (progressDialog != null)
+            progressDialog.dismiss();
+
         showProgressDialog("Loading Search Results");
+
+        merchants.clear();
 
         db.collection("Merchants")
                 .get()
@@ -154,6 +158,7 @@ public class SearchFragment extends Fragment {
 
                         } else {
                             Toast.makeText(customerHome, "Failed to load search results", Toast.LENGTH_SHORT).show();
+                            progressDialog.dismiss();
                         }
                     }
                 });
@@ -167,10 +172,10 @@ public class SearchFragment extends Fragment {
     }
 
     public void setUpMerchantsRecycler() {
+        progressDialog.dismiss();
         ResultAdapter resultsAdapter = new ResultAdapter(customerHome, merchants);
         rvResults.setLayoutManager(new LinearLayoutManager(getContext()));
         rvResults.setAdapter(resultsAdapter);
-        progressDialog.dismiss();
     }
 
     private void setUpFilters() {

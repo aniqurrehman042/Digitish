@@ -50,7 +50,19 @@ public class MessagesFragment extends Fragment {
         vpMain.setAdapter(pagerAdapter);
         tlTabs.setupWithViewPager(vpMain);
 
+        checkArguments();
+
         return view;
+    }
+
+    private void checkArguments() {
+        if (getArguments() != null) {
+            boolean review = getArguments().getBoolean("Review");
+            if (!review) {
+                vpMain.setCurrentItem(1);
+            }
+            setArguments(null);
+        }
     }
 
     @Override

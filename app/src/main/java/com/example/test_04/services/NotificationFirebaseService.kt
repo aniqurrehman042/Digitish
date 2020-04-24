@@ -34,7 +34,7 @@ class NotificationFirebaseService : FirebaseMessagingService() {
         val receiverMerchant: Boolean = p0.data["Merchant"]!!.toBoolean()
         val receiverNameOrEmail = p0.data["Receiver Name Or Email"]
         val senderNameOrEmail = p0.data["Sender Name Or Email"]
-        val review = p0.data["Review"]
+        val review: Boolean = p0.data["Review"]!!.toBoolean()
         val title: String = p0.data["title"].toString()
         val message: String = p0.data["message"].toString()
 

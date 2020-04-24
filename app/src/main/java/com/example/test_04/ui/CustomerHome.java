@@ -169,10 +169,12 @@ public class CustomerHome extends AppCompatActivity {
 
     public void showBackBtn() {
         ivBack.setVisibility(View.VISIBLE);
+        llBack.setVisibility(View.VISIBLE);
     }
 
     public void hideBackBtn() {
         ivBack.setVisibility(View.GONE);
+        llBack.setVisibility(View.GONE);
     }
 
     public void hideSearchIcons() {
@@ -190,12 +192,14 @@ public class CustomerHome extends AppCompatActivity {
     public void onProfileResume() {
         setPageTitle("Profile");
         ivBack.setVisibility(View.VISIBLE);
+        llBack.setVisibility(View.VISIBLE);
         llSearchIcons.setVisibility(View.VISIBLE);
         llBarSearch.setVisibility(View.GONE);
     }
 
     public void onProfilePause() {
         ivBack.setVisibility(View.GONE);
+        llBack.setVisibility(View.GONE);
         llSearchIcons.setVisibility(View.GONE);
         llBarSearch.setVisibility(View.VISIBLE);
     }
@@ -265,6 +269,7 @@ public class CustomerHome extends AppCompatActivity {
 
     public void onChatResume(Merchant merchant) {
         ivBack.setVisibility(View.VISIBLE);
+        llBack.setVisibility(View.VISIBLE);
         llSearchIcons.setVisibility(View.VISIBLE);
         llCall.setVisibility(View.GONE);
         llBarSearch.setVisibility(View.GONE);
@@ -281,6 +286,7 @@ public class CustomerHome extends AppCompatActivity {
 
     public void onChatPause() {
         ivBack.setVisibility(View.GONE);
+        llBack.setVisibility(View.GONE);
         llSearchIcons.setVisibility(View.GONE);
         llCall.setVisibility(View.GONE);
         llBarSearch.setVisibility(View.VISIBLE);
@@ -317,7 +323,14 @@ public class CustomerHome extends AppCompatActivity {
     private void checkNotificationIntent() {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            startFragment(fragments.get(1));
+            boolean review = extras.getBoolean("Review");
+            if (review) {
+                Bundle arguments = new Bundle();
+                arguments.putBoolean("Review", true);
+                fragments.get(1).setArguments(arguments);
+                startFragment(fragments.get(1));
+            } else
+                startFragment(fragments.get(1));
         }
     }
 
@@ -520,7 +533,8 @@ public class CustomerHome extends AppCompatActivity {
     private void setFirstRunArguments(Fragment fragment) {
         Bundle arguments = new Bundle();
         arguments.putBoolean("First Run", true);
-        fragment.setArguments(arguments);
+        if (fragment.getArguments() == null)
+            fragment.setArguments(arguments);
     }
 
     private void resetIcon() {
