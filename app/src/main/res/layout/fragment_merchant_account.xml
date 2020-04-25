@@ -275,6 +275,20 @@
 
         </androidx.cardview.widget.CardView>
 
+        <Button
+            android:id="@+id/btn_create_offer"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_35sdp"
+            android:text="CREATE AN OFFER"
+            android:textSize="@dimen/text_normal"
+            android:background="@drawable/bg_btn_darkest"
+            android:textColor="@color/white"
+            android:layout_marginRight="@dimen/_14sdp"
+            android:layout_marginBottom="@dimen/margin_normal"
+            android:paddingHorizontal="@dimen/padding_normal"
+            android:layout_marginTop="@dimen/margin_tiny"
+            android:layout_gravity="right"/>
+
     </LinearLayout>
 
 </LinearLayout>

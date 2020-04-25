@@ -5,6 +5,7 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.media.RingtoneManager
@@ -13,8 +14,10 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import com.example.test_04.R
+import com.example.test_04.db_callbacks.IIsOldCustomer
 import com.example.test_04.ui.CustomerHome
 import com.example.test_04.ui.MerchantHome
+import com.example.test_04.utils.DBUtils
 import com.example.test_04.utils.PreferencesUtils
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingService
@@ -73,27 +76,50 @@ class NotificationFirebaseService : FirebaseMessagingService() {
             val myMerchantName = PreferencesUtils.getMerchantDetail(this, "Merchant Name")
             receiverNameOrEmail == myMerchantName
         } else {
-            val myCustomerName = PreferencesUtils.getCustomerDetail(this, "Email")
-            receiverNameOrEmail == myCustomerName
+            val myCustomerEmail = PreferencesUtils.getCustomerDetail(this, "Email")
+            receiverNameOrEmail == myCustomerEmail
         }
 
         if (isMe) {
-            val notificationSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
-            val notificationBuilder = NotificationCompat.Builder(this, ADMIN_CHANNEL_ID)
-                    .setSmallIcon(R.drawable.digitish_round)
-                    .setLargeIcon(largeIcon)
-                    .setContentTitle(title)
-                    .setContentText(message)
-                    .setAutoCancel(true)
-                    .setSound(notificationSoundUri)
-                    .setContentIntent(pendingIntent)
-
-            //Set notification color to match your app color template
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                notificationBuilder.color = resources.getColor(R.color.darkest)
-            }
-            notificationManager.notify(notificationID, notificationBuilder.build())
+            sendNotification(largeIcon, title, message, pendingIntent, notificationManager, notificationID)
         }
+
+        when (receiverNameOrEmail) {
+            "General Audience" -> {
+                sendNotification(largeIcon, title, message, pendingIntent, notificationManager, notificationID)
+            }
+
+            "Old Customers" -> {
+                val myCustomerEmail = PreferencesUtils.getCustomerDetail(this, "Email")
+                if (myCustomerEmail != null && myCustomerEmail.isNotEmpty()) {
+                    DBUtils.isOldCustomer(myCustomerEmail, senderNameOrEmail, object : IIsOldCustomer {
+                        override fun onCallback(successful: Boolean, oldCustomer: Boolean) {
+                            if (successful && oldCustomer) {
+                                sendNotification(largeIcon, title, message, pendingIntent, notificationManager, notificationID)
+                            }
+                        }
+                    })
+                }
+            }
+        }
+    }
+
+    private fun sendNotification(largeIcon: Bitmap, title: String, message: String, pendingIntent: PendingIntent, notificationManager: NotificationManager, notificationID: Int) {
+        val notificationSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+        val notificationBuilder = NotificationCompat.Builder(this, ADMIN_CHANNEL_ID)
+                .setSmallIcon(R.drawable.digitish_round)
+                .setLargeIcon(largeIcon)
+                .setContentTitle(title)
+                .setContentText(message)
+                .setAutoCancel(true)
+                .setSound(notificationSoundUri)
+                .setContentIntent(pendingIntent)
+
+        //Set notification color to match your app color template
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            notificationBuilder.color = resources.getColor(R.color.darkest)
+        }
+        notificationManager.notify(notificationID, notificationBuilder.build())
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

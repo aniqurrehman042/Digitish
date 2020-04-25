@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding_normal"
+        android:background="@color/darkest"
+        android:gravity="center_vertical">
+        
+        <ImageView
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:src="@drawable/ic_offer"
+            android:tint="@color/white" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_medium"
+            android:text="Create an offer"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_title"
+            android:visibility="visible"
+            android:layout_marginLeft="@dimen/margin_tiny"/>
+        
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="@dimen/_30sdp"
+        android:layout_marginTop="@dimen/margin_normal"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Offer Title"
+            android:textSize="@dimen/text_sub_normal"
+            android:textColor="@color/dark_grey"/>
+
+        <EditText
+            android:id="@+id/et_offer_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:maxLength="50"
+            android:lines="1"
+            android:inputType="textCapSentences"
+            android:layout_marginLeft="-4dp"
+            android:layout_marginRight="-4dp"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right">
+
+            <TextView
+                android:id="@+id/tv_title_len"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="@dimen/text_sub_normal"
+                android:textColor="@color/dark_grey"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" / 50"
+                android:textSize="@dimen/text_sub_normal"
+                android:textColor="@color/dark_grey"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Description"
+            android:textSize="@dimen/text_sub_normal"
+            android:textColor="@color/dark_grey"/>
+
+        <EditText
+            android:id="@+id/et_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top"
+            android:maxLines="3"
+            android:maxLength="120"
+            android:lines="3"
+            android:layout_marginLeft="-4dp"
+            android:layout_marginRight="-4dp"
+            android:inputType="textMultiLine"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right">
+
+            <TextView
+                android:id="@+id/tv_desc_len"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="@dimen/text_sub_normal"
+                android:textColor="@color/dark_grey"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" / 120"
+                android:textSize="@dimen/text_sub_normal"
+                android:textColor="@color/dark_grey"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select Audience"
+            android:textSize="@dimen/text_sub_normal"
+            android:textColor="@color/dark_grey"/>
+        
+        <Spinner
+            android:id="@+id/spn_audience"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_spinner_grey"
+            android:layout_marginTop="@dimen/margin_tiny"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/et_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="mm/dd/yyyy"
+                android:textSize="@dimen/text_normal"
+                android:background="@drawable/bg_round_bordered_darkest"
+                android:paddingHorizontal="@dimen/padding_normal"
+                android:paddingVertical="@dimen/padding_large"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="@dimen/margin_large"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Valid Till"
+                android:textSize="@dimen/text_sub_normal"
+                android:textColor="@color/dark_grey"
+                app:layout_constraintLeft_toLeftOf="@id/et_date"
+                app:layout_constraintTop_toTopOf="@id/et_date"
+                app:layout_constraintBottom_toTopOf="@id/et_date"
+                android:layout_marginLeft="@dimen/margin_small"
+                android:background="@color/white"
+                android:inputType="date" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:layout_marginTop="@dimen/margin_small"
+            android:paddingVertical="@dimen/padding_large">
+
+            <TextView
+                android:id="@+id/tv_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CANCEL"
+                android:textColor="@color/dark_grey"
+                android:layout_marginRight="@dimen/margin_normal"
+                android:textSize="@dimen/text_sub_normal"/>
+
+            <TextView
+                android:id="@+id/tv_send"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SEND"
+                android:textColor="@color/darkest"
+                android:textSize="@dimen/text_sub_normal"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

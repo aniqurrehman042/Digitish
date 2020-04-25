@@ -15,11 +15,14 @@ import com.example.test_04.R;
 import com.example.test_04.adapters.MerchantNotificationsAdapter;
 import com.example.test_04.comparators.DateComparator;
 import com.example.test_04.db_callbacks.IGetMerchantReviews;
+import com.example.test_04.db_callbacks.IGetOffers;
 import com.example.test_04.db_callbacks.IGetProductReviewChats;
 import com.example.test_04.db_callbacks.IGetProductReviews;
+import com.example.test_04.db_callbacks.IIsOldCustomer;
 import com.example.test_04.models.CurrentCustomer;
 import com.example.test_04.models.CustomerNotification;
 import com.example.test_04.models.MerchantReview;
+import com.example.test_04.models.Offer;
 import com.example.test_04.models.ProductReview;
 import com.example.test_04.models.ProductReviewChat;
 import com.example.test_04.ui.CustomerHome;
@@ -43,6 +46,7 @@ public class NotificationsFragment extends Fragment {
     private ArrayList<CustomerNotification> customerNotificationsHolder = new ArrayList<>();
     private ArrayList<DateComparator> customerNotificationsData = new ArrayList<>();
     private int done = 0;
+    private int offerDone = 0;
 
     public NotificationsFragment() {
         // Required empty public constructor
@@ -124,11 +128,91 @@ public class NotificationsFragment extends Fragment {
                 checkAndSetRecycler();
             }
         });
+
+        DBUtils.getOffers(new IGetOffers() {
+            @Override
+            public void onCallback(boolean successful, @NotNull ArrayList<Offer> offers) {
+                if (successful) {
+                    addValidOffers(offers);
+                } else {
+                    Toast.makeText(getContext(), "Couldn't load notifications", Toast.LENGTH_SHORT).show();
+                    checkAndSetRecycler();
+                }
+            }
+        });
+    }
+
+    private void addValidOffers(final ArrayList<Offer> offers) {
+        final boolean[] abansCustomer = {false};
+        final boolean[] singerCustomer = {false};
+        final boolean[] softlogicCustomer = {false};
+
+        offerDone = 0;
+
+        DBUtils.isOldCustomer(CurrentCustomer.email, "Abans", new IIsOldCustomer() {
+            @Override
+            public void onCallback(boolean successful, boolean oldCustomer) {
+                if (successful && oldCustomer)
+                    abansCustomer[0] = true;
+                checkAndAddOffers(offers, abansCustomer, singerCustomer, softlogicCustomer);
+            }
+        });
+
+        DBUtils.isOldCustomer(CurrentCustomer.email, "Singer", new IIsOldCustomer() {
+            @Override
+            public void onCallback(boolean successful, boolean oldCustomer) {
+                if (successful && oldCustomer)
+                    singerCustomer[0] = true;
+                checkAndAddOffers(offers, abansCustomer, singerCustomer, softlogicCustomer);
+            }
+        });
+
+        DBUtils.isOldCustomer(CurrentCustomer.email, "Softlogic Holdings PLC", new IIsOldCustomer() {
+            @Override
+            public void onCallback(boolean successful, boolean oldCustomer) {
+                if (successful && oldCustomer)
+                    softlogicCustomer[0] = true;
+                checkAndAddOffers(offers, abansCustomer, singerCustomer, softlogicCustomer);
+            }
+        });
+    }
+
+    private void checkAndAddOffers(ArrayList<Offer> offers, boolean[] abansCustomer, boolean[] singerCustomer, boolean[] softlogicCustomer) {
+        offerDone++;
+        if (offerDone > 2) {
+            for (Offer offer : offers) {
+                if (offer.getGeneralAudience()) {
+                    customerNotificationsData.add(offer);
+                } else {
+                    switch (offer.getMerchantName()) {
+                        case "Abans":
+                            if (abansCustomer[0]) {
+                                customerNotificationsData.add(offer);
+                            }
+                            break;
+
+                        case "Singer":
+                            if (singerCustomer[0]) {
+                                customerNotificationsData.add(offer);
+                            }
+                            break;
+
+                        case "Softlogic Holdings PLC":
+                            if (softlogicCustomer[0]) {
+                                customerNotificationsData.add(offer);
+                            }
+                            break;
+                    }
+                }
+            }
+
+            checkAndSetRecycler();
+        }
     }
 
     private void checkAndSetRecycler() {
         done++;
-        if (done > 2) {
+        if (done > 3) {
             Collections.sort(customerNotificationsData, Collections.<DateComparator>reverseOrder());
             addHolderFromData();
             setUpNotificationsRecycler();
@@ -157,6 +241,10 @@ public class NotificationsFragment extends Fragment {
                 ProductReviewChat productReviewChat = (ProductReviewChat) dateComparator;
                 title = "Re:Review";
                 message = productReviewChat.getMerchantName() + " has replied to your review for " + productReviewChat.getProductName();
+            } else if (type.equals("Offer")) {
+                Offer offer = (Offer) dateComparator;
+                title = offer.getOfferTitle();
+                message = "You've received an offer from " + offer.getMerchantName();
             }
 
             customerNotificationsHolder.add(new CustomerNotification(customerName, title, message, type, date));

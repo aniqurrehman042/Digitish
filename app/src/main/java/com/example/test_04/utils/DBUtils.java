@@ -2,6 +2,7 @@ package com.example.test_04.utils;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -9,9 +10,11 @@ import androidx.annotation.NonNull;
 import com.example.test_04.db_callbacks.GetMerchantCallback;
 import com.example.test_04.db_callbacks.GetRatingsCallback;
 import com.example.test_04.db_callbacks.IGetMerchantReviews;
+import com.example.test_04.db_callbacks.IGetOffers;
 import com.example.test_04.db_callbacks.IGetProductReview;
 import com.example.test_04.db_callbacks.IGetProductReviewChats;
 import com.example.test_04.db_callbacks.IGetProductReviews;
+import com.example.test_04.db_callbacks.IIsOldCustomer;
 import com.example.test_04.db_callbacks.IUploadMerchantRating;
 import com.example.test_04.db_callbacks.IUploadQrScan;
 import com.example.test_04.db_callbacks.IsQRExpiredCallback;
@@ -19,6 +22,7 @@ import com.example.test_04.db_callbacks.UpdatePointsCallback;
 import com.example.test_04.models.CurrentCustomer;
 import com.example.test_04.models.Merchant;
 import com.example.test_04.models.MerchantReview;
+import com.example.test_04.models.Offer;
 import com.example.test_04.models.Product;
 import com.example.test_04.models.ProductReview;
 import com.example.test_04.models.ProductReviewChat;
@@ -514,6 +518,63 @@ public class DBUtils {
                             callback.onCallback(true, productReviewChats);
                         } else {
                             callback.onCallback(false, productReviewChats);
+                        }
+                    }
+                });
+
+    }
+
+    public static void isOldCustomer(final String customerEmail, final String merchantName, final IIsOldCustomer callback) {
+        db.collection("Product Reviews")
+                .whereEqualTo("Customer Email", customerEmail)
+                .whereEqualTo("Merchant Name", merchantName)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            List<DocumentSnapshot> documentSnapshots = task.getResult().getDocuments();
+                            if (documentSnapshots.size() > 0) {
+                                callback.onCallback(true, true);
+                            } else {
+                                callback.onCallback(true, false);
+                            }
+                        } else {
+                            callback.onCallback(false, false);
+                        }
+                    }
+                });
+    }
+
+    public static void getOffers(final IGetOffers callback) {
+
+        final ArrayList<Offer> offers = new ArrayList<>();
+
+        db.collection("Offers")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            List<DocumentSnapshot> documentSnapshots = task.getResult().getDocuments();
+                            for (DocumentSnapshot documentSnapshot : documentSnapshots) {
+
+                                String offerTitle = documentSnapshot.getString("Offer Title");
+                                String offerDesc = documentSnapshot.getString("Offer Description");
+                                String merchantName = documentSnapshot.getString("Merchant Name");
+                                boolean generalAudience = documentSnapshot.getBoolean("General Audience");
+                                Date validTillDate = documentSnapshot.getTimestamp("Valid Till").toDate();
+                                Date creationDateObj = documentSnapshot.getTimestamp("Date").toDate();
+                                String validTill = DateUtils.dateToStringWithTime(validTillDate);
+                                String creatingDate = DateUtils.dateToStringWithTime(creationDateObj);
+
+                                Offer offer = new Offer(offerTitle, offerDesc, merchantName, generalAudience, validTill, creatingDate);
+                                offers.add(offer);
+                            }
+
+                            callback.onCallback(true, offers);
+                        } else {
+                            callback.onCallback(false, offers);
                         }
                     }
                 });

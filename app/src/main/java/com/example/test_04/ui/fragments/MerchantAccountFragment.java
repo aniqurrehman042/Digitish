@@ -1,5 +1,6 @@
 package com.example.test_04.ui.fragments;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -7,26 +8,36 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.test_04.R;
 import com.example.test_04.models.CurrentMerchant;
 import com.example.test_04.ui.MerchantHome;
+import com.example.test_04.utils.DateUtils;
+import com.example.test_04.utils.FCMUtils;
 import com.example.test_04.utils.ReviewUtils;
 import com.example.test_04.utils.StringUtils;
 import com.example.test_04.utils.SwitchUtils;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -49,6 +60,7 @@ public class MerchantAccountFragment extends Fragment {
     private String merchantDesc = "";
     private String products = "";
     private ReviewUtils reviewUtils;
+    private Dialog dialog;
 
     private RoundedImageView rivMerchantLogo;
     private TextView tvMerchantName;
@@ -62,6 +74,7 @@ public class MerchantAccountFragment extends Fragment {
     private LinearLayout llProducts;
     private TextView tvDoneMerchantDesc;
     private TextView tvDoneProducts;
+    private Button btnCreateOffer;
 
 
     public MerchantAccountFragment() {
@@ -171,6 +184,128 @@ public class MerchantAccountFragment extends Fragment {
                 imm.hideSoftInputFromWindow(etMerchantDesc.getWindowToken(), 0);
             }
         });
+
+        btnCreateOffer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setupOfferDialog();
+            }
+        });
+    }
+
+    private void setupOfferDialog() {
+        dialog = new Dialog(merchantHome);
+        dialog.setContentView(R.layout.layout_create_offer);
+        dialog.show();
+
+        WindowManager.LayoutParams params = new WindowManager.LayoutParams();
+        params.width = WindowManager.LayoutParams.MATCH_PARENT;
+        params.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        dialog.getWindow().setAttributes(params);
+
+        final EditText etOfferTitle = dialog.findViewById(R.id.et_offer_title);
+        final EditText etDesc = dialog.findViewById(R.id.et_desc);
+        EditText etDate = dialog.findViewById(R.id.et_date);
+        Spinner spnAudience = dialog.findViewById(R.id.spn_audience);
+        TextView tvSend = dialog.findViewById(R.id.tv_send);
+        TextView tvCancel = dialog.findViewById(R.id.tv_cancel);
+        final TextView tvTitleLen = dialog.findViewById(R.id.tv_title_len);
+        final TextView tvDescLen = dialog.findViewById(R.id.tv_desc_len);
+
+        setOfferDialogListeners(etOfferTitle, etDesc, tvTitleLen, tvDescLen, tvSend, tvCancel, etDate, spnAudience);
+        setSpinnerAdapter(spnAudience);
+
+    }
+
+    private void setSpinnerAdapter(Spinner spnAudience) {
+        String[] audiences = {"General Audience", "Old Customers"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(merchantHome, R.layout.layout_offer_spinner_textview, audiences);
+        spnAudience.setAdapter(adapter);
+    }
+
+    private void setOfferDialogListeners(final EditText etOfferTitle, final EditText etDesc, final TextView tvTitleLen, final TextView tvDescLen, TextView tvSend, TextView tvCancel, final EditText etDate, final Spinner spnAudience) {
+        etOfferTitle.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                tvTitleLen.setText(String.valueOf(etOfferTitle.getText().toString().length()));
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        etDesc.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                tvDescLen.setText(String.valueOf(etDesc.getText().toString().length()));
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        tvSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String title = etOfferTitle.getText().toString();
+                String desc = etDesc.getText().toString();
+                String date = etDate.getText().toString();
+                String audience = spnAudience.getSelectedItem().toString();
+
+                uploadOfferAndSendNotification(title, desc, date, audience);
+                dialog.dismiss();
+            }
+        });
+
+        tvCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+    }
+
+    private void uploadOfferAndSendNotification(final String title, String desc, String date, final String audience) {
+
+        boolean generalAudience = true;
+
+        if (audience.equals("Old Customers"))
+            generalAudience = false;
+
+        Map<String, Object> offerData = new HashMap<>();
+        offerData.put("Offer Title", title);
+        offerData.put("Offer Description", desc);
+        offerData.put("Valid Till", DateUtils.stringToOfferDate(date));
+        offerData.put("Date", Timestamp.now());
+        offerData.put("General Audience", generalAudience);
+        offerData.put("Merchant Name", CurrentMerchant.name);
+
+        db.collection("Offers")
+                .add(offerData)
+                .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentReference> task) {
+                        if (task.isSuccessful())
+                            FCMUtils.Companion.sendMessage(merchantHome, true, false, title, "You have received an offer from " + CurrentMerchant.name, audience, CurrentMerchant.name);
+                        else
+                            Toast.makeText(merchantHome, "Couldn't send offer", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
     }
 
     private void updateMerchant(final String key, final String value) {
@@ -312,6 +447,7 @@ public class MerchantAccountFragment extends Fragment {
         llProducts = view.findViewById(R.id.ll_products);
         tvDoneMerchantDesc = view.findViewById(R.id.tv_done_merchant_desc);
         tvDoneProducts = view.findViewById(R.id.tv_done_products);
+        btnCreateOffer = view.findViewById(R.id.btn_create_offer);
 
     }
 

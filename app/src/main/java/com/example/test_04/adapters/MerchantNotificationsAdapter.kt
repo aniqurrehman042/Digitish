@@ -1,8 +1,10 @@
 package com.example.test_04.adapters
 
+import android.app.AlertDialog
 import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -148,6 +150,24 @@ class MerchantNotificationsAdapter(var customerNotificationsHolder: ArrayList<Cu
 
                 holder.llMain.setOnClickListener {
                     getProductReviewChat(productReview)
+                }
+            }
+
+            "Offer" -> {
+
+                val offer: Offer = customerNotificationData as Offer
+
+                ivNotificationImg.setImageResource(R.drawable.ic_offer)
+
+                holder.llMain.setOnClickListener {
+                    val alertDialogBuilder: AlertDialog.Builder = AlertDialog.Builder(context)
+                    alertDialogBuilder
+                            .setTitle(offer.offerTitle)
+                            .setMessage(offer.offerDesc)
+                            .setPositiveButton("OK") { _, _ ->
+
+                            }
+                            .show()
                 }
             }
         }

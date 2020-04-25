@@ -36,6 +36,18 @@ public class DateUtils {
         return date;
     }
 
+    public static Date stringToOfferDate(String dateString) {
+        Date date = null;
+        SimpleDateFormat format = new SimpleDateFormat("MM/dd/yy", Locale.US);
+        try {
+            date = format.parse(dateString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return date;
+    }
+
     public static String dateToStringWithTime(Date date) {
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yy - hh:mm a", Locale.US);
         return format.format(date);
@@ -43,6 +55,11 @@ public class DateUtils {
 
     public static String dateToString(Date date) {
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yy", Locale.US);
+        return format.format(date);
+    }
+
+    public static String dateToOfferString(Date date) {
+        SimpleDateFormat format = new SimpleDateFormat("MM/dd/yy", Locale.US);
         return format.format(date);
     }
 
