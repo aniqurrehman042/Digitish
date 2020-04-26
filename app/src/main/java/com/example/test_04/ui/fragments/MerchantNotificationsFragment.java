@@ -91,7 +91,7 @@ public class MerchantNotificationsFragment extends Fragment {
         if (progressDialog != null)
             progressDialog.dismiss();
 
-        showProgressDialog("Loading notifications");
+        showProgressDialog("Loading Notifications");
 
         DBUtils.getMerchantProductReviews(CurrentMerchant.name, new IGetProductReviews() {
             @Override
@@ -201,7 +201,7 @@ public class MerchantNotificationsFragment extends Fragment {
         if (progressDialog != null)
             progressDialog.dismiss();
 
-        showProgressDialog("Loading notifications");
+        showProgressDialog("Loading Notifications");
 
         DBUtils.getMerchantProductReviews(CurrentMerchant.name, new IGetProductReviews() {
             @Override

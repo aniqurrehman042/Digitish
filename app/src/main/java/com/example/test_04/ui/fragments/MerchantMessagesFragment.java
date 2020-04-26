@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,7 +25,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -89,11 +92,6 @@ public class MerchantMessagesFragment extends Fragment {
     }
 
     private void setRecyclerAdapter(String email) {
-        final ArrayList<Chat> chats = new ArrayList<>();
-        final Set<String> customerEmails = new HashSet<>();
-        final ArrayList<ArrayList<Chat>> chatsWithEachCustomer = new ArrayList<>();
-        final ArrayList<ArrayList<Date>> chatsWithEachCustomerDates = new ArrayList<>();
-        chatsWithLastMsg.clear();
 
         if (chatLoading)
             return;
@@ -102,22 +100,31 @@ public class MerchantMessagesFragment extends Fragment {
 
         progressDialog = new ProgressDialog(merchantHome);
         progressDialog.setCancelable(false);
-        progressDialog.setTitle("Loading chat");
+        progressDialog.setTitle("Loading Chat");
         progressDialog.show();
 
         db.collection("Chat")
                 .whereEqualTo("Merchant Email", email)
                 .orderBy("Date", Query.Direction.DESCENDING)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            if (task.getResult().getDocuments().size() > 0) {
+                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                        if (queryDocumentSnapshots != null) {
+                            if (queryDocumentSnapshots.getDocuments().size() > 0) {
+
+                                final ArrayList<Chat> chats = new ArrayList<>();
+                                final Set<String> customerEmails = new HashSet<>();
+                                final ArrayList<ArrayList<Chat>> chatsWithEachCustomer = new ArrayList<>();
+                                final ArrayList<ArrayList<Date>> chatsWithEachCustomerDates = new ArrayList<>();
+                                chats.clear();
+                                customerEmails.clear();
+                                chatsWithEachCustomer.clear();
+                                chatsWithEachCustomerDates.clear();
+                                chatsWithLastMsg.clear();
 
                                 llMessages.setVisibility(View.VISIBLE);
 
-                                for (DocumentSnapshot chat : task.getResult().getDocuments()) {
+                                for (DocumentSnapshot chat : queryDocumentSnapshots.getDocuments()) {
                                     Timestamp timestamp = (Timestamp) chat.get("Date");
                                     Date dateObj = timestamp.toDate();
                                     String date = DateUtils.dateToStringWithTime(dateObj);

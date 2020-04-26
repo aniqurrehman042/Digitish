@@ -57,7 +57,7 @@ public class AccountFragment extends Fragment {
         products.add(new Product(null, "Washing Machine", "Washing Machines", null));
         products.add(new Product(null, "TV", "Televisions", null));
         products.add(new Product(null, "Microwave", "Microwaves", null));
-        products.add(new Product(null, "TV", "Televisions", null));
+        products.add(new Product(null, "Smart TV", "Televisions1", null));
         products.add(new Product(null, "Refrigerator", "Refrigerators", null));
         SuggestionsAdapter adapter = new SuggestionsAdapter(getContext(), products);
         LinearLayoutManager lm = new LinearLayoutManager(getContext());

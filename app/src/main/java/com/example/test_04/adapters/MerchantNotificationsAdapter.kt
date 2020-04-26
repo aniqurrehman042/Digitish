@@ -182,7 +182,7 @@ class MerchantNotificationsAdapter(var customerNotificationsHolder: ArrayList<Cu
         toBeDone = 1
         var productReviewToPass: ProductReview = productReview
 
-        showProgressDialog("Loading review")
+        showProgressDialog("Loading Review")
 
         if (productReview.productName.isEmpty()) {
             toBeDone = 2

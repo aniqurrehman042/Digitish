@@ -87,7 +87,7 @@ public class MerchantDashboardFragment extends Fragment {
         if (progressDialog != null)
             progressDialog.dismiss();
 
-        showProgressDialog("Loading products");
+        showProgressDialog("Loading Products");
 
         final int[] products = new int[4];
         products[0] = 0;

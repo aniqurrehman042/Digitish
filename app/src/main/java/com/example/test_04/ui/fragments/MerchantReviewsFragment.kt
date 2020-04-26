@@ -149,7 +149,7 @@ class MerchantReviewsFragment : Fragment() {
         if (progressDialog != null)
             progressDialog.dismiss()
 
-        showProgressDialog("Loading reviews")
+        showProgressDialog("Loading Reviews")
 
         merchantReviews.clear()
         merchantReviewsHolder.clear()
@@ -202,7 +202,7 @@ class MerchantReviewsFragment : Fragment() {
         if (progressDialog != null)
             progressDialog.dismiss()
 
-        showProgressDialog("Loading reviews")
+        showProgressDialog("Loading Reviews")
 
         var query: Query = db.collection("Product Reviews")
         query = query.whereEqualTo("Reviewed", true)

@@ -101,7 +101,7 @@ public class ReviewsFragment extends Fragment {
         if (progressDialog != null)
             progressDialog.dismiss();
 
-        showProgressDialog("Loading reviews");
+        showProgressDialog("Loading Reviews");
 
         productReviews = new ArrayList<>();
 

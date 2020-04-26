@@ -13,6 +13,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -86,6 +87,12 @@ public class ProductReviewFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
         getProductAndQrId();
         setListeners();
+        setDoneButtonOnKeyboard();
+    }
+
+    private void setDoneButtonOnKeyboard() {
+        etDesc.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        etTitle.setImeOptions(EditorInfo.IME_ACTION_DONE);
     }
 
     private void setUpRatingSystem(View view) {

@@ -102,7 +102,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ViewHold
     }
 
     private void setUpMerchantReviewSystem() {
-        showProgressDialog("Loading review");
+        showProgressDialog("Loading Review");
 
         doneMerchant = 0;
 
@@ -495,7 +495,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ViewHold
 
     private void getAbansReview(final double averageReviewRating) {
 
-        showProgressDialog("Loading reviews");
+        showProgressDialog("Loading Reviews");
 
         db.collection("Merchant Reviews")
                 .whereEqualTo("Merchant Name", "Abans")
@@ -532,7 +532,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ViewHold
 
     private void getSingerReview(final double averageReviewRating) {
 
-        showProgressDialog("Loading reviews");
+        showProgressDialog("Loading Reviews");
 
         db.collection("Merchant Reviews")
                 .whereEqualTo("Merchant Name", "Singer")
@@ -568,7 +568,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ViewHold
 
     private void getSoftlogicReview(final double averageReviewRating) {
 
-        showProgressDialog("Loading reviews");
+        showProgressDialog("Loading Reviews");
 
         db.collection("Merchant Reviews")
                 .whereEqualTo("Merchant Name", "Softlogic Holdings PLC")
@@ -753,7 +753,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ViewHold
 
         final double averageReviewRating = (responsiveRating + saleServiceRating + agentSupportRating + productInfoRating + valueRating) / 5;
 
-        showProgressDialog("Saving merchant rating");
+        showProgressDialog("Saving Merchant Rating");
 
         final Map<String, Object> merchantReviewData = new HashMap<>();
         merchantReviewData.put("Merchant Name", "Abans");
@@ -810,7 +810,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ViewHold
 
         final double averageReviewRating = (responsiveRating + saleServiceRating + agentSupportRating + productInfoRating + valueRating) / 5;
 
-        showProgressDialog("Saving merchant rating");
+        showProgressDialog("Saving Merchant Rating");
         final Map<String, Object> merchantReviewData = new HashMap<>();
         merchantReviewData.put("Merchant Name", "Singer");
         merchantReviewData.put("Customer Email", CurrentCustomer.email);
@@ -864,7 +864,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ViewHold
 
         final double averageReviewRating = (responsiveRating + saleServiceRating + agentSupportRating + productInfoRating + valueRating) / 5;
 
-        showProgressDialog("Saving merchant rating");
+        showProgressDialog("Saving Merchant Rating");
         final Map<String, Object> merchantReviewData = new HashMap<>();
         merchantReviewData.put("Merchant Name", "Softlogic Holdings PLC");
         merchantReviewData.put("Customer Email", CurrentCustomer.email);
@@ -940,7 +940,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ViewHold
 
         final double[] merchantRating = new double[1];
 
-        showProgressDialog("Updating merchant rating");
+        showProgressDialog("Updating Merchant Rating");
 
         db.collection("Merchant Reviews")
                 .whereEqualTo("Merchant Name", merchantName)

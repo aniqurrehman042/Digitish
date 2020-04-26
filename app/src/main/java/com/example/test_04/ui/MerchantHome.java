@@ -9,10 +9,12 @@ import androidx.fragment.app.FragmentManager;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.example.test_04.R;
@@ -303,24 +305,46 @@ public class MerchantHome extends AppCompatActivity {
         llMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PopupMenu popup = new PopupMenu(MerchantHome.this, llMore);
-                //Inflating the Popup using xml file
-                popup.getMenuInflater()
-                        .inflate(R.menu.menu_logout, popup.getMenu());
+//                PopupMenu popup = new PopupMenu(MerchantHome.this, llMore);
+//                //Inflating the Popup using xml file
+//                popup.getMenuInflater()
+//                        .inflate(R.menu.menu_logout, popup.getMenu());
+//
+//                //registering popup with OnMenuItemClickListener
+//                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+//                    public boolean onMenuItemClick(MenuItem item) {
+//                        switch (item.getItemId()) {
+//                            case R.id.logout:
+//                                FirebaseAuth.getInstance().signOut();
+//                                finish();
+//                        }
+//                        return true;
+//                    }
+//                });
+//
+//                popup.show();
 
-                //registering popup with OnMenuItemClickListener
-                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()) {
-                            case R.id.logout:
-                                FirebaseAuth.getInstance().signOut();
-                                finish();
-                        }
-                        return true;
+                LayoutInflater inflater = (LayoutInflater)
+                        getSystemService(LAYOUT_INFLATER_SERVICE);
+                View popupView = inflater.inflate(R.layout.layout_textview_menu, null);
+
+                int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+                int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+                boolean focusable = true; // lets taps outside the popup also dismiss it
+                final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+                popupWindow.setContentView(popupView);
+                popupWindow.showAsDropDown(v, -50, 0);
+
+                popupView.findViewById(R.id.ll_menu).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        FirebaseAuth.getInstance().signOut();
+                        finish();
+                        popupWindow.dismiss();
                     }
                 });
 
-                popup.show();
+                ((TextView)popupView.findViewById(R.id.tv_menu)).setText("Logout");
             }
         });
 

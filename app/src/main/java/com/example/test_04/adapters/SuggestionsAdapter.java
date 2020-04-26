@@ -39,17 +39,21 @@ public class SuggestionsAdapter extends RecyclerView.Adapter<SuggestionsAdapter.
 
         switch (products.get(position).getProductCategory()) {
             case "Washing Machines":
-            holder.ivProductImg.setImageResource(R.drawable.item1);
+            holder.ivProductImg.setImageResource(R.drawable.item5);
             break;
             case "Televisions":
                 holder.ivProductImg.setImageResource(R.drawable.item2);
                 break;
             case "Microwaves":
-                holder.ivProductImg.setImageResource(R.drawable.item3);
-                break;
-            case "Refrigerators":
                 holder.ivProductImg.setImageResource(R.drawable.item4);
                 break;
+            case "Refrigerators":
+                holder.ivProductImg.setImageResource(R.drawable.item3);
+                break;
+            case "Televisions1":
+                holder.ivProductImg.setImageResource(R.drawable.item1);
+                break;
+
         }
     }
 

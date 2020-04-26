@@ -82,7 +82,7 @@ public class ScanFragment extends Fragment {
                                 if (progressDialog != null)
                                     progressDialog.dismiss();
 
-                                showProgressDialog("Verifying QR code");
+                                showProgressDialog("Verifying QR Code");
                                 DBUtils.isQrScanned(qrCode, new IsQRExpiredCallback() {
                                     @Override
                                     public void onCallback(boolean found, boolean expired, boolean successful, String merchantName) {

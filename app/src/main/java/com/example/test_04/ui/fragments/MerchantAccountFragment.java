@@ -26,6 +26,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
+import android.widget.PopupWindow;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -53,6 +54,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;
+import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -133,44 +135,86 @@ public class MerchantAccountFragment extends Fragment {
         ivMoreDesc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PopupMenu popupMenu = new PopupMenu(merchantHome, ivMoreDesc);
-                popupMenu.inflate(R.menu.menu_edit);
-                popupMenu.show();
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+//                PopupMenu popupMenu = new PopupMenu(merchantHome, ivMoreDesc);
+//                popupMenu.inflate(R.menu.menu_edit);
+//                popupMenu.show();
+//                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+//                    @Override
+//                    public boolean onMenuItemClick(MenuItem item) {
+//
+//                        switch (item.getItemId()) {
+//                            case R.id.edit:
+//                                editField(tvMerchantDesc, etMerchantDesc, llMerchantDesc);
+//                                break;
+//                        }
+//
+//                        return true;
+//                    }
+//                });
+
+                LayoutInflater inflater = (LayoutInflater)
+                        merchantHome.getSystemService(LAYOUT_INFLATER_SERVICE);
+                View popupView = inflater.inflate(R.layout.layout_textview_menu, null);
+
+                int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+                int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+                boolean focusable = true; // lets taps outside the popup also dismiss it
+                final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+                popupWindow.setContentView(popupView);
+                popupWindow.showAsDropDown(v, -50, 0);
+
+                popupView.findViewById(R.id.ll_menu).setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-
-                        switch (item.getItemId()) {
-                            case R.id.edit:
-                                editField(tvMerchantDesc, etMerchantDesc, llMerchantDesc);
-                                break;
-                        }
-
-                        return true;
+                    public void onClick(View v) {
+                        editField(tvMerchantDesc, etMerchantDesc, llMerchantDesc);
+                        popupWindow.dismiss();
                     }
                 });
+
+                ((TextView)popupView.findViewById(R.id.tv_menu)).setText("Edit");
             }
         });
 
         ivMoreProducts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PopupMenu popupMenu = new PopupMenu(merchantHome, ivMoreProducts);
-                popupMenu.inflate(R.menu.menu_edit);
-                popupMenu.show();
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+//                PopupMenu popupMenu = new PopupMenu(merchantHome, ivMoreProducts);
+//                popupMenu.inflate(R.menu.menu_edit);
+//                popupMenu.show();
+//                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+//                    @Override
+//                    public boolean onMenuItemClick(MenuItem item) {
+//
+//                        switch (item.getItemId()) {
+//                            case R.id.edit:
+//                                editField(tvProducts, etProducts, llProducts);
+//                                break;
+//                        }
+//
+//                        return true;
+//                    }
+//                });
+
+                LayoutInflater inflater = (LayoutInflater)
+                        merchantHome.getSystemService(LAYOUT_INFLATER_SERVICE);
+                View popupView = inflater.inflate(R.layout.layout_textview_menu, null);
+
+                int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+                int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+                boolean focusable = true; // lets taps outside the popup also dismiss it
+                final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+                popupWindow.setContentView(popupView);
+                popupWindow.showAsDropDown(v, -50, 0);
+
+                popupView.findViewById(R.id.ll_menu).setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-
-                        switch (item.getItemId()) {
-                            case R.id.edit:
-                                editField(tvProducts, etProducts, llProducts);
-                                break;
-                        }
-
-                        return true;
+                    public void onClick(View v) {
+                        editField(tvProducts, etProducts, llProducts);
+                        popupWindow.dismiss();
                     }
                 });
+
+                ((TextView)popupView.findViewById(R.id.tv_menu)).setText("Edit");
             }
         });
 
@@ -357,7 +401,7 @@ public class MerchantAccountFragment extends Fragment {
         if (progressDialog != null)
             progressDialog.dismiss();
 
-        showProgressDialog("Updating profile");
+        showProgressDialog("Updating Profile");
 
         db.collection("Merchants")
                 .whereEqualTo("Merchant Name", CurrentMerchant.name)
@@ -438,7 +482,7 @@ public class MerchantAccountFragment extends Fragment {
         if (progressDialog != null)
             progressDialog.dismiss();
 
-        showProgressDialog("Loading profile");
+        showProgressDialog("Loading Profile");
 
         db.collection("Merchants")
                 .whereEqualTo("Merchant Name", CurrentMerchant.name)

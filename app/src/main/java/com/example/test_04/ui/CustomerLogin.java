@@ -139,7 +139,10 @@ public class CustomerLogin extends AppCompatActivity {
             // The Task returned from this call is always completed, no need to attach
             // a listener.
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            firebaseAuthWithGoogle(task.getResult());
+            if (task.getResult() != null)
+                firebaseAuthWithGoogle(task.getResult());
+            else
+                Toast.makeText(this, "Couldn't sign in", Toast.LENGTH_SHORT).show();
         }
     }
 

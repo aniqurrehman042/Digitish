@@ -101,24 +101,29 @@ public class InboxFragment extends Fragment {
     }
 
     private void setRecyclerAdapter(String email) {
-        final ArrayList<Chat> chats = new ArrayList<>();
-        final Set<String> merchantEmails = new HashSet<>();
-        final ArrayList<ArrayList<Chat>> chatsWithEachCustomer = new ArrayList<>();
-        final ArrayList<ArrayList<Date>> chatsWithEachCustomerDates = new ArrayList<>();
 
         db.collection("Chat")
                 .whereEqualTo("Customer Email", email)
                 .orderBy("Date", Query.Direction.DESCENDING)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            if (task.getResult().getDocuments().size() > 0) {
+                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                        if (queryDocumentSnapshots != null) {
+                            if (queryDocumentSnapshots.getDocuments().size() > 0) {
+
+                                final ArrayList<Chat> chats = new ArrayList<>();
+                                final Set<String> merchantEmails = new HashSet<>();
+                                final ArrayList<ArrayList<Chat>> chatsWithEachCustomer = new ArrayList<>();
+                                final ArrayList<ArrayList<Date>> chatsWithEachCustomerDates = new ArrayList<>();
+                                chats.clear();
+                                merchantEmails.clear();
+                                chatsWithEachCustomer.clear();
+                                chatsWithEachCustomerDates.clear();
+                                chatsWithLastMsg.clear();
 
                                 llMessages.setVisibility(View.VISIBLE);
 
-                                for (DocumentSnapshot chat : task.getResult().getDocuments()) {
+                                for (DocumentSnapshot chat : queryDocumentSnapshots.getDocuments()) {
                                     Timestamp timestamp = (Timestamp) chat.get("Date");
                                     Date dateObj = timestamp.toDate();
                                     String date = DateUtils.dateToStringWithTime(dateObj);

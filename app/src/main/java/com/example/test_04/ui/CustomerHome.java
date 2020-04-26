@@ -6,12 +6,14 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -75,82 +77,151 @@ public class CustomerHome extends AppCompatActivity {
     private LinearLayout llCall;
     private LinearLayout llBack;
     private LinearLayout llMore;
+    private ConstraintLayout clFragment;
 
     private Bitmap profileBmp;
     private MerchantDetailsFragment merchantDetailsFragment = new MerchantDetailsFragment();
     private View.OnClickListener logoutMenuListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            PopupMenu popup = new PopupMenu(CustomerHome.this, llMore);
-            //Inflating the Popup using xml file
-            popup.getMenuInflater()
-                    .inflate(R.menu.menu_logout, popup.getMenu());
+//            PopupMenu popup = new PopupMenu(CustomerHome.this, llMore);
+//            //Inflating the Popup using xml file
+//            popup.getMenuInflater()
+//                    .inflate(R.menu.menu_logout, popup.getMenu());
+//
+//            //registering popup with OnMenuItemClickListener
+//            popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+//                public boolean onMenuItemClick(MenuItem item) {
+//                    switch (item.getItemId()) {
+//                        case R.id.logout:
+//                            signOut();
+//                            finish();
+//                    }
+//                    return true;
+//                }
+//            });
+//
+//            popup.show();
 
-            //registering popup with OnMenuItemClickListener
-            popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                public boolean onMenuItemClick(MenuItem item) {
-                    switch (item.getItemId()) {
-                        case R.id.logout:
-                            signOut();
-                            finish();
-                    }
-                    return true;
+            LayoutInflater inflater = (LayoutInflater)
+                    getSystemService(LAYOUT_INFLATER_SERVICE);
+            final View popupView = inflater.inflate(R.layout.layout_textview_menu, null);
+
+            int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+            int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+            boolean focusable = true; // lets taps outside the popup also dismiss it
+            final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+            popupWindow.setContentView(popupView);
+            popupWindow.showAsDropDown(v, -50, 0);
+
+            popupView.findViewById(R.id.ll_menu).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    signOut();
+                    finish();
+                    popupWindow.dismiss();
                 }
             });
-
-            popup.show();
         }
     };
 
     private View.OnClickListener showMerchantMenuListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            PopupMenu popup = new PopupMenu(CustomerHome.this, llMore);
-            //Inflating the Popup using xml file
-            popup.getMenuInflater()
-                    .inflate(R.menu.menu_show_merchant, popup.getMenu());
+//            PopupMenu popup = new PopupMenu(CustomerHome.this, llMore);
+//            //Inflating the Popup using xml file
+//            popup.getMenuInflater()
+//                    .inflate(R.menu.menu_show_merchant, popup.getMenu());
+//
+//            //registering popup with OnMenuItemClickListener
+//            popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+//                public boolean onMenuItemClick(MenuItem item) {
+//                    switch (item.getItemId()) {
+//                        case R.id.show_merchant:
+//                            fragmentManager.beginTransaction()
+//                                    .replace(R.id.cl_fragment, merchantDetailsFragment)
+//                                    .addToBackStack("Merchant Details")
+//                                    .commit();
+//                    }
+//                    return true;
+//                }
+//            });
+//
+//            popup.show();
 
-            //registering popup with OnMenuItemClickListener
-            popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                public boolean onMenuItemClick(MenuItem item) {
-                    switch (item.getItemId()) {
-                        case R.id.show_merchant:
-                            fragmentManager.beginTransaction()
+            LayoutInflater inflater = (LayoutInflater)
+                    getSystemService(LAYOUT_INFLATER_SERVICE);
+            View popupView = inflater.inflate(R.layout.layout_textview_menu, null);
+
+            int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+            int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+            boolean focusable = true; // lets taps outside the popup also dismiss it
+            final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+            popupWindow.setContentView(popupView);
+            popupWindow.showAsDropDown(v, -50, 0);
+
+            popupView.findViewById(R.id.ll_menu).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    fragmentManager.beginTransaction()
                                     .replace(R.id.cl_fragment, merchantDetailsFragment)
                                     .addToBackStack("Merchant Details")
                                     .commit();
-                    }
-                    return true;
+                    popupWindow.dismiss();
                 }
             });
 
-            popup.show();
+            ((TextView)popupView.findViewById(R.id.tv_menu)).setText("Show Merchant");
         }
     };
 
     private View.OnClickListener merchantProfileMenuListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            PopupMenu popup = new PopupMenu(CustomerHome.this, llMore);
-            //Inflating the Popup using xml file
-            popup.getMenuInflater()
-                    .inflate(R.menu.menu_merchant_profile, popup.getMenu());
+//            PopupMenu popup = new PopupMenu(CustomerHome.this, llMore);
+//            //Inflating the Popup using xml file
+//            popup.getMenuInflater()
+//                    .inflate(R.menu.menu_merchant_profile, popup.getMenu());
+//
+//            //registering popup with OnMenuItemClickListener
+//            popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+//                public boolean onMenuItemClick(MenuItem item) {
+//                    switch (item.getItemId()) {
+//                        case R.id.profile:
+//                            fragmentManager.beginTransaction()
+//                                    .replace(R.id.cl_fragment, merchantDetailsFragment)
+//                                    .addToBackStack("Merchant Details")
+//                                    .commit();
+//                    }
+//                    return true;
+//                }
+//            });
+//
+//            popup.show();
 
-            //registering popup with OnMenuItemClickListener
-            popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                public boolean onMenuItemClick(MenuItem item) {
-                    switch (item.getItemId()) {
-                        case R.id.profile:
-                            fragmentManager.beginTransaction()
-                                    .replace(R.id.cl_fragment, merchantDetailsFragment)
-                                    .addToBackStack("Merchant Details")
-                                    .commit();
-                    }
-                    return true;
+            LayoutInflater inflater = (LayoutInflater)
+                    getSystemService(LAYOUT_INFLATER_SERVICE);
+            View popupView = inflater.inflate(R.layout.layout_textview_menu, null);
+
+            int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+            int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+            boolean focusable = true; // lets taps outside the popup also dismiss it
+            final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+            popupWindow.setContentView(popupView);
+            popupWindow.showAsDropDown(v, -50, 0);
+
+            popupView.findViewById(R.id.ll_menu).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.cl_fragment, merchantDetailsFragment)
+                            .addToBackStack("Merchant Details")
+                            .commit();
+                    popupWindow.dismiss();
                 }
             });
 
-            popup.show();
+            ((TextView)popupView.findViewById(R.id.tv_menu)).setText("Profile");
         }
     };
 
@@ -517,11 +588,11 @@ public class CustomerHome extends AppCompatActivity {
 
         try {
 //            if (!currentFragment.equals(lastFragment)) {
-                reduceFragmentStack();
-                fragmentManager
-                        .beginTransaction()
-                        .replace(R.id.cl_fragment, fragment, currentFragment)
-                        .commitNow();
+            reduceFragmentStack();
+            fragmentManager
+                    .beginTransaction()
+                    .replace(R.id.cl_fragment, fragment, currentFragment)
+                    .commitNow();
 //            }
         } catch (Exception e) {
             e.printStackTrace();
@@ -627,6 +698,7 @@ public class CustomerHome extends AppCompatActivity {
         llCall = findViewById(R.id.ll_call);
         llMore = findViewById(R.id.ll_more);
         llBack = findViewById(R.id.ll_back);
+        clFragment = findViewById(R.id.cl_fragment);
     }
 
     @Override

@@ -28,6 +28,7 @@ import com.example.test_04.models.Merchant;
 import com.example.test_04.ui.CustomerHome;
 import com.example.test_04.ui.MerchantHome;
 import com.example.test_04.utils.DBUtils;
+import com.example.test_04.utils.DateUtils;
 import com.example.test_04.utils.FCMUtils;
 import com.fasterxml.uuid.Generators;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -36,7 +37,12 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -55,6 +61,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -72,7 +79,7 @@ public class ChatFragment extends Fragment {
     private CustomerHome customerHome;
     private MerchantHome merchantHome;
     private ChatAdapter chatAdapter;
-    private FirebaseFirestore db;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private ArrayList<Chat> chats = new ArrayList<>();
     private ArrayList<Bitmap> bitmaps = new ArrayList<>();
     private Merchant merchant;
@@ -187,13 +194,66 @@ public class ChatFragment extends Fragment {
                         }).show(getActivity().getSupportFragmentManager());
             }
         });
+
+        setChatsListener();
+    }
+
+    private void setChatsListener() {
+
+        String customerEmail = "";
+        String merchantName = "";
+        if (customerHome == null) {
+            customerEmail = chats.get(0).getCustomerEmail();
+            merchantName = chats.get(0).getMerchantName();
+        } else {
+            customerEmail = CurrentCustomer.email;
+            if (!chats.isEmpty()) {
+                merchantName = chats.get(0).getMerchantName();
+            } else {
+                merchantName = merchant.getName();
+            }
+        }
+
+        db.collection("Chat")
+                .whereEqualTo("Customer Email", customerEmail)
+                .whereEqualTo("Merchant Name", merchantName)
+                .orderBy("Date", Query.Direction.DESCENDING)
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@androidx.annotation.Nullable QuerySnapshot queryDocumentSnapshots, @androidx.annotation.Nullable FirebaseFirestoreException e) {
+                        if (queryDocumentSnapshots != null) {
+                            List<DocumentSnapshot> documentSnapshots = queryDocumentSnapshots.getDocuments();
+                            if (documentSnapshots.size() > chats.size()) {
+                                chats.clear();
+
+                                for (DocumentSnapshot documentSnapshot : documentSnapshots) {
+                                    String customerName = documentSnapshot.get("Customer Name").toString();
+                                    String customerEmail = documentSnapshot.get("Customer Email").toString();
+                                    String merchantName = documentSnapshot.get("Merchant Name").toString();
+                                    String merchantEmail = documentSnapshot.get("Merchant Email").toString();
+                                    String image = documentSnapshot.get("Image").toString();
+                                    String message = documentSnapshot.get("Message").toString();
+                                    String sender = documentSnapshot.get("Sender").toString();
+                                    boolean read = documentSnapshot.getBoolean("Read");
+                                    Timestamp timestamp = (Timestamp) documentSnapshot.get("Date");
+                                    Date dateObj = timestamp.toDate();
+                                    String date = DateUtils.dateToStringWithTime(dateObj);
+                                    Chat chat = new Chat(customerEmail, customerName, merchantEmail, merchantName, image, message, sender, read, date);
+                                    chats.add(chat);
+                                }
+
+                                chatAdapter.notifyDataSetChanged();
+                                clm.scrollToPosition(0);
+                            }
+                        }
+                    }
+                });
     }
 
     private Chat getChatObject(String message, String image) {
 
         Date dateObj = Calendar.getInstance().getTime();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy - HH:mm");
-        String date = sdf.format(dateObj);
+        String date = DateUtils.dateToStringWithTime(dateObj);
         String sender = null;
         if (customerHome != null)
             sender = "Customer";
@@ -330,7 +390,7 @@ public class ChatFragment extends Fragment {
                 String merchantName = chats.get(0).getMerchantName();
                 customerHome.setPageTitle(merchantName);
 
-                showProgressDialog("Loading merchant");
+                showProgressDialog("Loading Merchant");
                 DBUtils.getMerchant(merchantName, new GetMerchantCallback() {
                     @Override
                     public void onCallback(@Nullable Merchant merchant, boolean successful) {

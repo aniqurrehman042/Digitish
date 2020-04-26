@@ -260,7 +260,7 @@ public class SearchFragment extends Fragment {
         if (progressDialog != null)
             progressDialog.dismiss();
 
-        showProgressDialog("Loading reviews");
+        showProgressDialog("Loading Reviews");
 
         Query query = db.collection("Product Reviews");
 

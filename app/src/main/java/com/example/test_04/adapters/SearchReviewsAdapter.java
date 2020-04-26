@@ -93,7 +93,7 @@ public class SearchReviewsAdapter extends RecyclerView.Adapter<SearchReviewsAdap
 
         done = 0;
 
-        showProgressDialog("Loading review");
+        showProgressDialog("Loading Review");
 
         productReviewChats = new ArrayList<>();
 

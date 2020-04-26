@@ -12,7 +12,20 @@ public class DateUtils {
 
     public static Date stringToDateWithTime(String dateString) {
         Date date = null;
-        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yy - hh:mm a", Locale.US);
+        int dotUnicode = 0x00B7;
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yy " + (char) dotUnicode + " hh:mm a", Locale.US);
+        try {
+            date = format.parse(dateString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return date;
+    }
+
+    public static Date timeStringToDate(String dateString) {
+        Date date = null;
+        SimpleDateFormat format = new SimpleDateFormat("hh:mm a", Locale.US);
         try {
             date = format.parse(dateString);
         } catch (ParseException e) {
@@ -47,7 +60,13 @@ public class DateUtils {
     }
 
     public static String dateToStringWithTime(Date date) {
-        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yy - hh:mm a", Locale.US);
+        int dotUnicode = 0x00B7;
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yy " + (char) dotUnicode + " hh:mm a", Locale.US);
+        return format.format(date);
+    }
+
+    public static String dateToTimeString(Date date) {
+        SimpleDateFormat format = new SimpleDateFormat("hh:mm a", Locale.US);
         return format.format(date);
     }
 

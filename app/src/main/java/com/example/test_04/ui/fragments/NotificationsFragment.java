@@ -88,7 +88,7 @@ public class NotificationsFragment extends Fragment {
         if (progressDialog != null)
             progressDialog.dismiss();
 
-        showProgressDialog("Loading notifications");
+        showProgressDialog("Loading Notifications");
 
         customerNotificationsHolder = new ArrayList<>();
         customerNotificationsData = new ArrayList<>();
