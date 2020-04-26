@@ -83,7 +83,7 @@ public class InboxFragment extends Fragment {
 
     private void setRecyclerView() {
         if (chatsWithLastMsg.isEmpty()) {
-            progressDialog = new ProgressDialog(getContext());
+            progressDialog = new ProgressDialog(customerHome);
             progressDialog.setCancelable(false);
             progressDialog.setTitle("Loading chat");
             progressDialog.show();
@@ -164,6 +164,13 @@ public class InboxFragment extends Fragment {
                     }
                 });
 
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (progressDialog != null)
+            progressDialog.dismiss();
     }
 
 }

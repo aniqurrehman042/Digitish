@@ -1,7 +1,9 @@
 package com.example.test_04.ui.fragments;
 
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -9,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -18,6 +21,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -43,7 +47,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.makeramen.roundedimageview.RoundedImageView;
 
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;
@@ -75,7 +81,26 @@ public class MerchantAccountFragment extends Fragment {
     private TextView tvDoneMerchantDesc;
     private TextView tvDoneProducts;
     private Button btnCreateOffer;
+    private EditText etDate;
+    private Calendar myCalendar = Calendar.getInstance();
 
+    private DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear,
+                              int dayOfMonth) {
+            // TODO Auto-generated method stub
+            myCalendar.set(Calendar.YEAR, year);
+            myCalendar.set(Calendar.MONTH, monthOfYear);
+            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            updateLabel();
+        }
+
+    };
+
+    private void updateLabel() {
+        etDate.setText(DateUtils.dateToOfferString(myCalendar.getTime()));
+    }
 
     public MerchantAccountFragment() {
         // Required empty public constructor
@@ -205,7 +230,8 @@ public class MerchantAccountFragment extends Fragment {
 
         final EditText etOfferTitle = dialog.findViewById(R.id.et_offer_title);
         final EditText etDesc = dialog.findViewById(R.id.et_desc);
-        EditText etDate = dialog.findViewById(R.id.et_date);
+        etDate = dialog.findViewById(R.id.et_date);
+        etDate.setInputType(InputType.TYPE_NULL);
         Spinner spnAudience = dialog.findViewById(R.id.spn_audience);
         TextView tvSend = dialog.findViewById(R.id.tv_send);
         TextView tvCancel = dialog.findViewById(R.id.tv_cancel);
@@ -258,6 +284,16 @@ public class MerchantAccountFragment extends Fragment {
             }
         });
 
+        etDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                new DatePickerDialog(merchantHome, date, myCalendar
+                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+
         tvSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -265,6 +301,11 @@ public class MerchantAccountFragment extends Fragment {
                 String desc = etDesc.getText().toString();
                 String date = etDate.getText().toString();
                 String audience = spnAudience.getSelectedItem().toString();
+
+                if (title.isEmpty() || desc.isEmpty() || date.isEmpty()) {
+                    Toast.makeText(merchantHome, "Please fill all the fields", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
                 uploadOfferAndSendNotification(title, desc, date, audience);
                 dialog.dismiss();
@@ -299,16 +340,22 @@ public class MerchantAccountFragment extends Fragment {
                 .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentReference> task) {
-                        if (task.isSuccessful())
+                        if (task.isSuccessful()) {
                             FCMUtils.Companion.sendMessage(merchantHome, true, false, title, "You have received an offer from " + CurrentMerchant.name, audience, CurrentMerchant.name);
-                        else
+                            Toast.makeText(merchantHome, "Your offer has been sent", Toast.LENGTH_SHORT).show();
+                        }
+                        else {
                             Toast.makeText(merchantHome, "Couldn't send offer", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
 
     }
 
     private void updateMerchant(final String key, final String value) {
+
+        if (progressDialog != null)
+            progressDialog.dismiss();
 
         showProgressDialog("Updating profile");
 
@@ -388,6 +435,9 @@ public class MerchantAccountFragment extends Fragment {
 
     private void setMerchantDescriptionRatingAndProducts() {
 
+        if (progressDialog != null)
+            progressDialog.dismiss();
+
         showProgressDialog("Loading profile");
 
         db.collection("Merchants")
@@ -464,5 +514,12 @@ public class MerchantAccountFragment extends Fragment {
         super.onPause();
 
         merchantHome.onMerchantAccountPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (progressDialog != null)
+            progressDialog.dismiss();
     }
 }

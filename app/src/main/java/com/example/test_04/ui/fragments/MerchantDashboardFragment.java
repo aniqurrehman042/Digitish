@@ -84,6 +84,9 @@ public class MerchantDashboardFragment extends Fragment {
 
     private void getProducts() {
 
+        if (progressDialog != null)
+            progressDialog.dismiss();
+
         showProgressDialog("Loading products");
 
         final int[] products = new int[4];
@@ -138,7 +141,7 @@ public class MerchantDashboardFragment extends Fragment {
 
     private void initializePieChart(int washingMachines, int refrigerators, int microwaves, int tvs) {
         entries = new ArrayList<>();
-        entries.add(new PieEntry(washingMachines, "Washing Machines", ResourcesCompat.getDrawable(getResources(), R.drawable.bg_btn_darkest, null)));
+        entries.add(new PieEntry(washingMachines, "Washing Machines", ResourcesCompat.getDrawable(merchantHome.getResources(), R.drawable.bg_btn_darkest, null)));
         entries.add(new PieEntry(refrigerators, "Refrigerators"));
         entries.add(new PieEntry(microwaves, "Microwaves"));
         entries.add(new PieEntry(tvs, "TVs"));
@@ -174,5 +177,12 @@ public class MerchantDashboardFragment extends Fragment {
     public void onResume() {
         super.onResume();
         merchantHome.setPageTitle("Dashboard");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (progressDialog != null)
+            progressDialog.dismiss();
     }
 }

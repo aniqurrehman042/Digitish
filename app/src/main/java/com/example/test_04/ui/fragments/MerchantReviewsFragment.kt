@@ -29,6 +29,9 @@ import kotlin.collections.ArrayList
  */
 class MerchantReviewsFragment : Fragment() {
 
+    var merchantReviewsLoadedOnce: Boolean = false
+
+    private var madeMerchantAsynchCalls: Boolean = false
     private lateinit var rvReviews: RecyclerView
     private lateinit var rvFilters: RecyclerView
 
@@ -52,6 +55,8 @@ class MerchantReviewsFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_merchant_reviews, container, false)
         merchantHome = activity as MerchantHome
+        showProgressDialog("")
+        progressDialog.dismiss()
 
         findViews(view)
         init()
@@ -72,7 +77,7 @@ class MerchantReviewsFragment : Fragment() {
         if (filters.isEmpty())
             setUpFilters()
         setUpFilterRecycler()
-        if (merchantReviews.isEmpty())
+        if (!merchantReviewsLoadedOnce)
             getMerchantReviews()
         else if (productReviews.isNotEmpty() && filterAdapter!!.selectedFilter != 0) {
             setUpReviewsRecycler()
@@ -137,6 +142,13 @@ class MerchantReviewsFragment : Fragment() {
 
     fun getMerchantReviews() {
 
+        if (madeMerchantAsynchCalls) return
+
+        madeMerchantAsynchCalls = true
+
+        if (progressDialog != null)
+            progressDialog.dismiss()
+
         showProgressDialog("Loading reviews")
 
         merchantReviews.clear()
@@ -151,15 +163,17 @@ class MerchantReviewsFragment : Fragment() {
                         for (merchantReview: MerchantReview in merchantReviews) {
                             merchantReviewsHolder.add(CustomerNotification(merchantReview.customerName, merchantReview.customerName, "Tap to view", "Merchant Review", merchantReview.date))
                         }
-
-                        setMerchantReviewsRecycler()
                     } else {
                         Toast.makeText(merchantHome, "No reviews found", Toast.LENGTH_SHORT).show()
+                        progressDialog.dismiss()
                     }
 
                 } else {
                     Toast.makeText(merchantHome, "Couldn't load reviews", Toast.LENGTH_SHORT).show()
+                    progressDialog.dismiss()
                 }
+
+                setMerchantReviewsRecycler()
             }
         })
     }
@@ -174,6 +188,8 @@ class MerchantReviewsFragment : Fragment() {
         rvReviews.layoutManager = reviewsLayoutManager
         rvReviews.adapter = merchantNotificationsAdapter
 
+        madeMerchantAsynchCalls = false
+        merchantReviewsLoadedOnce = true
         progressDialog.dismiss()
     }
 
@@ -182,7 +198,12 @@ class MerchantReviewsFragment : Fragment() {
         reviewsLoadingCompleted = false
         reviewsLoaded = 0
         productReviews.clear()
+
+        if (progressDialog != null)
+            progressDialog.dismiss()
+
         showProgressDialog("Loading reviews")
+
         var query: Query = db.collection("Product Reviews")
         query = query.whereEqualTo("Reviewed", true)
         query = query.whereEqualTo("Merchant Name", CurrentMerchant.name)
@@ -237,6 +258,11 @@ class MerchantReviewsFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         merchantHome!!.setPageTitle("Reviews")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (progressDialog != null) progressDialog.dismiss()
     }
 
 }

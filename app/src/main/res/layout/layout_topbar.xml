@@ -15,7 +15,6 @@
         android:id="@+id/ll_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/_12sdp"
         android:layout_marginRight="@dimen/margin_normal"
         android:background="@drawable/bg_round_grey_on_hover"
         android:clickable="true"

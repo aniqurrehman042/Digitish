@@ -121,9 +121,8 @@ public class MerchantInboxAdapter extends RecyclerView.Adapter<MerchantInboxAdap
                                 String sender = document.get("Sender").toString();
                                 boolean read = document.getBoolean("Read");
                                 Timestamp timestamp = (Timestamp) document.get("Date");
-                                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy - HH:mm");
                                 Date dateObj = timestamp.toDate();
-                                String date = sdf.format(dateObj);
+                                String date = DateUtils.dateToStringWithTime(dateObj);
                                 Chat chat = new Chat(customerEmail, customerName, merchantEmail, merchantName, image, message, sender, read, date);
                                 chats.add(chat);
                             }

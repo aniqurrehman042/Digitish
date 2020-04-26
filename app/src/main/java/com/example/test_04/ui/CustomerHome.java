@@ -435,11 +435,7 @@ public class CustomerHome extends AppCompatActivity {
                 if (ContextCompat.checkSelfPermission(CustomerHome.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                     ActivityCompat.requestPermissions(CustomerHome.this, new String[]{Manifest.permission.CAMERA}, 0);
                 } else {
-                    fragmentManager
-                            .beginTransaction()
-                            .replace(R.id.cl_fragment, new ScanFragment(), "Scan")
-                            .addToBackStack("Scan")
-                            .commit();
+                    startFragment(fragments.get(4));
                 }
 
             }
@@ -471,11 +467,7 @@ public class CustomerHome extends AppCompatActivity {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    fragmentManager
-                            .beginTransaction()
-                            .replace(R.id.cl_fragment, new ScanFragment(), "Scan")
-                            .addToBackStack("Scan")
-                            .commit();
+                    startFragment(fragments.get(4));
                 } else {
                     Toast.makeText(CustomerHome.this, "Camera permission is required to scan QR code", Toast.LENGTH_SHORT).show();
                 }
@@ -519,15 +511,21 @@ public class CustomerHome extends AppCompatActivity {
             currentFragment = "Scan";
 
         setIcon(false);
-        reduceFragmentStack();
 
         if (!currentFragment.equals("Reviews"))
             setFirstRunArguments(fragment);
 
-        fragmentManager
-                .beginTransaction()
-                .replace(R.id.cl_fragment, fragment, currentFragment)
-                .commit();
+        try {
+//            if (!currentFragment.equals(lastFragment)) {
+                reduceFragmentStack();
+                fragmentManager
+                        .beginTransaction()
+                        .replace(R.id.cl_fragment, fragment, currentFragment)
+                        .commitNow();
+//            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void setFirstRunArguments(Fragment fragment) {
@@ -538,9 +536,9 @@ public class CustomerHome extends AppCompatActivity {
     }
 
     private void resetIcon() {
-        if (fragmentManager.getBackStackEntryCount() > 0)
+//        if (fragmentManager.getBackStackEntryCount() > 0)
 //            this.lastFragment = fragmentManager.getBackStackEntryAt(fragmentManager.getBackStackEntryCount() - 1).getName();
-            lastFragment = currentFragment;
+        lastFragment = currentFragment;
         switch (lastFragment) {
             case "Profile":
             case "Account":
@@ -561,11 +559,14 @@ public class CustomerHome extends AppCompatActivity {
                 ivThumbs.setColorFilter(ContextCompat.getColor(this, R.color.darkest));
                 ivSearch.setColorFilter(ContextCompat.getColor(this, R.color.darkest));
                 break;
+            case "Scan":
+                llQr.setBackgroundResource(R.drawable.bg_qr);
+                break;
         }
     }
 
     private void setIcon(boolean isBackpressed) {
-        if (isBackpressed && fragmentManager.getBackStackEntryCount() > 0)
+        if (isBackpressed)
 //            currentFragment = fragmentManager.getBackStackEntryAt(fragmentManager.getBackStackEntryCount() - 1).getName();
             currentFragment = lastFragment;
         switch (currentFragment) {
@@ -584,15 +585,23 @@ public class CustomerHome extends AppCompatActivity {
             case "Merchant Details":
                 ivSearch.setColorFilter(ContextCompat.getColor(this, R.color.white));
                 break;
+            case "Scan":
+                llQr.setBackgroundResource(R.drawable.bg_qr_light);
+                break;
         }
     }
 
     private void reduceFragmentStack() {
-        if (fragmentManager.getBackStackEntryCount() > 1) {
-            fragmentManager.executePendingTransactions();
-            for (int i = fragmentManager.getBackStackEntryCount(); i > 1; i--) {
-                fragmentManager.popBackStack();
+        try {
+            if (fragmentManager.getBackStackEntryCount() > 1) {
+                fragmentManager.executePendingTransactions();
+                for (int i = fragmentManager.getBackStackEntryCount(); i > 1; i--) {
+                    fragmentManager.popBackStack();
+                }
             }
+            fragmentManager.executePendingTransactions();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -629,13 +638,13 @@ public class CustomerHome extends AppCompatActivity {
             searchBackClick();
             return;
         }
-        resetIcon();
+//        resetIcon();
         if (fragmentManager.getBackStackEntryCount() > 0) {
             fragmentManager.executePendingTransactions();
             fragmentManager.popBackStack();
         } else
             super.onBackPressed();
-        setIcon(true);
+//        setIcon(true);
     }
 
     public void startMerchantDetailsFragment(Merchant merchant) {
@@ -657,8 +666,6 @@ public class CustomerHome extends AppCompatActivity {
     }
 
     public void loadReview(String qrCode) {
-        onBackPressed();
-
         Bundle arguments = new Bundle();
         arguments.putString("QR", qrCode);
         fragments.get(2).setArguments(arguments);

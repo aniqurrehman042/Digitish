@@ -147,6 +147,9 @@
                 android:paddingHorizontal="@dimen/padding_normal"
                 android:paddingVertical="@dimen/padding_large"
                 app:layout_constraintTop_toTopOf="parent"
+                android:clickable="true"
+                android:focusable="true"
+                android:focusableInTouchMode="false"
                 android:layout_marginTop="@dimen/margin_large"/>
 
             <TextView

@@ -69,9 +69,7 @@ public class SearchReviewsAdapter extends RecyclerView.Adapter<SearchReviewsAdap
         holder.clMain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 getChatBetween(productReviews.get(position));
-
             }
         });
 
@@ -92,6 +90,8 @@ public class SearchReviewsAdapter extends RecyclerView.Adapter<SearchReviewsAdap
 
     private void getChatBetween(final ProductReview productReview) {
         final FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        done = 0;
 
         showProgressDialog("Loading review");
 
@@ -132,53 +132,60 @@ public class SearchReviewsAdapter extends RecyclerView.Adapter<SearchReviewsAdap
                     }
                 });
 
-        db.collection("Merchants")
-                .whereEqualTo("Merchant Name", productReview.getMerchantName())
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot documentSnapshot = task.getResult().getDocuments().get(0);
-                            String merchantDesc = documentSnapshot.get("Merchant Description").toString();
-                            String merchantEmail = documentSnapshot.get("Email").toString();
-                            String merchantRating = documentSnapshot.get("Merchant Rating").toString();
-                            String merchantProducts = documentSnapshot.get("Products").toString();
-                            String website = documentSnapshot.get("Website").toString();
-                            merchant = new Merchant(productReview.getMerchantName(), merchantDesc, merchantEmail, merchantRating, merchantProducts, website);
+        if (customerHome != null) {
 
-                        } else
-                            Toast.makeText(context, "Couldn't load chat", Toast.LENGTH_SHORT).show();
+            db.collection("Merchants")
+                    .whereEqualTo("Merchant Name", productReview.getMerchantName())
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot documentSnapshot = task.getResult().getDocuments().get(0);
+                                String merchantDesc = documentSnapshot.get("Merchant Description").toString();
+                                String merchantEmail = documentSnapshot.get("Email").toString();
+                                String merchantRating = documentSnapshot.get("Merchant Rating").toString();
+                                String merchantProducts = documentSnapshot.get("Products").toString();
+                                String website = documentSnapshot.get("Website").toString();
+                                merchant = new Merchant(productReview.getMerchantName(), merchantDesc, merchantEmail, merchantRating, merchantProducts, website);
 
-                        checkAndStartFragment(productReview.getProductCategory(), productReview);
-                    }
-                });
+                            } else
+                                Toast.makeText(context, "Couldn't load chat", Toast.LENGTH_SHORT).show();
 
-        db.collection("Customers")
-                .whereEqualTo("Email", productReview.getCustomerEmail())
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot documentSnapshot = task.getResult().getDocuments().get(0);
-                            String customerName = documentSnapshot.get("Customer Name").toString();
-                            String phone = documentSnapshot.get("Phone").toString();
-                            String points = documentSnapshot.getLong("Points").toString();
-                            String profilePicture = documentSnapshot.get("Profile Picture").toString();
-                            customer = new Customer(productReview.getCustomerEmail(), customerName, phone, points, profilePicture);
+                            checkAndStartFragment(productReview.getProductCategory(), productReview);
+                        }
+                    });
+        } else {
 
-                        } else
-                            Toast.makeText(context, "Couldn't load chat", Toast.LENGTH_SHORT).show();
+            db.collection("Customers")
+                    .whereEqualTo("Email", productReview.getCustomerEmail())
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot documentSnapshot = task.getResult().getDocuments().get(0);
+                                String customerName = documentSnapshot.get("Customer Name").toString();
+                                Object phoneObj = documentSnapshot.get("Phone");
+                                String phone = "";
+                                if (phoneObj != null)
+                                    phone = phoneObj.toString();
+                                String points = documentSnapshot.getLong("Points").toString();
+                                String profilePicture = documentSnapshot.get("Profile Picture").toString();
+                                customer = new Customer(productReview.getCustomerEmail(), customerName, phone, points, profilePicture);
 
-                        checkAndStartFragment(productReview.getProductCategory(), productReview);
-                    }
-                });
+                            } else
+                                Toast.makeText(context, "Couldn't load chat", Toast.LENGTH_SHORT).show();
+
+                            checkAndStartFragment(productReview.getProductCategory(), productReview);
+                        }
+                    });
+        }
     }
 
     private void checkAndStartFragment(String productCategory, ProductReview productReview) {
         done++;
-        if (done > 2) {
+        if (done > 1) {
             progressDialog.dismiss();
             if (customerHome != null)
                 customerHome.startProductReviewChatFragment(productReviewChats, merchant, productReview, true);

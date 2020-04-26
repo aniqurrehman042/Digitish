@@ -4,6 +4,7 @@ import android.app.ProgressDialog
 import android.content.Context
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +19,7 @@ import com.example.test_04.adapters.SendImagesAdapter
 import com.example.test_04.models.*
 import com.example.test_04.ui.CustomerHome
 import com.example.test_04.ui.MerchantHome
+import com.example.test_04.utils.DateUtils
 import com.example.test_04.utils.FCMUtils.Companion.sendMessage
 import com.example.test_04.utils.ReviewUtils
 import com.example.test_04.utils.SwitchUtils
@@ -29,7 +31,6 @@ import com.vansuita.pickimage.bundle.PickSetup
 import com.vansuita.pickimage.dialog.PickImageDialog
 import kotlinx.android.synthetic.main.fragment_product_review_chat.*
 import java.io.ByteArrayOutputStream
-import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
@@ -61,7 +62,7 @@ class ProductReviewChatFragment : Fragment() {
     private lateinit var chatLayoutManager: LinearLayoutManager
     private lateinit var imagesAdapter: SendImagesAdapter
     private lateinit var productReviewChatAdapter: ProductReviewChatAdapter
-    private var progressDialog: ProgressDialog? = null
+    private lateinit var progressDialog: ProgressDialog
     private var productCategory: String? = null
     private var productReview: ProductReview? = null
     private var customerHome: CustomerHome? = null
@@ -73,16 +74,23 @@ class ProductReviewChatFragment : Fragment() {
     private var storage = FirebaseStorage.getInstance()
     private var fromSearch: Boolean? = false
     private var customer: Customer? = null
+    private lateinit var currentContext: Context
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         var view: View = inflater.inflate(R.layout.fragment_product_review_chat, container, false)
 
-        if (activity!!.javaClass.simpleName == "CustomerHome")
+        if (activity!!.javaClass.simpleName == "CustomerHome") {
             customerHome = activity as CustomerHome?
-        else
+            currentContext = customerHome!!
+        } else {
             merchantHome = activity as MerchantHome?
+            currentContext = merchantHome!!
+        }
+
+        showProgressDialog("")
+        progressDialog.dismiss()
 
         findView(view)
 
@@ -222,6 +230,14 @@ class ProductReviewChatFragment : Fragment() {
             val dataMap: MutableMap<String, Any> = java.util.HashMap()
             dataMap["Completed"] = true
 
+            if (productReview!!.id == null) {
+                Toast.makeText(context, "Couldn't mark complete", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if (progressDialog != null)
+                progressDialog.dismiss()
+
             showProgressDialog("Updating Review")
 
             db.collection("Product Reviews")
@@ -229,10 +245,10 @@ class ProductReviewChatFragment : Fragment() {
                     .update(dataMap)
                     .addOnCompleteListener {
                         if (it.isSuccessful) {
-                            Toast.makeText(customerHome, "Update Successful", LENGTH_SHORT)
+                            Toast.makeText(currentContext, "Update Successful", LENGTH_SHORT).show()
                             hideChatAndMarkComplete()
                         } else {
-                            Toast.makeText(customerHome, "Update Failed", LENGTH_SHORT)
+                            Toast.makeText(currentContext, "Update Failed", LENGTH_SHORT).show()
                         }
                         progressDialog!!.dismiss()
                     }
@@ -255,7 +271,7 @@ class ProductReviewChatFragment : Fragment() {
     }
 
     private fun showProgressDialog(title: String) {
-        progressDialog = ProgressDialog(customerHome)
+        progressDialog = ProgressDialog(currentContext)
         progressDialog!!.setTitle(title)
         progressDialog!!.setCancelable(false)
         progressDialog!!.show()
@@ -263,8 +279,7 @@ class ProductReviewChatFragment : Fragment() {
 
     private fun getChatObject(message: String, image: String): ProductReviewChat {
         val dateObj = Calendar.getInstance().time
-        val sdf = SimpleDateFormat("dd-MM-yyyy - HH:mm")
-        val date = sdf.format(dateObj)
+        val date = DateUtils.dateToStringWithTime(dateObj)
         var sender: String? = null
         sender = if (customerHome != null) "Customer" else "Merchant"
         val customerEmail: String
@@ -406,6 +421,11 @@ class ProductReviewChatFragment : Fragment() {
             customerHome!!.setLogoutMenuListener();
         } else
             merchantHome!!.onChatPause()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (progressDialog != null) progressDialog!!.dismiss()
     }
 
 }

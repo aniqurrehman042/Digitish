@@ -44,6 +44,8 @@ public class MerchantNotificationsFragment extends Fragment {
     private ArrayList<ArrayList<ProductReview>> notifications = new ArrayList<>();
     private ProgressDialog progressDialog;
     private int done = 0;
+    private boolean addingData = false;
+    private boolean madeAsynchCalls = false;
 
     public MerchantNotificationsFragment() {
         // Required empty public constructor
@@ -76,10 +78,18 @@ public class MerchantNotificationsFragment extends Fragment {
 
     private void getNotifications() {
 
+        if (madeAsynchCalls)
+            return;
+
+        madeAsynchCalls = true;
+
         done = 0;
 
         customerNotificationsData = new ArrayList<>();
         customerNotificationsHolder = new ArrayList<>();
+
+        if (progressDialog != null)
+            progressDialog.dismiss();
 
         showProgressDialog("Loading notifications");
 
@@ -142,6 +152,7 @@ public class MerchantNotificationsFragment extends Fragment {
     private void checkAndSetRecycler() {
         done++;
         if (done > 2) {
+            madeAsynchCalls = false;
             Collections.sort(customerNotificationsData, Collections.<DateComparator>reverseOrder());
             addHolderFromData();
             setUpNotificationsRecycler();
@@ -150,6 +161,13 @@ public class MerchantNotificationsFragment extends Fragment {
     }
 
     private void addHolderFromData() {
+        customerNotificationsHolder.clear();
+
+        if (addingData)
+            return;
+
+        addingData = true;
+
         for (DateComparator dateComparator : customerNotificationsData) {
 
             String title = "";
@@ -172,11 +190,16 @@ public class MerchantNotificationsFragment extends Fragment {
 
             customerNotificationsHolder.add(new CustomerNotification(customerName, title, message, type, date));
         }
+
+        addingData = false;
     }
 
     private void getProductReviews() {
 
         notifications = new ArrayList<>();
+
+        if (progressDialog != null)
+            progressDialog.dismiss();
 
         showProgressDialog("Loading notifications");
 
@@ -245,5 +268,19 @@ public class MerchantNotificationsFragment extends Fragment {
     public void onResume() {
         super.onResume();
         merchantHome.setPageTitle("Notifications");
+        done = 0;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        done = 0;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (progressDialog != null)
+            progressDialog.dismiss();
     }
 }

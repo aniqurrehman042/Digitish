@@ -90,13 +90,17 @@ public class ReviewsFragment extends Fragment {
     }
 
     private void showProgressDialog(String title) {
-        progressDialog = new ProgressDialog(getContext());
+        progressDialog = new ProgressDialog(customerHome);
         progressDialog.setTitle(title);
         progressDialog.setCancelable(false);
         progressDialog.show();
     }
 
     private void withoutScan() {
+
+        if (progressDialog != null)
+            progressDialog.dismiss();
+
         showProgressDialog("Loading reviews");
 
         productReviews = new ArrayList<>();
@@ -141,6 +145,13 @@ public class ReviewsFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
+        if (progressDialog != null)
+            progressDialog.dismiss();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
         if (progressDialog != null)
             progressDialog.dismiss();
     }

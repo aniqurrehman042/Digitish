@@ -45,8 +45,9 @@ public class MerchantMessagesFragment extends Fragment {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private MerchantInboxAdapter adapter;
     private ProgressDialog progressDialog;
-    private final ArrayList<Chat> chatsWithLastMsg = new ArrayList<>();
+    private ArrayList<Chat> chatsWithLastMsg = new ArrayList<>();
     private LinearLayout llMessages;
+    private boolean chatLoading = false;
 
     public MerchantMessagesFragment() {
         // Required empty public constructor
@@ -76,11 +77,10 @@ public class MerchantMessagesFragment extends Fragment {
     }
 
     private void setRecyclerView() {
+        if (progressDialog != null)
+            progressDialog.dismiss();
+
         if (chatsWithLastMsg.isEmpty()) {
-            progressDialog = new ProgressDialog(getContext());
-            progressDialog.setCancelable(false);
-            progressDialog.setTitle("Loading chat");
-            progressDialog.show();
             setRecyclerAdapter(CurrentMerchant.email);
         } else {
             rvInbox.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -93,6 +93,17 @@ public class MerchantMessagesFragment extends Fragment {
         final Set<String> customerEmails = new HashSet<>();
         final ArrayList<ArrayList<Chat>> chatsWithEachCustomer = new ArrayList<>();
         final ArrayList<ArrayList<Date>> chatsWithEachCustomerDates = new ArrayList<>();
+        chatsWithLastMsg.clear();
+
+        if (chatLoading)
+            return;
+
+        chatLoading = true;
+
+        progressDialog = new ProgressDialog(merchantHome);
+        progressDialog.setCancelable(false);
+        progressDialog.setTitle("Loading chat");
+        progressDialog.show();
 
         db.collection("Chat")
                 .whereEqualTo("Merchant Email", email)
@@ -149,6 +160,7 @@ public class MerchantMessagesFragment extends Fragment {
 
                         Collections.sort(chatsWithLastMsg, Collections.<Chat>reverseOrder());
                         progressDialog.dismiss();
+                        chatLoading = false;
                     }
                 });
 
@@ -160,5 +172,12 @@ public class MerchantMessagesFragment extends Fragment {
 
         merchantHome.setPageTitle("Messages");
 
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (progressDialog != null)
+            progressDialog.dismiss();
     }
 }

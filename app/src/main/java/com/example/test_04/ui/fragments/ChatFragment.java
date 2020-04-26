@@ -336,14 +336,15 @@ public class ChatFragment extends Fragment {
                     public void onCallback(@Nullable Merchant merchant, boolean successful) {
                         if (successful) {
                             customerHome.onChatResume(merchant);
+                            if (ChatFragment.this.merchant == null)
+                                ChatFragment.this.merchant = merchant;
                         } else {
                             Toast.makeText(customerHome, "Failed to load merchant profile", Toast.LENGTH_SHORT).show();
                         }
                         progressDialog.dismiss();
                     }
                 });
-            }
-            else {
+            } else {
                 customerHome.setPageTitle(merchant.getName());
                 customerHome.onChatResume(merchant);
             }
@@ -358,8 +359,7 @@ public class ChatFragment extends Fragment {
         super.onPause();
         if (customerHome != null) {
             customerHome.onChatPause();
-        }
-        else
+        } else
             merchantHome.onChatPause();
     }
 

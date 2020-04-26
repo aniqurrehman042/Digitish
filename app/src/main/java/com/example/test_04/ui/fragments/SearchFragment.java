@@ -56,6 +56,7 @@ public class SearchFragment extends Fragment {
     private LinearLayoutManager reviewsLayoutManager;
     private int reviewsLoaded = 0;
     private boolean reviewsLoadingCompleted = true;
+    private boolean madeMerchantAsynchCalls = false;
 
     public SearchFragment() {
         // Required empty public constructor
@@ -130,6 +131,11 @@ public class SearchFragment extends Fragment {
 
     public void getMerchants() {
 
+        if (madeMerchantAsynchCalls)
+            return;
+
+        madeMerchantAsynchCalls = true;
+
         if (progressDialog != null)
             progressDialog.dismiss();
 
@@ -172,6 +178,7 @@ public class SearchFragment extends Fragment {
     }
 
     public void setUpMerchantsRecycler() {
+        madeMerchantAsynchCalls = false;
         progressDialog.dismiss();
         ResultAdapter resultsAdapter = new ResultAdapter(customerHome, merchants);
         rvResults.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -249,6 +256,9 @@ public class SearchFragment extends Fragment {
 
         reviewsLoaded = 0;
         productReviews.clear();
+
+        if (progressDialog != null)
+            progressDialog.dismiss();
 
         showProgressDialog("Loading reviews");
 
@@ -334,5 +344,12 @@ public class SearchFragment extends Fragment {
         super.onPause();
 
         customerHome.onSearchFragmentPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (progressDialog != null)
+            progressDialog.dismiss();
     }
 }

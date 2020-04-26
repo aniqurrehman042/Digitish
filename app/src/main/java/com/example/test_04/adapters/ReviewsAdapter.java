@@ -1,5 +1,6 @@
 package com.example.test_04.adapters;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -325,11 +326,9 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ViewHold
 
                             } else {
                                 Toast.makeText(customerHome, "Failed to load review. Please try again.", Toast.LENGTH_SHORT).show();
-                                customerHome.onBackPressed();
                             }
                         } else {
                             Toast.makeText(customerHome, "Failed to load review. Please try again.", Toast.LENGTH_SHORT).show();
-                            customerHome.onBackPressed();
                         }
 
                         checkAndStartFragment(productReview.getProductCategory());
@@ -349,7 +348,11 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ViewHold
         progressDialog = new ProgressDialog(customerHome);
         progressDialog.setTitle(title);
         progressDialog.setCancelable(false);
-        progressDialog.show();
+        if(!((Activity) customerHome).isFinishing())
+        {
+            progressDialog.show();
+        }
+
     }
 
     private void getMerchantRating() {

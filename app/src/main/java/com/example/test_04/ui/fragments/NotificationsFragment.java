@@ -75,7 +75,7 @@ public class NotificationsFragment extends Fragment {
     }
 
     private void showProgressDialog(String title) {
-        progressDialog = new ProgressDialog(getContext());
+        progressDialog = new ProgressDialog(customerHome);
         progressDialog.setTitle(title);
         progressDialog.setCancelable(false);
         progressDialog.show();
@@ -84,6 +84,9 @@ public class NotificationsFragment extends Fragment {
     private void getCustomerNotifications() {
 
         done = 0;
+
+        if (progressDialog != null)
+            progressDialog.dismiss();
 
         showProgressDialog("Loading notifications");
 
@@ -96,7 +99,7 @@ public class NotificationsFragment extends Fragment {
                 if (successful) {
                     customerNotificationsData.addAll(productReviews);
                 } else {
-                    Toast.makeText(getContext(), "Couldn't load notifications", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(customerHome, "Couldn't load notifications", Toast.LENGTH_SHORT).show();
                 }
 
                 checkAndSetRecycler();
@@ -107,9 +110,10 @@ public class NotificationsFragment extends Fragment {
             @Override
             public void onCallback(boolean successful, @NotNull ArrayList<ProductReviewChat> productReviewChats) {
                 if (successful) {
-                    customerNotificationsData.addAll(productReviewChats);
+                    if (!productReviewChats.isEmpty())
+                        customerNotificationsData.addAll(productReviewChats);
                 } else {
-                    Toast.makeText(getContext(), "Couldn't load notifications", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(customerHome, "Couldn't load notifications", Toast.LENGTH_SHORT).show();
                 }
 
                 checkAndSetRecycler();
@@ -122,7 +126,7 @@ public class NotificationsFragment extends Fragment {
                 if (successful) {
                     customerNotificationsData.addAll(merchantReviews);
                 } else {
-                    Toast.makeText(getContext(), "Couldn't load notifications", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(customerHome, "Couldn't load notifications", Toast.LENGTH_SHORT).show();
                 }
 
                 checkAndSetRecycler();
@@ -135,7 +139,7 @@ public class NotificationsFragment extends Fragment {
                 if (successful) {
                     addValidOffers(offers);
                 } else {
-                    Toast.makeText(getContext(), "Couldn't load notifications", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(customerHome, "Couldn't load notifications", Toast.LENGTH_SHORT).show();
                     checkAndSetRecycler();
                 }
             }
@@ -254,11 +258,18 @@ public class NotificationsFragment extends Fragment {
     private void setUpNotificationsRecycler() {
         rvNotifications.setVisibility(View.VISIBLE);
         adapter = new MerchantNotificationsAdapter(customerNotificationsHolder, customerNotificationsData, null, customerHome);
-        rvNotifications.setLayoutManager(new LinearLayoutManager(getContext()));
+        rvNotifications.setLayoutManager(new LinearLayoutManager(customerHome));
         rvNotifications.setAdapter(adapter);
 
         if (customerNotificationsHolder.isEmpty()) {
             rvNotifications.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (progressDialog != null)
+            progressDialog.dismiss();
     }
 }

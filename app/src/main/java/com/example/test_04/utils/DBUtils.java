@@ -293,6 +293,7 @@ public class DBUtils {
                                     String date = DateUtils.dateToStringWithTime(documentSnapshot.getTimestamp("Date").toDate());
 
                                     ProductReview productReview = new ProductReview(CurrentCustomer.email, CurrentCustomer.name, merchantName, productCode, productName, productCategory, productRating, reviewDescription, reviewTitle, qrId, completed, reviewed, date);
+                                    productReview.setId(documentSnapshot.getId());
                                     productReviews.add(productReview);
                                 }
 
@@ -338,6 +339,7 @@ public class DBUtils {
                                     String date = DateUtils.dateToStringWithTime(documentSnapshot.getTimestamp("Date").toDate());
 
                                     ProductReview productReview = new ProductReview(CurrentCustomer.email, CurrentCustomer.name, merchantName, productCode, productName, productCategory, productRating, reviewDescription, reviewTitle, qrId, completed, reviewed, date);
+                                    productReview.setId(documentSnapshot.getId());
                                     productReviews.add(productReview);
                                 }
 
@@ -384,6 +386,7 @@ public class DBUtils {
                                     String date = DateUtils.dateToStringWithTime(documentSnapshot.getTimestamp("Date").toDate());
 
                                     ProductReview productReview = new ProductReview(customerEmail, customerName, merchantName, productCode, productName, productCategory, productRating, reviewDescription, reviewTitle, qrId, completed, reviewed, date);
+                                    productReview.setId(documentSnapshot.getId());
                                     productReviews.add(productReview);
                                 }
 
@@ -433,6 +436,7 @@ public class DBUtils {
                                 String date = DateUtils.dateToStringWithTime(documentSnapshot.getTimestamp("Date").toDate());
 
                                 productReview = new ProductReview(customerEmail, customerName, merchantName, productCode, productName, productCategory, productRating, reviewDescription, reviewTitle, qrId, completed, reviewed, date);
+                                productReview.setId(documentSnapshot.getId());
                                 callback.onCallback(true, productReview);
                             } else {
                                 callback.onCallback(false, productReview);

@@ -105,6 +105,11 @@ public class MerchantLogin extends AppCompatActivity {
         final String email = etUsername.getText().toString().trim();
         final String password = etPassword.getText().toString();
 
+        if (email.isEmpty() || password.isEmpty()) {
+            Toast.makeText(this, "Email and password cannot be empty", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         mAuth.signInWithEmailAndPassword(email, password)
         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
@@ -128,6 +133,10 @@ public class MerchantLogin extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()){
+                            if (task.getResult().getDocuments().size() < 1) {
+                                Toast.makeText(MerchantLogin.this, "Failed to login", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
                             setPreferences(task.getResult().getDocuments().get(0).getData());
                             startMerchantHome();
                         } else {

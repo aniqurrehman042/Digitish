@@ -25,6 +25,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -170,12 +171,22 @@ public class CustomerLogin extends AppCompatActivity {
 
                             saveCustomerPreferences(task.getResult().getDocuments().get(0).getData());
 
+                            DocumentSnapshot documentSnapshot = task.getResult().getDocuments().get(0);
+
+                            Object phoneObj = documentSnapshot.get("Phone");
+                            String phone = "";
+                            if (phoneObj != null)
+                                phone = phoneObj.toString();
+
                             Map<String, Object> data = new HashMap<>();
                             if (name != null) {
                                 data.put("Customer Name", name);
                             }
                             if (profilePicture != null) {
                                 data.put("Profile Picture", profilePicture);
+                            }
+                            if (phone.isEmpty()) {
+                                data.put("Phone", phone);
                             }
                             data.put("Username", username);
                             String customerId = task.getResult().getDocuments().get(0).getId();
@@ -204,6 +215,7 @@ public class CustomerLogin extends AppCompatActivity {
                             data.put("Profile Picture", profilePicture);
                             data.put("Username", username);
                             data.put("Points", points);
+                            data.put("Phone", "");
                             db.collection("Customers")
                                     .add(data)
                                     .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {

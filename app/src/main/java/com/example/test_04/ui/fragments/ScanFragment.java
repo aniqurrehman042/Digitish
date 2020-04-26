@@ -79,7 +79,10 @@ public class ScanFragment extends Fragment {
                             if (QRUtils.hasEmail(qrCode)) {
                                 String customerEmail = QRUtils.extractCustomerEmail(qrCode);
                             } else {
-                                showProgressDialog("Verifying Qr code");
+                                if (progressDialog != null)
+                                    progressDialog.dismiss();
+
+                                showProgressDialog("Verifying QR code");
                                 DBUtils.isQrScanned(qrCode, new IsQRExpiredCallback() {
                                     @Override
                                     public void onCallback(boolean found, boolean expired, boolean successful, String merchantName) {
@@ -165,5 +168,12 @@ public class ScanFragment extends Fragment {
         if (progressDialog != null)
             progressDialog.dismiss();
 
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (progressDialog != null)
+            progressDialog.dismiss();
     }
 }

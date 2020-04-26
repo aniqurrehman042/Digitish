@@ -96,6 +96,10 @@ public class ProductReviewFragment extends Fragment {
         tvProductCode.setText(productReview.getProductCode());
 
         if (productReview.isReviewed()) {
+
+            if (progressDialog != null)
+                progressDialog.dismiss();
+
             showProgressDialog("Loading Review");
 
             db.collection("Product Reviews")
@@ -231,6 +235,9 @@ public class ProductReviewFragment extends Fragment {
 
     private void uploadReview(final ProductReview productReview, boolean showToOthers) {
 
+        if (progressDialog != null)
+            progressDialog.dismiss();
+
         showProgressDialog("Submitting Review");
 
         final Map<String, Object> productReviewData = new HashMap<>();
@@ -316,5 +323,12 @@ public class ProductReviewFragment extends Fragment {
     public void onPause() {
         super.onPause();
         customerHome.hideBackBtn();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (progressDialog != null)
+            progressDialog.dismiss();
     }
 }

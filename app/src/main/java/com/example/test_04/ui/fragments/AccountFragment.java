@@ -106,5 +106,4 @@ public class AccountFragment extends Fragment {
 
         ((TextView) getActivity().findViewById(R.id.tv_title)).setText("Account");
     }
-
 }

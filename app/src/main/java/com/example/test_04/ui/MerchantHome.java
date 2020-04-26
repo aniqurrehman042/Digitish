@@ -176,19 +176,23 @@ public class MerchantHome extends AppCompatActivity {
 
         setIcon(false);
 
-        if (!(lastFragment.equals(currentFragment))) {
-            reduceFragmentStack();
-            if (!(currentFragment.equals("Merchant Account")))
+        try {
+//            if (!(lastFragment.equals(currentFragment))) {
+                reduceFragmentStack();
                 fragmentManager
                         .beginTransaction()
                         .replace(R.id.cl_fragment, fragment)
-                        .addToBackStack(currentFragment)
-                        .commit();
+                        .commitNow();
+//            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     private void resetIcon() {
-        this.lastFragment = fragmentManager.getBackStackEntryAt(fragmentManager.getBackStackEntryCount() - 1).getName();
+//        if (fragmentManager.getBackStackEntryCount() > 0)
+//            this.lastFragment = fragmentManage(r.getBackStackEntryAt(fragmentManager.getBackStackEntryCount() - 1).getName();
+        lastFragment = currentFragment;
         switch (lastFragment) {
             case "Merchant Account":
                 ivAccount.setColorFilter(ContextCompat.getColor(this, R.color.dark_yellow));
@@ -202,12 +206,16 @@ public class MerchantHome extends AppCompatActivity {
             case "Merchant Dashboard":
                 ivDashboard.setColorFilter(ContextCompat.getColor(this, R.color.dark_yellow));
                 break;
+            case "Merchant Reviews":
+                llReviews.setBackgroundResource(R.drawable.bg_reviews);
+                break;
         }
     }
 
     private void setIcon(boolean isBackpressed) {
-        if (isBackpressed && fragmentManager.getBackStackEntryCount() > 0)
-            currentFragment = fragmentManager.getBackStackEntryAt(fragmentManager.getBackStackEntryCount() - 1).getName();
+        if (isBackpressed)
+//            currentFragment = fragmentManager.getBackStackEntryAt(fragmentManager.getBackStackEntryCount() - 1).getName();
+            currentFragment = lastFragment;
         switch (currentFragment) {
             case "Merchant Account":
                 ivAccount.setColorFilter(ContextCompat.getColor(this, R.color.light_yellow));
@@ -221,14 +229,22 @@ public class MerchantHome extends AppCompatActivity {
             case "Merchant Dashboard":
                 ivDashboard.setColorFilter(ContextCompat.getColor(this, R.color.light_yellow));
                 break;
+            case "Merchant Reviews":
+                llReviews.setBackgroundResource(R.drawable.bg_reviews_light);
+                break;
         }
     }
 
     private void reduceFragmentStack() {
-        if (fragmentManager.getBackStackEntryCount() > 1)
-            for (int i = fragmentManager.getBackStackEntryCount(); i > 1; i--) {
-                fragmentManager.popBackStack();
-            }
+        try {
+            if (fragmentManager.getBackStackEntryCount() > 1)
+                for (int i = fragmentManager.getBackStackEntryCount(); i > 1; i--) {
+                    fragmentManager.popBackStack();
+                }
+            fragmentManager.executePendingTransactions();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void setPageTitle(String title) {
@@ -279,6 +295,7 @@ public class MerchantHome extends AppCompatActivity {
                 Bundle bundle = new Bundle();
                 bundle.putBoolean("First Run", true);
                 fragments.get(4).setArguments(bundle);
+                ((MerchantReviewsFragment)fragments.get(4)).setMerchantReviewsLoadedOnce(false);
                 startFragment(fragments.get(4));
             }
         });
@@ -357,12 +374,14 @@ public class MerchantHome extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if ((getSupportFragmentManager().getBackStackEntryCount() < 2)) {
+            fragmentManager.executePendingTransactions();
             getSupportFragmentManager().popBackStack();
         }
+        fragmentManager.executePendingTransactions();
 
-        resetIcon();
+//        resetIcon();
         super.onBackPressed();
-        setIcon(true);
+//        setIcon(true);
     }
 
     public void startProductReviewChatFragment(ArrayList<ProductReviewChat> chats, ProductReview productReview, Customer customer) {

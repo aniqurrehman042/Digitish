@@ -40,13 +40,16 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ViewHolder
         holder.llMain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                customerHome.startMerchantDetailsFragment(merchants.get(position));
+                if (merchants.size() > position)
+                    customerHome.startMerchantDetailsFragment(merchants.get(position));
             }
         });
 
-        holder.tvResultName.setText(merchants.get(position).getName());
-        holder.tvResultDesc.setText(merchants.get(position).getWebsite());
-        holder.rivResultImg.setImageResource(SwitchUtils.getMerchantImgId(merchants.get(position).getName()));
+        if (merchants.size() > position) {
+            holder.tvResultName.setText(merchants.get(position).getName());
+            holder.tvResultDesc.setText(merchants.get(position).getWebsite());
+            holder.rivResultImg.setImageResource(SwitchUtils.getMerchantImgId(merchants.get(position).getName()));
+        }
     }
 
     @Override
