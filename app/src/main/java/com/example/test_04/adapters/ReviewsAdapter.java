@@ -90,11 +90,12 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ViewHold
     private boolean rateSingerDisabled = false;
     private boolean rateSoftlogicDisabled = false;
 
-    public ReviewsAdapter(ArrayList<ProductReview> productReviews, FragmentManager fm, CustomerHome customerHome) {
+    public ReviewsAdapter(ArrayList<ProductReview> productReviews, FragmentManager fm, CustomerHome customerHome, ProgressDialog progressDialog) {
         this.productReviews = productReviews;
         this.fm = fm;
         this.customerHome = customerHome;
         this.context = customerHome;
+        this.progressDialog = progressDialog;
 
         segregateReviewsLists();
 
@@ -345,7 +346,6 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ViewHold
     }
 
     private void showProgressDialog(String title) {
-        progressDialog = new ProgressDialog(customerHome);
         progressDialog.setTitle(title);
         progressDialog.setCancelable(false);
         if(!((Activity) customerHome).isFinishing())
@@ -380,6 +380,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ViewHold
         db.collection("Merchant Reviews")
                 .whereEqualTo("Merchant Name", "Abans")
                 .whereEqualTo("Merchant Rated", false)
+                .whereEqualTo("Customer Email", CurrentCustomer.email)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -410,6 +411,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ViewHold
         db.collection("Merchant Reviews")
                 .whereEqualTo("Merchant Name", "Singer")
                 .whereEqualTo("Merchant Rated", false)
+                .whereEqualTo("Customer Email", CurrentCustomer.email)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -439,6 +441,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ViewHold
         db.collection("Merchant Reviews")
                 .whereEqualTo("Merchant Name", "Softlogic Holdings PLC")
                 .whereEqualTo("Merchant Rated", false)
+                .whereEqualTo("Customer Email", CurrentCustomer.email)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -500,6 +503,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ViewHold
         db.collection("Merchant Reviews")
                 .whereEqualTo("Merchant Name", "Abans")
                 .whereEqualTo("Merchant Rated", false)
+                .whereEqualTo("Customer Email", CurrentCustomer.email)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -537,6 +541,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ViewHold
         db.collection("Merchant Reviews")
                 .whereEqualTo("Merchant Name", "Singer")
                 .whereEqualTo("Merchant Rated", false)
+                .whereEqualTo("Customer Email", CurrentCustomer.email)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -573,6 +578,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ViewHold
         db.collection("Merchant Reviews")
                 .whereEqualTo("Merchant Name", "Softlogic Holdings PLC")
                 .whereEqualTo("Merchant Rated", false)
+                .whereEqualTo("Customer Email", CurrentCustomer.email)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override

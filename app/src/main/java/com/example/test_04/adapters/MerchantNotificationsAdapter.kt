@@ -33,7 +33,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class MerchantNotificationsAdapter(var customerNotificationsHolder: ArrayList<CustomerNotification>, var customerNotificationsData: ArrayList<DateComparator>, var merchantHome: MerchantHome?, var customerHome: CustomerHome?) : RecyclerView.Adapter<MerchantNotificationsAdapter.ViewHolder>() {
+class MerchantNotificationsAdapter(var customerNotificationsHolder: ArrayList<CustomerNotification>, var customerNotificationsData: ArrayList<DateComparator>?, var merchantHome: MerchantHome?, var customerHome: CustomerHome?, productReview: ProductReview?) : RecyclerView.Adapter<MerchantNotificationsAdapter.ViewHolder>() {
 
     private var lastDate = Calendar.getInstance().time
     private var db: FirebaseFirestore = FirebaseFirestore.getInstance()
@@ -44,6 +44,12 @@ class MerchantNotificationsAdapter(var customerNotificationsHolder: ArrayList<Cu
     private var customer: Customer? = null
     private var merchant: Merchant? = null
     private var context: Context = if (customerHome != null) customerHome!! else merchantHome!!
+
+    init {
+        if (customerNotificationsData == null) {
+            getProductReviewChat(productReview!!)
+        }
+    }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -68,7 +74,7 @@ class MerchantNotificationsAdapter(var customerNotificationsHolder: ArrayList<Cu
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         val customerNotificationHolder = customerNotificationsHolder[position]
-        val customerNotificationData = customerNotificationsData[position]
+        val customerNotificationData = customerNotificationsData!![position]
 
         val tvDateHeading: TextView = holder.tvDateHeading
         val tvNotificationTitle: TextView = holder.tvNotificationTitle

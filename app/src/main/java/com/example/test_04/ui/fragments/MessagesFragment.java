@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.example.test_04.R;
 import com.example.test_04.adapters.MessagesPagerAdapter;
+import com.example.test_04.models.ProductReview;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
@@ -46,13 +47,36 @@ public class MessagesFragment extends Fragment {
             fragments.add(new InboxFragment());
         }
 
-        pagerAdapter = new MessagesPagerAdapter(getChildFragmentManager(), fragments);
-        vpMain.setAdapter(pagerAdapter);
-        tlTabs.setupWithViewPager(vpMain);
+        if (!isProductReview()) {
+            pagerAdapter = new MessagesPagerAdapter(getChildFragmentManager(), fragments);
+            vpMain.setAdapter(pagerAdapter);
+            tlTabs.setupWithViewPager(vpMain);
+        }
 
         checkArguments();
 
         return view;
+    }
+
+    private boolean isProductReview() {
+        if (getArguments() != null) {
+            ProductReview productReview = (ProductReview) getArguments().getSerializable("Product Review");
+
+            if (productReview != null) {
+                Bundle arguments = new Bundle();
+                arguments.putSerializable("Product Review", productReview);
+                fragments.get(0).setArguments(arguments);
+                pagerAdapter = new MessagesPagerAdapter(getChildFragmentManager(), fragments);
+                vpMain.setAdapter(pagerAdapter);
+                tlTabs.setupWithViewPager(vpMain);
+                setArguments(null);
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
     }
 
     private void checkArguments() {

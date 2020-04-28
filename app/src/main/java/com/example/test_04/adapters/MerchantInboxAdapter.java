@@ -75,7 +75,10 @@ public class MerchantInboxAdapter extends RecyclerView.Adapter<MerchantInboxAdap
 
         holder.tvCustomerName.setText(chatsWithLastMsg.get(position).getCustomerName());
         holder.tvCustomerAlias.setText(String.valueOf(chatsWithLastMsg.get(position).getCustomerName().charAt(0)));
-        holder.tvDate.setText(chatsWithLastMsg.get(position).getDate());
+
+        String time = DateUtils.dateToTimeString(DateUtils.stringToDateWithTime(chatsWithLastMsg.get(position).getDate()));
+
+        holder.tvDate.setText(time);
 
         Date currentDate = Calendar.getInstance().getTime();
         Date msgDate = DateUtils.stringToDateWithTime(chatsWithLastMsg.get(position).getDate());

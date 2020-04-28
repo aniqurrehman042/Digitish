@@ -21,6 +21,7 @@ import com.example.test_04.db_callbacks.IGetProductReviews;
 import com.example.test_04.db_callbacks.IIsOldCustomer;
 import com.example.test_04.models.CurrentCustomer;
 import com.example.test_04.models.CustomerNotification;
+import com.example.test_04.models.Merchant;
 import com.example.test_04.models.MerchantReview;
 import com.example.test_04.models.Offer;
 import com.example.test_04.models.ProductReview;
@@ -71,7 +72,35 @@ public class NotificationsFragment extends Fragment {
     }
 
     private void init() {
-        getCustomerNotifications();
+        if (!isProductReview())
+            getCustomerNotifications();
+    }
+
+    private boolean isProductReview() {
+        if (getArguments() != null) {
+            ProductReview productReview = (ProductReview) getArguments().getSerializable("Product Review");
+
+            if (productReview != null) {
+                startProductReviewChatThroughNotificationsRecycler(productReview);
+                setArguments(null);
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    private void startProductReviewChatThroughNotificationsRecycler(ProductReview productReview) {
+        rvNotifications.setVisibility(View.VISIBLE);
+        adapter = new MerchantNotificationsAdapter(customerNotificationsHolder, null, null, customerHome, productReview);
+        rvNotifications.setLayoutManager(new LinearLayoutManager(customerHome));
+        rvNotifications.setAdapter(adapter);
+
+        if (customerNotificationsHolder.isEmpty()) {
+            rvNotifications.setVisibility(View.GONE);
+        }
     }
 
     private void showProgressDialog(String title) {
@@ -257,7 +286,7 @@ public class NotificationsFragment extends Fragment {
 
     private void setUpNotificationsRecycler() {
         rvNotifications.setVisibility(View.VISIBLE);
-        adapter = new MerchantNotificationsAdapter(customerNotificationsHolder, customerNotificationsData, null, customerHome);
+        adapter = new MerchantNotificationsAdapter(customerNotificationsHolder, customerNotificationsData, null, customerHome, null);
         rvNotifications.setLayoutManager(new LinearLayoutManager(customerHome));
         rvNotifications.setAdapter(adapter);
 

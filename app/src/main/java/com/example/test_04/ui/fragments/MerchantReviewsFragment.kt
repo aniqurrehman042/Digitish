@@ -123,7 +123,7 @@ class MerchantReviewsFragment : Fragment() {
     }
 
     private fun setUpFilters() {
-        val filterNames = arrayOf("Merchant rating", "Reviews", "5 star reviews", "4 star reviews", "3 star reviews", "2 star reviews", "1 star reviews")
+        val filterNames = arrayOf("Merchant Rating", "Reviews", "5 star reviews", "4 star reviews", "3 star reviews", "2 star reviews", "1 star reviews")
         filters = ArrayList()
         for (filterName in filterNames) {
             filters.add(Filter(filterName, false))
@@ -183,7 +183,7 @@ class MerchantReviewsFragment : Fragment() {
         Collections.sort(merchantReviews, Collections.reverseOrder<DateComparator>())
         Collections.sort(merchantReviewsHolder, Collections.reverseOrder<DateComparator>())
         
-        merchantNotificationsAdapter = MerchantNotificationsAdapter(merchantReviewsHolder, merchantReviews as ArrayList<DateComparator>, merchantHome!!, null)
+        merchantNotificationsAdapter = MerchantNotificationsAdapter(merchantReviewsHolder, merchantReviews as ArrayList<DateComparator>, merchantHome!!, null, null)
         reviewsLayoutManager = LinearLayoutManager(merchantHome)
         rvReviews.layoutManager = reviewsLayoutManager
         rvReviews.adapter = merchantNotificationsAdapter

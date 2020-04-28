@@ -8,6 +8,7 @@ import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.test_04.models.CurrentCustomer
+import com.example.test_04.models.ProductReview
 import com.google.firebase.messaging.FirebaseMessaging
 import org.json.JSONException
 import org.json.JSONObject
@@ -36,6 +37,45 @@ class FCMUtils {
                 notificationBody.put("Sender Name Or Email", senderNameOrEmail)
                 notificationBody.put("Review", review)
                 notificationBody.put("Merchant", receiverMerchant)
+                notification.put("to", topic)
+                notification.put("data", notificationBody)
+                Log.e("TAG", "try")
+            } catch (e: JSONException) {
+                Log.e("TAG", "onCreate: " + e.message)
+            }
+
+            sendNotification(context, notification)
+        }
+
+        fun sendMessage(context: Context, review: Boolean, receiverMerchant: Boolean, title: String, message: String, receiverNameOrEmail: String, senderNameOrEmail: String, productReview: ProductReview) {
+
+            FirebaseMessaging.getInstance().subscribeToTopic("/topics/Enter_your_topic_name")
+            val topic = "/topics/Enter_your_topic_name" //topic has to match what the receiver subscribed to
+
+            val notification = JSONObject()
+            val notificationBody = JSONObject()
+
+            try {
+                notificationBody.put("title", title)
+                notificationBody.put("message", message)   //Enter your notification message
+                notificationBody.put("Receiver Name Or Email", receiverNameOrEmail)
+                notificationBody.put("Sender Name Or Email", senderNameOrEmail)
+                notificationBody.put("Review", review)
+                notificationBody.put("Merchant", receiverMerchant)
+                notificationBody.put("Customer Email", productReview.customerEmail)
+                notificationBody.put("Customer Name", productReview.customerName)
+                notificationBody.put("Merchant Name", productReview.merchantName)
+                notificationBody.put("Product Code", productReview.productCode)
+                notificationBody.put("Product Name", productReview.productName)
+                notificationBody.put("Product Category", productReview.productCategory)
+                notificationBody.put("Product Rating", productReview.productRating)
+                notificationBody.put("Review Title", productReview.reviewTitle)
+                notificationBody.put("Review Description", productReview.reviewDescription)
+                notificationBody.put("QR Id", productReview.qrId)
+                notificationBody.put("Reviewed", productReview.isReviewed)
+                notificationBody.put("Completed", productReview.isCompleted)
+                notificationBody.put("Date", productReview.date)
+                notificationBody.put("Id", productReview.id)
                 notification.put("to", topic)
                 notification.put("data", notificationBody)
                 Log.e("TAG", "try")

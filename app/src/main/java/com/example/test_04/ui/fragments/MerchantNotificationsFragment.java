@@ -46,6 +46,7 @@ public class MerchantNotificationsFragment extends Fragment {
     private int done = 0;
     private boolean addingData = false;
     private boolean madeAsynchCalls = false;
+    MerchantNotificationsAdapter adapter;
 
     public MerchantNotificationsFragment() {
         // Required empty public constructor
@@ -73,7 +74,35 @@ public class MerchantNotificationsFragment extends Fragment {
     }
 
     private void init() {
-        getNotifications();
+        if (!isProductReview())
+            getNotifications();
+    }
+
+    private boolean isProductReview() {
+        if (getArguments() != null) {
+            ProductReview productReview = (ProductReview) getArguments().getSerializable("Product Review");
+
+            if (productReview != null) {
+                startProductReviewChatThroughNotificationsRecycler(productReview);
+                setArguments(null);
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    private void startProductReviewChatThroughNotificationsRecycler(ProductReview productReview) {
+        rvNotifications.setVisibility(View.VISIBLE);
+        adapter = new MerchantNotificationsAdapter(customerNotificationsHolder, null, merchantHome, null, productReview);
+        rvNotifications.setLayoutManager(new LinearLayoutManager(merchantHome));
+        rvNotifications.setAdapter(adapter);
+
+        if (customerNotificationsHolder.isEmpty()) {
+            rvNotifications.setVisibility(View.GONE);
+        }
     }
 
     private void getNotifications() {
@@ -255,7 +284,7 @@ public class MerchantNotificationsFragment extends Fragment {
 
     private void setUpNotificationsRecycler() {
         rvNotifications.setVisibility(View.VISIBLE);
-        MerchantNotificationsAdapter adapter = new MerchantNotificationsAdapter(customerNotificationsHolder, customerNotificationsData, merchantHome, null);
+        adapter = new MerchantNotificationsAdapter(customerNotificationsHolder, customerNotificationsData, merchantHome, null, null);
         rvNotifications.setLayoutManager(new LinearLayoutManager(getContext()));
         rvNotifications.setAdapter(adapter);
 

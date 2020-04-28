@@ -84,10 +84,16 @@ public class MerchantHome extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             boolean review = extras.getBoolean("Review");
-            if (review)
+            if (review) {
+                ProductReview productReview = (ProductReview) extras.getSerializable("Product Review");
+                Bundle arguments = new Bundle();
+                arguments.putSerializable("Product Review", productReview);
+                fragments.get(2).setArguments(arguments);
                 startFragment(fragments.get(2));
-            else
+            }
+            else {
                 startFragment(fragments.get(1));
+            }
         }
     }
 

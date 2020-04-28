@@ -32,6 +32,7 @@ import com.example.test_04.async.DownloadImageTask;
 import com.example.test_04.models.Chat;
 import com.example.test_04.models.CurrentCustomer;
 import com.example.test_04.models.Merchant;
+import com.example.test_04.models.Product;
 import com.example.test_04.models.ProductReview;
 import com.example.test_04.models.ProductReviewChat;
 import com.example.test_04.ui.fragments.AccountFragment;
@@ -396,8 +397,10 @@ public class CustomerHome extends AppCompatActivity {
         if (extras != null) {
             boolean review = extras.getBoolean("Review");
             if (review) {
+                ProductReview productReview = (ProductReview) extras.getSerializable("Product Review");
                 Bundle arguments = new Bundle();
                 arguments.putBoolean("Review", true);
+                arguments.putSerializable("Product Review", productReview);
                 fragments.get(1).setArguments(arguments);
                 startFragment(fragments.get(1));
             } else

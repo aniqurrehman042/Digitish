@@ -298,7 +298,7 @@ public class ProductReviewFragment extends Fragment {
                                         }
                                     });
 
-                            FCMUtils.Companion.sendMessage(customerHome, true, true, "Review", "Your product has been rated by " + CurrentCustomer.name, productReview.getMerchantName(), CurrentCustomer.email);
+                            FCMUtils.Companion.sendMessage(customerHome, true, true, "Review", "Your product has been rated by " + CurrentCustomer.name, productReview.getMerchantName(), CurrentCustomer.email, productReview);
                             FCMUtils.Companion.sendMessage(customerHome, true, false, "Review published - " + productReview.getMerchantName(), "Your review for " + productReview.getProductName() + " has been published", CurrentCustomer.email, CurrentCustomer.email);
 
                         } else {

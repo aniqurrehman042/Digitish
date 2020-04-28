@@ -372,7 +372,7 @@ class ProductReviewChatFragment : Fragment() {
                             senderNameOrEmail = productReview!!.merchantName
                             receiverNameOrEmail = productReview!!.customerEmail
                         }
-                        sendMessage(context!!, true, receiverMerchant, "Review", message, receiverNameOrEmail, senderNameOrEmail)
+                        sendMessage(context!!, true, receiverMerchant, "Review", message, receiverNameOrEmail, senderNameOrEmail, productReview!!)
                     } else {
                         productReviewChat.sent = false
                         productReviewChatAdapter.notifyItemChanged(productReviewChats.indexOf(productReviewChat))

@@ -15,6 +15,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import com.example.test_04.R
 import com.example.test_04.db_callbacks.IIsOldCustomer
+import com.example.test_04.models.ProductReview
 import com.example.test_04.ui.CustomerHome
 import com.example.test_04.ui.MerchantHome
 import com.example.test_04.utils.DBUtils
@@ -41,12 +42,36 @@ class NotificationFirebaseService : FirebaseMessagingService() {
         val title: String = p0.data["title"].toString()
         val message: String = p0.data["message"].toString()
 
+        val customerEmail = p0.data["Customer Email"]
+
+        val isProductReview = customerEmail != null && customerEmail.isNotEmpty()
+
         var intent = Intent(this, CustomerHome::class.java)
 
         if (receiverMerchant)
             intent = Intent(this, MerchantHome::class.java)
 
         intent.putExtra("Review", review)
+
+        if (isProductReview) {
+            val customerName = p0.data["Customer Name"]
+            val merchantName = p0.data["Merchant Name"]
+            val productCode = p0.data["Product Code"]
+            val productName = p0.data["Product Name"]
+            val productCategory = p0.data["Product Category"]
+            val productRating = p0.data["Product Rating"]!!.toInt()
+            val reviewTitle = p0.data["Review Title"]
+            val reviewDescription = p0.data["Review Description"]
+            val qrId = p0.data["QR Id"]
+            val reviewed = p0.data["Reviewed"]!!.toBoolean()
+            val completed = p0.data["Completed"]!!.toBoolean()
+            val id = p0.data["Id"]
+            val date = p0.data["Date"]
+
+            val productReview = ProductReview(customerEmail, customerName, merchantName, productCode, productName, productCategory, productRating, reviewDescription, reviewTitle, qrId, completed, reviewed, date)
+            productReview.id = id
+            intent.putExtra("Product Review", productReview)
+        }
 
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val notificationID = Random().nextInt(3000)

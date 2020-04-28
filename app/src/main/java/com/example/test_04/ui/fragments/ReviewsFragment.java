@@ -124,7 +124,11 @@ public class ReviewsFragment extends Fragment {
     }
 
     private void setUpReviewsRecycler() {
-        adapter = new ReviewsAdapter(productReviews, getFragmentManager(), customerHome);
+        if (progressDialog == null) {
+            showProgressDialog("");
+            progressDialog.dismiss();
+        }
+        adapter = new ReviewsAdapter(productReviews, getFragmentManager(), customerHome, progressDialog);
         rvReviews.setLayoutManager(new LinearLayoutManager(getContext()));
         rvReviews.setAdapter(adapter);
     }

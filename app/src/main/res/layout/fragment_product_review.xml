@@ -143,7 +143,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:maxLines="1"
-            android:maxLength="50"
+            android:maxLength="75"
             android:lines="1"
             android:inputType="textCapSentences"/>
 
@@ -163,7 +163,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=" / 50"
+                android:text=" / 75"
                 android:textSize="@dimen/text_sub_normal"
                 android:textColor="@color/dark_grey"/>
 
@@ -182,7 +182,7 @@
             android:layout_height="wrap_content"
             android:gravity="top"
             android:maxLines="3"
-            android:maxLength="120"
+            android:maxLength="250"
             android:lines="3"
             android:inputType="textMultiLine"/>
 
@@ -202,7 +202,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=" / 120"
+                android:text=" / 250"
                 android:textSize="@dimen/text_sub_normal"
                 android:textColor="@color/dark_grey"/>
 
