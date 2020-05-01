@@ -280,7 +280,7 @@ public class CustomerHome extends AppCompatActivity {
     }
 
     public void onProductCategorySearchFragmentResume(String productCategory) {
-        tvTitle.setText("Reviews - " + productCategory);
+        tvTitle.setText("Reviews for " + productCategory);
         llSearchIcons.setVisibility(View.GONE);
         llMore.setVisibility(View.GONE);
         showBackBtn();
@@ -288,15 +288,17 @@ public class CustomerHome extends AppCompatActivity {
 
     public void onSearchFragmentResume() {
         searchBackClick();
+        hideBackBtn();
         llSearchIcons.setVisibility(View.VISIBLE);
         llMore.setVisibility(View.GONE);
         tvTitle.setText("Search");
     }
 
-    public void startProductCategorySearch(String productCategory) {
+    public void startProductCategorySearch(String productCategory, String merchantName) {
         SearchFragment searchFragment = new SearchFragment();
         Bundle arguments = new Bundle();
         arguments.putSerializable("Product Category", productCategory);
+        arguments.putSerializable("Merchant Name", merchantName);
         searchFragment.setArguments(arguments);
 
         fragmentManager

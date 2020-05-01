@@ -86,10 +86,10 @@ public class MerchantDetailsFragment extends Fragment {
     private void setUpProductsRecycler() {
         ArrayList<Product> products = new ArrayList<>();
         products.add(new Product(null, "Washing Machine", "Washing Machines", null));
-        products.add(new Product(null, "TV", "Televisions", null));
+        products.add(new Product(null, "Television", "Televisions", null));
         products.add(new Product(null, "Microwave", "Microwaves", null));
         products.add(new Product(null, "Refrigerator", "Refrigerators", null));
-        ProductsAdapter adapter = new ProductsAdapter(customerHome, products);
+        ProductsAdapter adapter = new ProductsAdapter(customerHome, products, merchant);
         LinearLayoutManager lm = new LinearLayoutManager(customerHome);
         lm.setOrientation(LinearLayoutManager.HORIZONTAL);
         rvProducts.setAdapter(adapter);

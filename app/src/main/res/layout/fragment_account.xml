@@ -156,26 +156,6 @@
             app:layout_constraintTop_toTopOf="@id/iv_feedback"
             app:layout_constraintBottom_toBottomOf="@id/iv_feedback"/>
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_suggestions"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_large"
-            android:fontFamily="@font/roboto_medium"
-            android:text="Product suggestions"
-            android:textColor="@color/dark_grey"
-            android:textSize="@dimen/_10ssp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iv_feedback"/>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_suggestions"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_150sdp"
-        app:layout_constraintTop_toBottomOf="@+id/cl_container"
-        android:layout_marginLeft="@dimen/_10sdp"
-        android:layout_marginTop="@dimen/margin_normal"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

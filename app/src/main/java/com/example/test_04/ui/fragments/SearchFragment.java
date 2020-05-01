@@ -58,6 +58,7 @@ public class SearchFragment extends Fragment {
     private boolean reviewsLoadingCompleted = true;
     private boolean madeMerchantAsynchCalls = false;
     private String productCategory = null;
+    private String merchantName = null;
 
     public SearchFragment() {
         // Required empty public constructor
@@ -106,6 +107,7 @@ public class SearchFragment extends Fragment {
 
     private void checkProductCategory() {
         productCategory = getArguments().getString("Product Category");
+        merchantName = getArguments().getString("Merchant Name");
     }
 
     private void firstRunCheck() {
@@ -287,6 +289,7 @@ public class SearchFragment extends Fragment {
 
         if (productCategory != null) {
             query = query.whereEqualTo("Product Category", productCategory);
+            query = query.whereEqualTo("Merchant Name", merchantName);
         }
 
         query.get()

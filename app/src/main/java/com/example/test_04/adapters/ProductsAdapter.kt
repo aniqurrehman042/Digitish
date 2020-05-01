@@ -9,11 +9,12 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.test_04.R
+import com.example.test_04.models.Merchant
 import com.example.test_04.models.Product
 import com.example.test_04.ui.CustomerHome
 import java.util.*
 
-class ProductsAdapter(var context: Context, var products: ArrayList<Product>) : RecyclerView.Adapter<ProductsAdapter.ViewHolder>() {
+class ProductsAdapter(var context: Context, var products: ArrayList<Product>, var merchant: Merchant) : RecyclerView.Adapter<ProductsAdapter.ViewHolder>() {
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var ivProductImg: ImageView = itemView.findViewById(R.id.iv_product_img)
@@ -40,7 +41,7 @@ class ProductsAdapter(var context: Context, var products: ArrayList<Product>) : 
         }
 
         holder.llMain.setOnClickListener {
-            (context as CustomerHome).startProductCategorySearch(products[position].productCategory)
+            (context as CustomerHome).startProductCategorySearch(products[position].productCategory, merchant.name)
         }
 
     }

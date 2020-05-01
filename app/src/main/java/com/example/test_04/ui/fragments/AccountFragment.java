@@ -27,7 +27,6 @@ import java.util.ArrayList;
  */
 public class AccountFragment extends Fragment {
 
-    private RecyclerView rvSuggestions;
     private TextView tvCustomerName;
     private TextView tvCustomerPoints;
     private RoundedImageView rivProfilePicture;
@@ -51,19 +50,6 @@ public class AccountFragment extends Fragment {
         findViews(view);
 
         setViewValues();
-
-        rvSuggestions = view.findViewById(R.id.rv_suggestions);
-        ArrayList<Product> products = new ArrayList<>();
-        products.add(new Product(null, "Washing Machine", "Washing Machines", null));
-        products.add(new Product(null, "TV", "Televisions", null));
-        products.add(new Product(null, "Microwave", "Microwaves", null));
-        products.add(new Product(null, "Smart TV", "Televisions1", null));
-        products.add(new Product(null, "Refrigerator", "Refrigerators", null));
-        SuggestionsAdapter adapter = new SuggestionsAdapter(getContext(), products);
-        LinearLayoutManager lm = new LinearLayoutManager(getContext());
-        lm.setOrientation(LinearLayoutManager.HORIZONTAL);
-        rvSuggestions.setAdapter(adapter);
-        rvSuggestions.setLayoutManager(lm);
 
         view.findViewById(R.id.cl_profile).setOnClickListener(new View.OnClickListener() {
             @Override
