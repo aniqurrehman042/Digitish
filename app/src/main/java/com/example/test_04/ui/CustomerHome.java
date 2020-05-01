@@ -7,7 +7,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -19,7 +18,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.LinearLayoutCompat;
-import androidx.appcompat.widget.PopupMenu;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
@@ -32,7 +30,6 @@ import com.example.test_04.async.DownloadImageTask;
 import com.example.test_04.models.Chat;
 import com.example.test_04.models.CurrentCustomer;
 import com.example.test_04.models.Merchant;
-import com.example.test_04.models.Product;
 import com.example.test_04.models.ProductReview;
 import com.example.test_04.models.ProductReviewChat;
 import com.example.test_04.ui.fragments.AccountFragment;
@@ -64,8 +61,8 @@ public class CustomerHome extends AppCompatActivity {
     private LinearLayout llAccount;
     private FragmentManager fragmentManager;
     private ArrayList<Fragment> fragments = new ArrayList<>();
-    private String lastFragment = "Account";
-    private String currentFragment = "Account";
+    private String lastFragment = "Search";
+    private String currentFragment = "Search";
     private CardView cvSearch;
     private LinearLayout llSearchIcons;
     private TextView tvTitle;
@@ -165,14 +162,14 @@ public class CustomerHome extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     fragmentManager.beginTransaction()
-                                    .replace(R.id.cl_fragment, merchantDetailsFragment)
-                                    .addToBackStack("Merchant Details")
-                                    .commit();
+                            .replace(R.id.cl_fragment, merchantDetailsFragment)
+                            .addToBackStack("Merchant Details")
+                            .commit();
                     popupWindow.dismiss();
                 }
             });
 
-            ((TextView)popupView.findViewById(R.id.tv_menu)).setText("Show Merchant");
+            ((TextView) popupView.findViewById(R.id.tv_menu)).setText("Show Merchant");
         }
     };
 
@@ -222,7 +219,7 @@ public class CustomerHome extends AppCompatActivity {
                 }
             });
 
-            ((TextView)popupView.findViewById(R.id.tv_menu)).setText("Profile");
+            ((TextView) popupView.findViewById(R.id.tv_menu)).setText("Profile");
         }
     };
 
@@ -282,11 +279,31 @@ public class CustomerHome extends AppCompatActivity {
         llMore.setVisibility(View.VISIBLE);
     }
 
+    public void onProductCategorySearchFragmentResume(String productCategory) {
+        tvTitle.setText("Reviews - " + productCategory);
+        llSearchIcons.setVisibility(View.GONE);
+        llMore.setVisibility(View.GONE);
+        showBackBtn();
+    }
+
     public void onSearchFragmentResume() {
         searchBackClick();
         llSearchIcons.setVisibility(View.VISIBLE);
         llMore.setVisibility(View.GONE);
         tvTitle.setText("Search");
+    }
+
+    public void startProductCategorySearch(String productCategory) {
+        SearchFragment searchFragment = new SearchFragment();
+        Bundle arguments = new Bundle();
+        arguments.putSerializable("Product Category", productCategory);
+        searchFragment.setArguments(arguments);
+
+        fragmentManager
+                .beginTransaction()
+                .replace(R.id.cl_fragment, searchFragment)
+                .addToBackStack("Search")
+                .commit();
     }
 
     public void startChatFragment(ArrayList<Chat> chats, @Nullable Merchant merchant) {
@@ -372,18 +389,15 @@ public class CustomerHome extends AppCompatActivity {
         DBUtils.setContext(this);
         setCustomerValues();
 
-//        startNotificationService();
-
         findViews();
 
         initializeObjects();
 
-        setPageTitle("Account");
-
+        setPageTitle("Search");
 
         fragmentManager.beginTransaction()
-                .add(R.id.cl_fragment, fragments.get(0))
-                .addToBackStack("Account")
+                .add(R.id.cl_fragment, fragments.get(3))
+                .addToBackStack("Search")
                 .commit();
         fragmentManager.executePendingTransactions();
 
@@ -590,13 +604,11 @@ public class CustomerHome extends AppCompatActivity {
             setFirstRunArguments(fragment);
 
         try {
-//            if (!currentFragment.equals(lastFragment)) {
             reduceFragmentStack();
             fragmentManager
                     .beginTransaction()
                     .replace(R.id.cl_fragment, fragment, currentFragment)
                     .commitNow();
-//            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -610,8 +622,6 @@ public class CustomerHome extends AppCompatActivity {
     }
 
     private void resetIcon() {
-//        if (fragmentManager.getBackStackEntryCount() > 0)
-//            this.lastFragment = fragmentManager.getBackStackEntryAt(fragmentManager.getBackStackEntryCount() - 1).getName();
         lastFragment = currentFragment;
         switch (lastFragment) {
             case "Profile":
@@ -641,7 +651,6 @@ public class CustomerHome extends AppCompatActivity {
 
     private void setIcon(boolean isBackpressed) {
         if (isBackpressed)
-//            currentFragment = fragmentManager.getBackStackEntryAt(fragmentManager.getBackStackEntryCount() - 1).getName();
             currentFragment = lastFragment;
         switch (currentFragment) {
             case "Profile":

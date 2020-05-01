@@ -4,6 +4,8 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,9 +15,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.test_04.R;
+import com.example.test_04.adapters.ProductsAdapter;
+import com.example.test_04.adapters.SuggestionsAdapter;
 import com.example.test_04.models.Chat;
 import com.example.test_04.models.CurrentCustomer;
 import com.example.test_04.models.Merchant;
+import com.example.test_04.models.Product;
 import com.example.test_04.ui.CustomerHome;
 import com.example.test_04.utils.ReviewUtils;
 import com.example.test_04.utils.StringUtils;
@@ -42,6 +47,7 @@ public class MerchantDetailsFragment extends Fragment {
     private TextView tvMerchantName;
     private TextView tvMerchantDesc;
     private TextView tvProducts;
+    private RecyclerView rvProducts;
 
     private CustomerHome customerHome;
     private Merchant merchant;
@@ -74,6 +80,20 @@ public class MerchantDetailsFragment extends Fragment {
 
         setViewValues();
         setListeners();
+        setUpProductsRecycler();
+    }
+
+    private void setUpProductsRecycler() {
+        ArrayList<Product> products = new ArrayList<>();
+        products.add(new Product(null, "Washing Machine", "Washing Machines", null));
+        products.add(new Product(null, "TV", "Televisions", null));
+        products.add(new Product(null, "Microwave", "Microwaves", null));
+        products.add(new Product(null, "Refrigerator", "Refrigerators", null));
+        ProductsAdapter adapter = new ProductsAdapter(customerHome, products);
+        LinearLayoutManager lm = new LinearLayoutManager(customerHome);
+        lm.setOrientation(LinearLayoutManager.HORIZONTAL);
+        rvProducts.setAdapter(adapter);
+        rvProducts.setLayoutManager(lm);
     }
 
     private void setViewValues() {
@@ -82,7 +102,7 @@ public class MerchantDetailsFragment extends Fragment {
         tvMerchantName.setText(merchant.getName());
         tvMerchantDesc.setText(merchant.getDescription());
 
-        reviewUtils.fillStars((int) Math.rint(Double.valueOf(merchant.getRating())));
+        reviewUtils.fillStars((int) Math.rint(Double.parseDouble(merchant.getRating())));
     }
 
     private void setListeners() {
@@ -132,6 +152,7 @@ public class MerchantDetailsFragment extends Fragment {
         tvMerchantName = view.findViewById(R.id.tv_merchant_name);
         tvMerchantDesc = view.findViewById(R.id.tv_merchant_desc);
         tvProducts = view.findViewById(R.id.tv_products);
+        rvProducts = view.findViewById(R.id.rv_products);
     }
 
     @Override

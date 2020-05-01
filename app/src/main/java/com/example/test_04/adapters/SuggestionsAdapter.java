@@ -53,7 +53,6 @@ public class SuggestionsAdapter extends RecyclerView.Adapter<SuggestionsAdapter.
             case "Televisions1":
                 holder.ivProductImg.setImageResource(R.drawable.item1);
                 break;
-
         }
     }
 

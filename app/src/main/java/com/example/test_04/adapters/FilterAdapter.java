@@ -70,28 +70,51 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.ViewHolder
 
         if (searchFragment != null) {
 
-            switch (position) {
-                case 0:
-                    searchFragment.getMerchants();
-                    break;
-                case 1:
-                    searchFragment.getReviews("", "");
-                    break;
-                case 2:
-                    searchFragment.getReviews("Product Rating", "5");
-                    break;
-                case 3:
-                    searchFragment.getReviews("Product Rating", "4");
-                    break;
-                case 4:
-                    searchFragment.getReviews("Product Rating", "3");
-                    break;
-                case 5:
-                    searchFragment.getReviews("Product Rating", "2");
-                    break;
-                case 6:
-                    searchFragment.getReviews("Product Rating", "1");
-                    break;
+            if (filters.size() == 7) {
+                switch (position) {
+                    case 0:
+                        searchFragment.getMerchants();
+                        break;
+                    case 1:
+                        searchFragment.getReviews("", "");
+                        break;
+                    case 2:
+                        searchFragment.getReviews("Product Rating", "5");
+                        break;
+                    case 3:
+                        searchFragment.getReviews("Product Rating", "4");
+                        break;
+                    case 4:
+                        searchFragment.getReviews("Product Rating", "3");
+                        break;
+                    case 5:
+                        searchFragment.getReviews("Product Rating", "2");
+                        break;
+                    case 6:
+                        searchFragment.getReviews("Product Rating", "1");
+                        break;
+                }
+            } else if (filters.size() == 6) {
+                switch (position) {
+                    case 0:
+                        searchFragment.getReviews("", "");
+                        break;
+                    case 1:
+                        searchFragment.getReviews("Product Rating", "5");
+                        break;
+                    case 2:
+                        searchFragment.getReviews("Product Rating", "4");
+                        break;
+                    case 3:
+                        searchFragment.getReviews("Product Rating", "3");
+                        break;
+                    case 4:
+                        searchFragment.getReviews("Product Rating", "2");
+                        break;
+                    case 5:
+                        searchFragment.getReviews("Product Rating", "1");
+                        break;
+                }
             }
         } else {
 

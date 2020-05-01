@@ -57,6 +57,7 @@ public class SearchFragment extends Fragment {
     private int reviewsLoaded = 0;
     private boolean reviewsLoadingCompleted = true;
     private boolean madeMerchantAsynchCalls = false;
+    private String productCategory = null;
 
     public SearchFragment() {
         // Required empty public constructor
@@ -85,6 +86,7 @@ public class SearchFragment extends Fragment {
 
         if (getArguments() != null) {
             firstRunCheck();
+            checkProductCategory();
         }
 
         setArguments(null);
@@ -95,9 +97,15 @@ public class SearchFragment extends Fragment {
 
         if (!productReviews.isEmpty() && filterAdapter.getSelectedFilter() != 0) {
             setUpReviewsRecycler();
-        }else if (filterAdapter.getSelectedFilter() == 0) {
+        } else if (filterAdapter.getSelectedFilter() == 0 && filters.get(0).getFilterName().equals("Merchants")) {
             getMerchants();
+        } else if (filterAdapter.getSelectedFilter() == 0 && filters.get(0).getFilterName().equals("Reviews")){
+            getReviews("", "");
         }
+    }
+
+    private void checkProductCategory() {
+        productCategory = getArguments().getString("Product Category");
     }
 
     private void firstRunCheck() {
@@ -186,7 +194,11 @@ public class SearchFragment extends Fragment {
     }
 
     private void setUpFilters() {
-        String[] filterNames = new String[]{"Merchants", "Reviews", "5 star reviews", "4 star reviews", "3 star reviews", "2 star reviews", "1 star reviews"};
+        String[] filterNames;
+        if (productCategory == null)
+            filterNames = new String[]{"Merchants", "Reviews", "5 star reviews", "4 star reviews", "3 star reviews", "2 star reviews", "1 star reviews"};
+        else
+            filterNames = new String[]{"Reviews", "5 star reviews", "4 star reviews", "3 star reviews", "2 star reviews", "1 star reviews"};
 
         filters = new ArrayList<>();
 
@@ -198,7 +210,6 @@ public class SearchFragment extends Fragment {
     }
 
     private void setUpFilterRecycler() {
-
         if (filterAdapter == null)
             filterAdapter = new FilterAdapter(filters, SearchFragment.this, null);
         selectLayoutManager = new LinearLayoutManager(getContext());
@@ -274,6 +285,10 @@ public class SearchFragment extends Fragment {
                 query = query.whereEqualTo(key, value);
         }
 
+        if (productCategory != null) {
+            query = query.whereEqualTo("Product Category", productCategory);
+        }
+
         query.get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -336,7 +351,10 @@ public class SearchFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        customerHome.onSearchFragmentResume();
+        if (productCategory == null)
+            customerHome.onSearchFragmentResume();
+        else
+            customerHome.onProductCategorySearchFragmentResume(productCategory);
     }
 
     @Override

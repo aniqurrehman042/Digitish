@@ -53,7 +53,7 @@
                 android:layout_width="@dimen/size_icon"
                 android:layout_height="@dimen/size_icon"
                 android:src="@drawable/ic_search"
-                android:tint="@color/darkest" />
+                android:tint="@color/white" />
 
         </LinearLayout>
 
@@ -127,7 +127,7 @@
                 android:layout_width="@dimen/size_icon"
                 android:layout_height="@dimen/size_icon"
                 android:src="@drawable/ic_account"
-                android:tint="@color/white" />
+                android:tint="@color/darkest" />
 
         </LinearLayout>
 

@@ -51,7 +51,6 @@ public class CustomerLogin extends AppCompatActivity {
     }
 
     private void init() {
-        setUpSignInServices();
         checkSignUp();
 
         findViews();
@@ -59,10 +58,6 @@ public class CustomerLogin extends AppCompatActivity {
         setListeners();
 
         setupGoogleLogin();
-    }
-
-    private void setUpSignInServices() {
-
     }
 
     private void checkSignUp() {
