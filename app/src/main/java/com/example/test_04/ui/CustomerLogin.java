@@ -67,6 +67,7 @@ public class CustomerLogin extends AppCompatActivity {
             boolean signUp = extrasBundle.getBoolean("signUp");
             if (signUp) {
                 tvTitle.setText("Sign in with google");
+                ((Button) findViewById(R.id.btn_login_google)).setText("Sign in with google");
             }
         } else {
             tvTitle.setText("Customer Login");
@@ -134,10 +135,15 @@ public class CustomerLogin extends AppCompatActivity {
             // The Task returned from this call is always completed, no need to attach
             // a listener.
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            if (task.getResult() != null)
-                firebaseAuthWithGoogle(task.getResult());
-            else
+            if (task.getResult() != null) {
+                try {
+                    firebaseAuthWithGoogle(task.getResult());
+                } catch (Exception e) {
+                    Toast.makeText(this, "Couldn't sign in", Toast.LENGTH_SHORT).show();
+                }
+            } else {
                 Toast.makeText(this, "Couldn't sign in", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -261,7 +267,11 @@ public class CustomerLogin extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = mAuth.getCurrentUser();
-                            handleSignInResult(acct);
+                            try {
+                                handleSignInResult(acct);
+                            } catch (Exception e) {
+                                Toast.makeText(CustomerLogin.this, "Failed to sign in", Toast.LENGTH_SHORT).show();
+                            }
                         } else {
                             // If sign in fails, display a message to the user.
                             Toast.makeText(CustomerLogin.this, "Failed to sign in", Toast.LENGTH_SHORT).show();

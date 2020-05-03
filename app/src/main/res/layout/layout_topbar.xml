@@ -92,6 +92,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:background="@drawable/bg_round_grey_on_hover"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="@dimen/_5sdp"
+            android:addStatesFromChildren="true"
             android:layout_marginLeft="@dimen/margin_tiny">
 
             <ImageView

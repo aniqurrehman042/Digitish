@@ -3,7 +3,7 @@
     android:id="@+id/ll_main"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_height="@dimen/_105sdp"
     android:gravity="center"
     android:orientation="vertical"
     android:layout_marginRight="@dimen/margin_normal"
@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_small"
         android:text="Product Name"
-        android:textSize="@dimen/text_sub_normal"
+        android:textSize="@dimen/_9sdp"
         android:textColor="@color/darkest"/>
 
 </LinearLayout>

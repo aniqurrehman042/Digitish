@@ -30,6 +30,7 @@ import com.example.test_04.ui.fragments.MerchantMessagesFragment;
 import com.example.test_04.ui.fragments.MerchantNotificationsFragment;
 import com.example.test_04.ui.fragments.MerchantReviewsFragment;
 import com.example.test_04.ui.fragments.ProductReviewChatFragment;
+import com.example.test_04.ui.fragments.SearchFragment;
 import com.example.test_04.utils.DBUtils;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -99,12 +100,13 @@ public class MerchantHome extends AppCompatActivity {
 
     private void setMerchantValues() {
         SharedPreferences sp = getSharedPreferences("Merchant", MODE_PRIVATE);
-        String[] keys = {"Merchant Name", "Merchant Description", "Email", "Products", "Merchant Rating"};
+        String[] keys = {"Merchant Name", "Merchant Description", "Email", "Products", "Merchant Rating", "Website"};
         CurrentMerchant.name = sp.getString(keys[0], "");
         CurrentMerchant.description = sp.getString(keys[1], "");
         CurrentMerchant.email = sp.getString(keys[2], "");
         CurrentMerchant.rating = sp.getString(keys[4], "");
         CurrentMerchant.products = sp.getString(keys[3], "");
+        CurrentMerchant.website = sp.getString(keys[4], "");
     }
 
     public void hideSearchIcons() {
@@ -123,13 +125,34 @@ public class MerchantHome extends AppCompatActivity {
         ivBack.setVisibility(View.GONE);
         llBack.setVisibility(View.GONE);
         llSearchIcons.setVisibility(View.GONE);
-        clBottombar.setVisibility(View.VISIBLE);
+        showBottomBar();
         llMore.setVisibility(View.VISIBLE);
+    }
+
+    public void onProductCategoryMerchantReviewsFragmentResume(String productCategory) {
+        tvTitle.setText("Reviews for " + productCategory);
+        llSearchIcons.setVisibility(View.GONE);
+        llMore.setVisibility(View.GONE);
+        showBackBtn();
+    }
+
+    public void onMerchantReviewsFragmentPause() {
+        llSearchIcons.setVisibility(View.GONE);
+        llMore.setVisibility(View.GONE);
+        hideBackBtn();
+    }
+
+    public void onMerchantReviewsFragmentResume() {
+        tvTitle.setText("Reviews");
+        llSearchIcons.setVisibility(View.GONE);
+        llMore.setVisibility(View.GONE);
+        hideBackBtn();
     }
 
     public void onMerchantAccountResume() {
         setPageTitle("Account");
         llSearchIcons.setVisibility(View.VISIBLE);
+        llMore.setVisibility(View.VISIBLE);
     }
 
     public void onMerchantAccountPause() {
@@ -164,6 +187,20 @@ public class MerchantHome extends AppCompatActivity {
                 .beginTransaction()
                 .replace(R.id.cl_fragment, chatFragment)
                 .addToBackStack("Chat")
+                .commit();
+    }
+
+    public void startProductCategorySearch(String productCategory, String merchantName) {
+        MerchantReviewsFragment merchantReviewsFragment = new MerchantReviewsFragment();
+        Bundle arguments = new Bundle();
+        arguments.putSerializable("Product Category", productCategory);
+        arguments.putSerializable("Merchant Name", merchantName);
+        merchantReviewsFragment.setArguments(arguments);
+
+        fragmentManager
+                .beginTransaction()
+                .replace(R.id.cl_fragment, merchantReviewsFragment)
+                .addToBackStack("Merchant Reviews")
                 .commit();
     }
 
@@ -338,6 +375,7 @@ public class MerchantHome extends AppCompatActivity {
                 int height = LinearLayout.LayoutParams.WRAP_CONTENT;
                 boolean focusable = true; // lets taps outside the popup also dismiss it
                 final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+                popupWindow.setOutsideTouchable(true);
                 popupWindow.setContentView(popupView);
                 popupWindow.showAsDropDown(v, -50, 0);
 

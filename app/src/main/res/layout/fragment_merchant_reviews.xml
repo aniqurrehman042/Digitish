@@ -12,6 +12,16 @@
         android:layout_height="@dimen/_40sdp"
         android:layout_marginHorizontal="@dimen/margin_small"/>
 
+    <TextView
+        android:id="@+id/tv_no_rating"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="No one has rated Abans yet"
+        android:textSize="@dimen/text_normal"
+        android:textStyle="italic"
+        android:textColor="@color/black"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_reviews"
         android:layout_width="match_parent"

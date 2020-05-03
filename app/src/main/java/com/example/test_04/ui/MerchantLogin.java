@@ -4,11 +4,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -32,6 +34,7 @@ public class MerchantLogin extends AppCompatActivity {
     private EditText etUsername;
     private EditText etPassword;
     private TextView tvTitle;
+    private TextView tvForgotPass;
     ProgressDialog progressDialog;
 
     private FirebaseFirestore db;
@@ -92,12 +95,61 @@ public class MerchantLogin extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressDialog = new ProgressDialog(MerchantLogin.this);
-                progressDialog.setTitle("Logging in");
-                progressDialog.show();
+                showProgressDialog("Logging in");
                 authenticateUser();
             }
         });
+
+        tvForgotPass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Dialog dialogResetPassword = new Dialog(MerchantLogin.this);
+                WindowManager.LayoutParams params = new WindowManager.LayoutParams();
+                dialogResetPassword.setCanceledOnTouchOutside(true);
+                dialogResetPassword.setContentView(R.layout.layout_reset_password);
+                dialogResetPassword.findViewById(R.id.btn_send).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String email = ((EditText) dialogResetPassword.findViewById(R.id.et_email)).getText().toString();
+
+                        if (email.trim().isEmpty()) {
+                            Toast.makeText(MerchantLogin.this, "Please enter your registered email", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        showProgressDialog("Sending Reset Email");
+
+                        mAuth.sendPasswordResetEmail(email)
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            Toast.makeText(MerchantLogin.this, "The instructions to reset your password have been sent to your email", Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            Toast.makeText(MerchantLogin.this, "Invalid email", Toast.LENGTH_SHORT).show();
+                                        }
+
+                                        progressDialog.dismiss();
+                                        dialogResetPassword.dismiss();
+                                    }
+                                });
+                    }
+                });
+
+                dialogResetPassword.show();
+
+                params.width = WindowManager.LayoutParams.MATCH_PARENT;
+                params.height = WindowManager.LayoutParams.WRAP_CONTENT;
+                dialogResetPassword.getWindow().setAttributes(params);
+            }
+        });
+    }
+
+    private void showProgressDialog(String title) {
+        progressDialog = new ProgressDialog(MerchantLogin.this);
+        progressDialog.setTitle(title);
+        progressDialog.setCancelable(false);
+        progressDialog.show();
     }
 
     private void authenticateUser() {
@@ -127,7 +179,6 @@ public class MerchantLogin extends AppCompatActivity {
     private void saveMerchantDetails(String email, String password) {
         db.collection("Merchants")
                 .whereEqualTo("Email", email)
-                .whereEqualTo("Password", password)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -135,6 +186,7 @@ public class MerchantLogin extends AppCompatActivity {
                         if (task.isSuccessful()){
                             if (task.getResult().getDocuments().size() < 1) {
                                 Toast.makeText(MerchantLogin.this, "Failed to login", Toast.LENGTH_SHORT).show();
+                                progressDialog.dismiss();
                                 return;
                             }
                             setPreferences(task.getResult().getDocuments().get(0).getData());
@@ -155,7 +207,7 @@ public class MerchantLogin extends AppCompatActivity {
     private void setPreferences(Map<String, Object> merchant) {
         SharedPreferences sp = getSharedPreferences("Merchant", MODE_PRIVATE);
         SharedPreferences.Editor spe = sp.edit();
-        String[] keys = {"Merchant Name", "Merchant Description", "Email", "Products", "Merchant Rating"};
+        String[] keys = {"Merchant Name", "Merchant Description", "Email", "Products", "Merchant Rating", "Website"};
         for(String key : keys){
             spe.putString(key, merchant.get(key).toString());
         }
@@ -167,5 +219,6 @@ public class MerchantLogin extends AppCompatActivity {
         tvTitle = findViewById(R.id.tv_title);
         etPassword = findViewById(R.id.et_password);
         etUsername = findViewById(R.id.et_username);
+        tvForgotPass = findViewById(R.id.tv_forgot_pass);
     }
 }

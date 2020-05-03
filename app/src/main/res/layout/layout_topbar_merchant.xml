@@ -7,7 +7,7 @@
     android:layout_height="@dimen/_50sdp"
     android:background="@color/darkest"
     android:gravity="center_vertical"
-    android:paddingHorizontal="@dimen/_15sdp"
+    android:paddingHorizontal="@dimen/_10sdp"
     android:paddingVertical="@dimen/_4sdp"
     android:orientation="horizontal">
 
@@ -60,6 +60,12 @@
             android:id="@+id/ll_more"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/bg_round_grey_on_hover"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="@dimen/_4sdp"
+            android:layout_marginRight="@dimen/_2sdp"
+            android:addStatesFromChildren="true"
             android:gravity="center">
 
             <ImageView

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -34,6 +35,7 @@ class MerchantReviewsFragment : Fragment() {
     private var madeMerchantAsynchCalls: Boolean = false
     private lateinit var rvReviews: RecyclerView
     private lateinit var rvFilters: RecyclerView
+    private lateinit var tvNoRating: TextView
 
     private var productReviews = ArrayList<ProductReview>()
     private var merchantReviews = ArrayList<MerchantReview>()
@@ -49,6 +51,8 @@ class MerchantReviewsFragment : Fragment() {
     private var reviewsLoaded = 0
     private var reviewsLoadingCompleted = true
     private var merchantHome: MerchantHome? = null
+    private var productCategory: String? = null
+    private var merchantName: String? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -67,23 +71,32 @@ class MerchantReviewsFragment : Fragment() {
     private fun findViews(view: View?) {
         rvReviews = view!!.findViewById(R.id.rv_reviews)
         rvFilters = view.findViewById(R.id.rv_select)
+        tvNoRating = view.findViewById(R.id.tv_no_rating)
     }
 
     private fun init() {
         if (arguments != null) {
             firstRunCheck()
+            checkProductCategory()
         }
         arguments = null
         if (filters.isEmpty())
             setUpFilters()
         setUpFilterRecycler()
-        if (!merchantReviewsLoadedOnce)
+        if (!merchantReviewsLoadedOnce && filters[0].filterName == "Merchant Rating")
             getMerchantReviews()
-        else if (productReviews.isNotEmpty() && filterAdapter!!.selectedFilter != 0) {
+        else if ((productReviews.isNotEmpty() && filterAdapter!!.selectedFilter != 0) || (productReviews.isNotEmpty() && filters[0].filterName == "Reviews")) {
             setUpReviewsRecycler()
+        } else if (filters[0].filterName == "Reviews") {
+            getReviews("", "")
         } else {
             setMerchantReviewsRecycler()
         }
+    }
+
+    private fun checkProductCategory() {
+        productCategory = arguments!!.getString("Product Category")
+        merchantName = arguments!!.getString("Merchant Name")
     }
 
     private fun firstRunCheck() {
@@ -106,6 +119,7 @@ class MerchantReviewsFragment : Fragment() {
     }
 
     private fun setUpReviewsRecycler() {
+        tvNoRating.visibility = View.GONE
         if (searchReviewsAdapter == null)
             searchReviewsAdapter = SearchReviewsAdapter(productReviews, null, merchantHome)
         else
@@ -123,7 +137,11 @@ class MerchantReviewsFragment : Fragment() {
     }
 
     private fun setUpFilters() {
-        val filterNames = arrayOf("Merchant Rating", "Reviews", "5 star reviews", "4 star reviews", "3 star reviews", "2 star reviews", "1 star reviews")
+        val filterNames: Array<String>
+        if (productCategory == null)
+            filterNames = arrayOf("Merchant Rating", "Reviews", "5 star reviews", "4 star reviews", "3 star reviews", "2 star reviews", "1 star reviews")
+        else
+            filterNames = arrayOf("Reviews", "5 star reviews", "4 star reviews", "3 star reviews", "2 star reviews", "1 star reviews")
         filters = ArrayList()
         for (filterName in filterNames) {
             filters.add(Filter(filterName, false))
@@ -180,9 +198,16 @@ class MerchantReviewsFragment : Fragment() {
 
     fun setMerchantReviewsRecycler() {
 
+        tvNoRating.visibility = View.GONE
+
         Collections.sort(merchantReviews, Collections.reverseOrder<DateComparator>())
         Collections.sort(merchantReviewsHolder, Collections.reverseOrder<DateComparator>())
-        
+
+        if (merchantReviews.isEmpty()) {
+            tvNoRating.visibility = View.VISIBLE
+            tvNoRating.text = "No one has rated ${CurrentMerchant.name} yet"
+        }
+
         merchantNotificationsAdapter = MerchantNotificationsAdapter(merchantReviewsHolder, merchantReviews as ArrayList<DateComparator>, merchantHome!!, null, null)
         reviewsLayoutManager = LinearLayoutManager(merchantHome)
         rvReviews.layoutManager = reviewsLayoutManager
@@ -213,6 +238,12 @@ class MerchantReviewsFragment : Fragment() {
             else
                 query.whereEqualTo(key, value)
         }
+
+        if (productCategory != null) {
+            query = query.whereEqualTo("Product Category", productCategory)
+            query = query.whereEqualTo("Merchant Name", merchantName)
+        }
+
         query.get()
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
@@ -257,7 +288,15 @@ class MerchantReviewsFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        merchantHome!!.setPageTitle("Reviews")
+        if (productCategory == null)
+            merchantHome!!.onMerchantReviewsFragmentResume()
+        else
+            merchantHome!!.onProductCategoryMerchantReviewsFragmentResume(productCategory)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        merchantHome!!.onMerchantReviewsFragmentPause()
     }
 
     override fun onDestroy() {

@@ -7,5 +7,5 @@ public class CurrentMerchant {
     public static String email;
     public static String rating;
     public static String products;
-
+    public static String website;
 }

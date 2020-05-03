@@ -12,6 +12,7 @@ import com.example.test_04.R
 import com.example.test_04.models.Merchant
 import com.example.test_04.models.Product
 import com.example.test_04.ui.CustomerHome
+import com.example.test_04.ui.MerchantHome
 import java.util.*
 
 class ProductsAdapter(var context: Context, var products: ArrayList<Product>, var merchant: Merchant) : RecyclerView.Adapter<ProductsAdapter.ViewHolder>() {
@@ -41,7 +42,11 @@ class ProductsAdapter(var context: Context, var products: ArrayList<Product>, va
         }
 
         holder.llMain.setOnClickListener {
-            (context as CustomerHome).startProductCategorySearch(products[position].productCategory, merchant.name)
+            try {
+                (context as CustomerHome).startProductCategorySearch(products[position].productCategory, merchant.name)
+            } catch (e: Exception) {
+                (context as MerchantHome).startProductCategorySearch(products[position].productCategory, merchant.name)
+            }
         }
 
     }

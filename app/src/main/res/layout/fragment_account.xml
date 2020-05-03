@@ -124,7 +124,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_contact" />
 
-        <androidx.appcompat.widget.AppCompatTextView
+        <TextView
             android:id="@+id/tv_callback"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -135,7 +135,7 @@
             app:layout_constraintTop_toTopOf="@id/iv_headset"
             app:layout_constraintBottom_toBottomOf="@id/iv_headset"/>
 
-        <androidx.appcompat.widget.AppCompatImageView
+        <ImageView
             android:id="@+id/iv_feedback"
             android:layout_width="@dimen/size_icon"
             android:layout_height="@dimen/size_icon"
@@ -143,7 +143,8 @@
             android:src="@drawable/ic_feedback"
             android:tint="@color/darkest"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iv_headset"/>
+            app:layout_constraintTop_toBottomOf="@id/iv_headset"
+            android:visibility="gone"/>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_feedback"
@@ -152,6 +153,7 @@
             android:text="Send feedback"
             android:textColor="@color/darkest"
             android:textSize="@dimen/text_normal"
+            android:visibility="gone"
             app:layout_constraintLeft_toLeftOf="@id/tv_notifications"
             app:layout_constraintTop_toTopOf="@id/iv_feedback"
             app:layout_constraintBottom_toBottomOf="@id/iv_feedback"/>

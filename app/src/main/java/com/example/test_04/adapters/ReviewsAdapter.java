@@ -967,6 +967,9 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ViewHold
                                     double productInfoRating = documentSnapshot.getDouble("Product Info");
                                     double valueRating = documentSnapshot.getDouble("Value For Price");
 
+                                    if (responsiveRating == 0)
+                                        continue;
+
                                     double averageReviewRating = (responsiveRating + saleServiceRating + agentSupportRating + productInfoRating + valueRating) / 5;
 
                                     perReviewAverage[i] = averageReviewRating;

@@ -9,6 +9,8 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Editable;
 import android.text.InputType;
@@ -32,7 +34,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.test_04.R;
+import com.example.test_04.adapters.ProductsAdapter;
 import com.example.test_04.models.CurrentMerchant;
+import com.example.test_04.models.Merchant;
+import com.example.test_04.models.Product;
 import com.example.test_04.ui.MerchantHome;
 import com.example.test_04.utils.DateUtils;
 import com.example.test_04.utils.FCMUtils;
@@ -48,6 +53,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.makeramen.roundedimageview.RoundedImageView;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
@@ -85,6 +91,7 @@ public class MerchantAccountFragment extends Fragment {
     private Button btnCreateOffer;
     private EditText etDate;
     private Calendar myCalendar = Calendar.getInstance();
+    private RecyclerView rvProducts;
 
     private DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
 
@@ -129,6 +136,21 @@ public class MerchantAccountFragment extends Fragment {
         imm = (InputMethodManager) merchantHome.getSystemService(INPUT_METHOD_SERVICE);
         setListeners();
         setViewValues();
+        setUpProductsRecycler();
+    }
+
+    private void setUpProductsRecycler() {
+        ArrayList<Product> products = new ArrayList<>();
+        products.add(new Product(null, "Washing Machine", "Washing Machines", null));
+        products.add(new Product(null, "Television", "Televisions", null));
+        products.add(new Product(null, "Microwave", "Microwaves", null));
+        products.add(new Product(null, "Refrigerator", "Refrigerators", null));
+        Merchant merchant = new Merchant(CurrentMerchant.name, CurrentMerchant.description, CurrentMerchant.email, CurrentMerchant.rating, CurrentMerchant.products, CurrentMerchant.website);
+        ProductsAdapter adapter = new ProductsAdapter(merchantHome, products, merchant);
+        LinearLayoutManager lm = new LinearLayoutManager(merchantHome);
+        lm.setOrientation(LinearLayoutManager.HORIZONTAL);
+        rvProducts.setAdapter(adapter);
+        rvProducts.setLayoutManager(lm);
     }
 
     private void setListeners() {
@@ -288,7 +310,7 @@ public class MerchantAccountFragment extends Fragment {
     }
 
     private void setSpinnerAdapter(Spinner spnAudience) {
-        String[] audiences = {"General Audience", "Old Customers"};
+        String[] audiences = {"General Audience", "Existing Customers"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(merchantHome, R.layout.layout_offer_spinner_textview, audiences);
         spnAudience.setAdapter(adapter);
     }
@@ -368,7 +390,7 @@ public class MerchantAccountFragment extends Fragment {
 
         boolean generalAudience = true;
 
-        if (audience.equals("Old Customers"))
+        if (audience.equals("Existing Customers"))
             generalAudience = false;
 
         Map<String, Object> offerData = new HashMap<>();
@@ -542,7 +564,7 @@ public class MerchantAccountFragment extends Fragment {
         tvDoneMerchantDesc = view.findViewById(R.id.tv_done_merchant_desc);
         tvDoneProducts = view.findViewById(R.id.tv_done_products);
         btnCreateOffer = view.findViewById(R.id.btn_create_offer);
-
+        rvProducts = view.findViewById(R.id.rv_products);
     }
 
     @Override

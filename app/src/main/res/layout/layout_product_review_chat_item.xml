@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:text="Friday - 15:23"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/margin_normal"/>
+        android:layout_marginTop="@dimen/margin_small"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -50,7 +50,7 @@
                         android:background="@drawable/bg_lightest_round"
                         android:padding="@dimen/padding_normal"
                         android:layout_marginLeft="@dimen/margin_tiny"
-                        android:layout_marginTop="@dimen/margin_small">
+                        android:layout_marginVertical="@dimen/_12sdp">
 
                         <TextView
                             android:id="@+id/tv_other_name"
@@ -91,7 +91,7 @@
                         android:background="@drawable/bg_lightest_round"
                         android:padding="@dimen/padding_normal"
                         android:layout_marginRight="@dimen/margin_tiny"
-                        android:layout_marginTop="@dimen/margin_normal">
+                        android:layout_marginVertical="@dimen/_12sdp">
 
                         <TextView
                             android:id="@+id/tv_my_name"
@@ -125,7 +125,7 @@
                 android:id="@+id/iv_other_img"
                 android:layout_marginLeft="@dimen/margin_small"
                 android:src="@color/darkest"
-                android:layout_marginTop="@dimen/margin_normal"
+                android:layout_marginVertical="@dimen/margin_small"
                 android:layout_width="@dimen/_100sdp"
                 android:layout_height="@dimen/_100sdp"
                 android:visibility="visible"/>
@@ -135,7 +135,7 @@
                 android:layout_gravity="right"
                 android:layout_marginRight="@dimen/margin_small"
                 android:src="@color/darkest"
-                android:layout_marginTop="@dimen/margin_normal"
+                android:layout_marginVertical="@dimen/_12sdp"
                 android:layout_width="@dimen/_100sdp"
                 android:layout_height="@dimen/_100sdp"
                 android:visibility="visible"/>

@@ -296,9 +296,7 @@ public class SearchFragment extends Fragment {
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-
                         if (task.isSuccessful()) {
-
                             for (DocumentSnapshot documentSnapshot : task.getResult().getDocuments()) {
                                 String merchantName = documentSnapshot.get("Merchant Name").toString();
                                 String customerName = documentSnapshot.get("Customer Name").toString();

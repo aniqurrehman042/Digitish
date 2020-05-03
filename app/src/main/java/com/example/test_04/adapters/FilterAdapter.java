@@ -117,29 +117,51 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.ViewHolder
                 }
             }
         } else {
-
-            switch (position) {
-                case 0:
-                    merchantReviewsFragment.getMerchantReviews();
-                    break;
-                case 1:
-                    merchantReviewsFragment.getReviews("", "");
-                    break;
-                case 2:
-                    merchantReviewsFragment.getReviews("Product Rating", "5");
-                    break;
-                case 3:
-                    merchantReviewsFragment.getReviews("Product Rating", "4");
-                    break;
-                case 4:
-                    merchantReviewsFragment.getReviews("Product Rating", "3");
-                    break;
-                case 5:
-                    merchantReviewsFragment.getReviews("Product Rating", "2");
-                    break;
-                case 6:
-                    merchantReviewsFragment.getReviews("Product Rating", "1");
-                    break;
+            if (filters.size() == 7) {
+                switch (position) {
+                    case 0:
+                        merchantReviewsFragment.getMerchantReviews();
+                        break;
+                    case 1:
+                        merchantReviewsFragment.getReviews("", "");
+                        break;
+                    case 2:
+                        merchantReviewsFragment.getReviews("Product Rating", "5");
+                        break;
+                    case 3:
+                        merchantReviewsFragment.getReviews("Product Rating", "4");
+                        break;
+                    case 4:
+                        merchantReviewsFragment.getReviews("Product Rating", "3");
+                        break;
+                    case 5:
+                        merchantReviewsFragment.getReviews("Product Rating", "2");
+                        break;
+                    case 6:
+                        merchantReviewsFragment.getReviews("Product Rating", "1");
+                        break;
+                }
+            } else if (filters.size() == 6) {
+                switch (position) {
+                    case 0:
+                        merchantReviewsFragment.getReviews("", "");
+                        break;
+                    case 1:
+                        merchantReviewsFragment.getReviews("Product Rating", "5");
+                        break;
+                    case 2:
+                        merchantReviewsFragment.getReviews("Product Rating", "4");
+                        break;
+                    case 3:
+                        merchantReviewsFragment.getReviews("Product Rating", "3");
+                        break;
+                    case 4:
+                        merchantReviewsFragment.getReviews("Product Rating", "2");
+                        break;
+                    case 5:
+                        merchantReviewsFragment.getReviews("Product Rating", "1");
+                        break;
+                }
             }
         }
     }
