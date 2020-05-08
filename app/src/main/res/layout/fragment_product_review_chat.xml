@@ -155,7 +155,8 @@
                 android:background="@drawable/bg_qr"
                 android:gravity="center"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent">
 
                 <ImageView
                     android:id="@+id/iv_product_img_search"
@@ -172,7 +173,7 @@
                 android:layout_marginLeft="@dimen/margin_normal"
                 android:orientation="vertical"
                 app:layout_constraintLeft_toRightOf="@id/ll_product_img_search"
-                app:layout_constraintTop_toTopOf="@id/ll_product_img_search">
+                app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
                     android:id="@+id/tv_product_name"
@@ -265,7 +266,7 @@
                         android:lines="1"
                         android:text="Merchant: "
                         android:textColor="@color/black"
-                        android:textSize="@dimen/text_sub_normal" />
+                        android:textSize="@dimen/text_super_sub_normal" />
 
                     <TextView
                         android:id="@+id/tv_merchant_name"
@@ -274,7 +275,7 @@
                         android:lines="1"
                         android:text="Abans"
                         android:textColor="@color/dark_grey"
-                        android:textSize="@dimen/text_sub_normal" />
+                        android:textSize="@dimen/text_super_sub_normal" />
 
                 </LinearLayout>
 
