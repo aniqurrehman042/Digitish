@@ -2,6 +2,8 @@ package com.example.test_04.models;
 
 import android.graphics.Bitmap;
 
+import com.example.test_04.utils.DateUtils;
+
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 
@@ -89,6 +91,6 @@ public class Chat implements Serializable, Comparable<Chat> {
 
     @Override
     public int compareTo(Chat o) {
-        return getDate().compareTo(o.getDate());
+        return DateUtils.stringToDateWithTime(getDate()).compareTo(DateUtils.stringToDateWithTime(o.getDate()));
     }
 }

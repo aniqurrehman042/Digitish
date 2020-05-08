@@ -135,6 +135,36 @@
             app:layout_constraintTop_toTopOf="@id/iv_headset"
             app:layout_constraintBottom_toBottomOf="@id/iv_headset"/>
 
+        <View
+            android:id="@+id/v_callback_divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            app:layout_constraintTop_toBottomOf="@id/iv_headset"
+            android:layout_marginTop="@dimen/margin_large"
+            android:background="@color/dark_grey"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_logout"
+            android:layout_width="@dimen/size_icon"
+            android:layout_height="@dimen/size_icon"
+            android:layout_marginTop="@dimen/margin_normal"
+            android:src="@drawable/ic_logout"
+            android:tint="@color/darkest"
+            android:layout_marginLeft="@dimen/_3sdp"
+            app:layout_constraintLeft_toLeftOf="@id/iv_headset"
+            app:layout_constraintTop_toBottomOf="@+id/v_callback_divider" />
+
+        <TextView
+            android:id="@+id/tv_logout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Log out"
+            android:textColor="@color/darkest"
+            android:textSize="@dimen/text_normal"
+            app:layout_constraintLeft_toLeftOf="@id/tv_notifications"
+            app:layout_constraintTop_toTopOf="@id/iv_logout"
+            app:layout_constraintBottom_toBottomOf="@id/iv_logout"/>
+
         <ImageView
             android:id="@+id/iv_feedback"
             android:layout_width="@dimen/size_icon"

@@ -35,7 +35,6 @@ public class InboxAdapter extends RecyclerView.Adapter<InboxAdapter.ViewHolder> 
 
     private CustomerHome customerHome;
     private ArrayList<Chat> chatsWithLastMsg;
-    private Date lastDate = Calendar.getInstance().getTime();
 
     public InboxAdapter(CustomerHome customerHome, ArrayList<Chat> chatsWithLastMsg) {
         this.customerHome = customerHome;
@@ -81,21 +80,21 @@ public class InboxAdapter extends RecyclerView.Adapter<InboxAdapter.ViewHolder> 
         String time = DateUtils.dateToTimeString(DateUtils.stringToDateWithTime(chatsWithLastMsg.get(position).getDate()));
 
         holder.tvDate.setText(time);
+        tvDateHeading.setVisibility(View.GONE);
 
         Date currentDate = Calendar.getInstance().getTime();
         Date msgDate = DateUtils.stringToDateWithTime(chatsWithLastMsg.get(position).getDate());
+        Date lastDate = currentDate;
+        if (position > 0) {
+            lastDate = DateUtils.stringToDateWithTime(chatsWithLastMsg.get(position - 1).getDate());
+        }
 
         if (DateUtils.isSameDay(currentDate, msgDate) && position < 1){
-
             tvDateHeading.setVisibility(View.VISIBLE);
             tvDateHeading.setText("Today");
-
         } else if (DateUtils.isSameDay(msgDate, lastDate)) {
-
             tvDateHeading.setVisibility(View.GONE);
-
         } else {
-            lastDate = msgDate;
             tvDateHeading.setVisibility(View.VISIBLE);
             tvDateHeading.setText(DateUtils.dateToString(msgDate));
         }

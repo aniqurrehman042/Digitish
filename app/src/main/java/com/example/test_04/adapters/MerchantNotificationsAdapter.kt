@@ -4,7 +4,6 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.Context
-import android.content.DialogInterface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,7 +34,6 @@ import kotlin.collections.ArrayList
 
 class MerchantNotificationsAdapter(var customerNotificationsHolder: ArrayList<CustomerNotification>, var customerNotificationsData: ArrayList<DateComparator>?, var merchantHome: MerchantHome?, var customerHome: CustomerHome?, productReview: ProductReview?) : RecyclerView.Adapter<MerchantNotificationsAdapter.ViewHolder>() {
 
-    private var lastDate = Calendar.getInstance().time
     private var db: FirebaseFirestore = FirebaseFirestore.getInstance()
     private var done: Int = 0
     private var toBeDone: Int = 1
@@ -83,9 +81,14 @@ class MerchantNotificationsAdapter(var customerNotificationsHolder: ArrayList<Cu
         val tvUnread: TextView = holder.tvUnread
 
         tvUnread.visibility = View.GONE
+        tvDateHeading.visibility = View.GONE
 
         val currentDate = Calendar.getInstance().time
         val msgDate = DateUtils.stringToDateWithTime(customerNotificationsHolder[position].date)
+        var lastDate = currentDate
+        if (position > 0) {
+            lastDate = DateUtils.stringToDateWithTime(customerNotificationsHolder[position - 1].date)
+        }
 
         if (DateUtils.isSameDay(currentDate, msgDate) && position < 1) {
             tvDateHeading.visibility = View.VISIBLE
@@ -93,7 +96,6 @@ class MerchantNotificationsAdapter(var customerNotificationsHolder: ArrayList<Cu
         } else if (DateUtils.isSameDay(msgDate, lastDate)) {
             tvDateHeading.visibility = View.GONE
         } else {
-            lastDate = msgDate
             tvDateHeading.visibility = View.VISIBLE
             tvDateHeading.text = DateUtils.dateToString(msgDate)
         }

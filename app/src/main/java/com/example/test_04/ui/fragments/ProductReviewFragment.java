@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +30,8 @@ import com.example.test_04.utils.DateUtils;
 import com.example.test_04.utils.FCMUtils;
 import com.example.test_04.utils.PreferencesUtils;
 import com.example.test_04.utils.ReviewUtils;
+import com.example.test_04.utils.StringUtils;
+import com.example.test_04.utils.SwitchUtils;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
@@ -54,6 +57,7 @@ public class ProductReviewFragment extends Fragment {
     private TextView tvProductCode;
     private Button btnSubmit;
     private Button btnClear;
+    private ImageView ivProductImg;
 
     private ProductReview productReview;
     private FirebaseFirestore db;
@@ -86,8 +90,15 @@ public class ProductReviewFragment extends Fragment {
 
         db = FirebaseFirestore.getInstance();
         getProductAndQrId();
+        setProductImage();
         setListeners();
         setDoneButtonOnKeyboard();
+    }
+
+    private void setProductImage() {
+        if (productReview != null) {
+            ivProductImg.setImageResource(SwitchUtils.getProductImgId(productReview.getProductCategory()));
+        }
     }
 
     private void setDoneButtonOnKeyboard() {
@@ -316,6 +327,7 @@ public class ProductReviewFragment extends Fragment {
         tvProductCode = view.findViewById(R.id.tv_product_code);
         btnClear = view.findViewById(R.id.btn_clear);
         btnSubmit = view.findViewById(R.id.btn_submit);
+        ivProductImg = view.findViewById(R.id.iv_product_img);
     }
 
     @Override

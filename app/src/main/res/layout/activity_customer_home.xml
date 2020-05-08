@@ -126,7 +126,7 @@
                 android:id="@+id/iv_account"
                 android:layout_width="@dimen/size_icon"
                 android:layout_height="@dimen/size_icon"
-                android:src="@drawable/ic_account"
+                android:src="@drawable/ic_home"
                 android:tint="@color/darkest" />
 
         </LinearLayout>

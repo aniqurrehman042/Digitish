@@ -46,6 +46,7 @@ class ProductReviewChatFragment : Fragment() {
     private lateinit var tvProductCode: TextView
     private lateinit var tvReviewTitle: TextView
     private lateinit var tvReviewDesc: TextView
+    private lateinit var tvMerchantName: TextView
     private lateinit var tvMarkCompleted: TextView
     private lateinit var ivAddPic: ImageView
     private lateinit var etMessage: EditText
@@ -123,6 +124,7 @@ class ProductReviewChatFragment : Fragment() {
         if (fromSearch!!) {
             tvProductCodeSearch.text = productReview!!.productCode
             tvProductName.text = productReview!!.productName
+            tvMerchantName.text = productReview!!.merchantName
             showSearchHeader()
         } else {
             tvProductCode.text = productReview!!.productCode
@@ -196,6 +198,7 @@ class ProductReviewChatFragment : Fragment() {
         tvProductCodeSearch = view.findViewById(R.id.tv_product_code_search)
         llSearchReviewHeader = view.findViewById(R.id.ll_search_review_header)
         llReviewHeader = view.findViewById(R.id.ll_review_header)
+        tvMerchantName = view.findViewById(R.id.tv_merchant_name)
     }
 
     private fun setListeners() {

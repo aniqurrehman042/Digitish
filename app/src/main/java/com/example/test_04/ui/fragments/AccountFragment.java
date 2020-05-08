@@ -23,6 +23,8 @@ import com.example.test_04.models.CurrentCustomer;
 import com.example.test_04.models.Product;
 import com.example.test_04.ui.CustomerHome;
 import com.example.test_04.ui.MerchantLogin;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
@@ -42,7 +44,9 @@ public class AccountFragment extends Fragment {
     private TextView tvCustomerName;
     private TextView tvCustomerPoints;
     private TextView tvCallback;
+    private TextView tvLogout;
     private ImageView ivHeadset;
+    private ImageView ivLogout;
     private RoundedImageView rivProfilePicture;
 
     private CustomerHome customerHome;
@@ -107,6 +111,15 @@ public class AccountFragment extends Fragment {
         return view;
     }
 
+    private void signOut() {
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+        GoogleSignIn.getClient(customerHome, gso).signOut();
+        customerHome.finish();
+    }
+
     private void showProgressDialog(String title) {
         progressDialog = new ProgressDialog(customerHome);
         progressDialog.setTitle(title);
@@ -117,6 +130,18 @@ public class AccountFragment extends Fragment {
     private void setListeners() {
         tvCallback.setOnClickListener(requestCallbackClickListener);
         ivHeadset.setOnClickListener(requestCallbackClickListener);
+        tvLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signOut();
+            }
+        });
+        ivLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signOut();
+            }
+        });
     }
 
     private void setViewValues() {
@@ -138,6 +163,8 @@ public class AccountFragment extends Fragment {
         rivProfilePicture = view.findViewById(R.id.riv_profile_pic);
         tvCallback = view.findViewById(R.id.tv_callback);
         ivHeadset = view.findViewById(R.id.iv_headset);
+        tvLogout = view.findViewById(R.id.tv_logout);
+        ivLogout = view.findViewById(R.id.iv_logout);
     }
 
     @Override
